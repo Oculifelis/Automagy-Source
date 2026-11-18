@@ -1,0 +1,28 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:aer",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "thaumaturge:golem_bell"
+    },
+    {
+      "item": "automagia:crystal_brain_aer"
+    },
+    {
+      "item": "automagia:sliver_ordo"
+    }
+  ],
+  "research": {
+    "entry": "automagia:golem_linker",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:golem_linker"
+  },
+  "vis": 15
+}

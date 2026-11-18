@@ -1,0 +1,28 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ignis",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "automagia:runed_obsidian"
+    },
+    {
+      "item": "minecraft:gold_nugget"
+    },
+    {
+      "item": "minecraft:gold_nugget"
+    }
+  ],
+  "research": {
+    "entry": "automagia:netherrune_zombie",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:runed_obsidian_zombie"
+  },
+  "vis": 15
+}

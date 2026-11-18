@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "automagia:block/siren_lure_side",
+    "top": "thaumaturge:block/obsidian_totem_base",
+    "bottom": "thaumaturge:block/obsidian_totem_base"
+  }
+}

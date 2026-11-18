@@ -1,0 +1,21 @@
+{
+  "type": "thaumaturge:crucible",
+  "aspects": [
+    {
+      "aspect": "thaumaturge:perditio",
+      "amount": 6
+    },
+    {
+      "aspect": "thaumaturge:ignis",
+      "amount": 2
+    }
+  ],
+  "catalyst": "thaumaturge:crystal_ignis",
+  "research": {
+    "entry": "automagia:entropic_refining"
+  },
+  "result": {
+    "id": "automagia:sliver_ignis",
+    "count": 4
+  }
+}

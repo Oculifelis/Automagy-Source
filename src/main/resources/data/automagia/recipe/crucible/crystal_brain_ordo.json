@@ -1,0 +1,21 @@
+{
+  "type": "thaumaturge:crucible",
+  "aspects": [
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 8
+    },
+    {
+      "aspect": "thaumaturge:vitreus",
+      "amount": 8
+    }
+  ],
+  "catalyst": "thaumaturge:brain",
+  "research": {
+    "entry": "automagia:crystal_brain"
+  },
+  "result": {
+    "id": "automagia:crystal_brain_ordo",
+    "count": 1
+  }
+}

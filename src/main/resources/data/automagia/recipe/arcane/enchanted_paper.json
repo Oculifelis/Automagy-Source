@@ -1,0 +1,25 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    "minecraft:paper",
+    "minecraft:paper",
+    "minecraft:paper",
+    "minecraft:gold_nugget",
+    "automagia:sliver_ordo"
+  ],
+  "research": {
+    "entry": "automagia:enchanted_paper",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:enchanted_paper",
+    "count": 3
+  },
+  "vis": 10
+}

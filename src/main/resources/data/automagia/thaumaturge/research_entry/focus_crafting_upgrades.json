@@ -1,0 +1,48 @@
+{
+  "category": "automagia:automagy",
+  "name": "research.automagia.focus_crafting_upgrades.title",
+  "parents": [
+    "automagia:focus_crafting"
+  ],
+  "column": 12,
+  "row": -1,
+  "icons": [
+    "thaumaturge:focus_2"
+  ],
+  "stages": [
+    {
+      "text": "research.automagia.focus_crafting_upgrades.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "thaumaturge:auromancy",
+          "amount": 1
+        },
+        {
+          "type": "observation",
+          "category": "thaumaturge:auromancy",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.automagia.focus_crafting_upgrades.stage_1",
+      "recipes": []
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:fabrico",
+      "amount": 4
+    },
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:vacuos",
+      "amount": 2
+    }
+  ],
+  "complexity": 3
+}

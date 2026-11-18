@@ -1,0 +1,25 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:terra",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    "automagia:redcrystal",
+    "automagia:redcrystal",
+    "automagia:redcrystal",
+    "automagia:redcrystal",
+    "automagia:sliver_terra"
+  ],
+  "research": {
+    "entry": "automagia:redcrystal_dense",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:redcrystal_dense",
+    "count": 4
+  },
+  "vis": 10
+}

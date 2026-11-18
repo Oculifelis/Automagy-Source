@@ -1,0 +1,32 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 2
+    },
+    {
+      "aspect": "thaumaturge:aer",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "E": "automagia:crystalline_eye",
+    "P": "automagia:enchanted_paper",
+    "C": "automagia:crystal_brain_ordo",
+    "A": "thaumaturge:amber_block"
+  },
+  "pattern": [
+    " E ",
+    "PCP",
+    " A "
+  ],
+  "research": {
+    "entry": "automagia:inventarium",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:inventarium_core"
+  },
+  "vis": 50
+}

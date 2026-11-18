@@ -1,0 +1,23 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [],
+  "key": {
+    "N": {
+      "item": "minecraft:gold_nugget"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    }
+  },
+  "pattern": [
+    "NGN"
+  ],
+  "research": {
+    "entry": "automagia:tally_box_lens",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:tally_lens_clear"
+  },
+  "vis": 5
+}

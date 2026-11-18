@@ -1,0 +1,37 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ignis",
+      "amount": 2
+    },
+    {
+      "aspect": "thaumaturge:perditio",
+      "amount": 2
+    }
+  ],
+  "key": {
+    "R": {
+      "item": "automagia:runed_obsidian"
+    },
+    "C": {
+      "item": "minecraft:crying_obsidian"
+    },
+    "E": {
+      "item": "minecraft:ender_eye"
+    }
+  },
+  "pattern": [
+    "RCR",
+    "CEC",
+    "RCR"
+  ],
+  "research": {
+    "entry": "automagia:dimensionlure",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:dimensional_lure"
+  },
+  "vis": 60
+}

@@ -1,0 +1,78 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "top": "automagia:block/vis_reader_on",
+    "side": "thaumaturge:block/arcane_stone_1",
+    "particle": "thaumaturge:block/arcane_stone_1"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        0,
+        3
+      ],
+      "to": [
+        13,
+        6,
+        13
+      ],
+      "faces": {
+        "up": {
+          "texture": "#top",
+          "uv": [
+            3,
+            3,
+            13,
+            13
+          ]
+        },
+        "down": {
+          "texture": "#side",
+          "uv": [
+            3,
+            3,
+            13,
+            13
+          ]
+        },
+        "north": {
+          "texture": "#side",
+          "uv": [
+            3,
+            10,
+            13,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#side",
+          "uv": [
+            3,
+            10,
+            13,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#side",
+          "uv": [
+            3,
+            10,
+            13,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#side",
+          "uv": [
+            3,
+            10,
+            13,
+            16
+          ]
+        }
+      }
+    }
+  ]
+}

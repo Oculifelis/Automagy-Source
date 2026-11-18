@@ -1,0 +1,17 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [],
+  "ingredients": [
+    "automagia:enchanted_paper",
+    "minecraft:gold_nugget",
+    "automagia:sliver_ordo"
+  ],
+  "research": {
+    "entry": "automagia:enchanted_paper",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:runic_whitelist"
+  },
+  "vis": 5
+}

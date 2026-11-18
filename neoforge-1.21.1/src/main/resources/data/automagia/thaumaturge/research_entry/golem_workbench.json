@@ -1,0 +1,51 @@
+{
+  "category": "automagia:automagy",
+  "name": "research.automagia.golem_workbench.title",
+  "parents": [
+    "automagia:congregatrix",
+    "automagia:golem_linker"
+  ],
+  "column": -4,
+  "row": 5,
+  "icons": [
+    "automagia:golem_workbench"
+  ],
+  "stages": [
+    {
+      "text": "research.automagia.golem_workbench.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "thaumaturge:golemancy",
+          "amount": 1
+        },
+        {
+          "type": "observation",
+          "category": "thaumaturge:golemancy",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.automagia.golem_workbench.stage_1",
+      "recipes": [
+        "automagia:arcane/golem_workbench"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:fabrico",
+      "amount": 4
+    },
+    {
+      "aspect": "thaumaturge:machina",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:cognitio",
+      "amount": 2
+    }
+  ],
+  "complexity": 3
+}

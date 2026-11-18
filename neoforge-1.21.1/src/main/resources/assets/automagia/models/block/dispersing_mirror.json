@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "thaumaturge:block/metal_thaumium",
+    "top": "automagia:block/dispersing_mirror_top",
+    "bottom": "thaumaturge:block/metal_thaumium"
+  }
+}

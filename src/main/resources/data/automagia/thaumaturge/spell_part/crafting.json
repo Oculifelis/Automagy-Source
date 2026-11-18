@@ -1,0 +1,38 @@
+{
+  "aspect": "thaumaturge:fabrico",
+  "behavior": {
+    "type": "automagia:crafting_grid",
+    "open_vis": 2.0,
+    "craft_vis": 1.0
+  },
+  "color": 11569232,
+  "complexity": 2,
+  "icon": "automagia:textures/foci/crafting.png",
+  "max_per_spell": 1,
+  "research": {
+    "entry": "automagia:focus_crafting"
+  },
+  "settings": [
+    {
+      "key": "gratis",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "complexity": 2.0
+    },
+    {
+      "key": "storage",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "complexity": 2.0
+    },
+    {
+      "key": "transposing",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "complexity": 2.0
+    }
+  ]
+}

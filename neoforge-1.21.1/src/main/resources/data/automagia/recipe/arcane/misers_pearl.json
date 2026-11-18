@@ -1,0 +1,28 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "automagia:avarice_pearl"
+    },
+    {
+      "item": "automagia:shattered_avarice_pearl"
+    },
+    {
+      "item": "automagia:sliver_ordo"
+    }
+  ],
+  "research": {
+    "entry": "automagia:avaricious",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:misers_pearl"
+  },
+  "vis": 30
+}

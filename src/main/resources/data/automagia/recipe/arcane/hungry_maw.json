@@ -1,0 +1,31 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:perditio",
+      "amount": 2
+    },
+    {
+      "aspect": "thaumaturge:aer",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "O": "minecraft:obsidian",
+    "C": "thaumaturge:hungry_chest"
+  },
+  "pattern": [
+    "O",
+    "C",
+    "O"
+  ],
+  "research": {
+    "entry": "automagia:hungry_maw",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:hungry_maw",
+    "count": 2
+  },
+  "vis": 40
+}

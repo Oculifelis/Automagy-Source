@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "eye=false,facing=up": {
+      "model": "automagia:block/melding_mirror"
+    },
+    "eye=true,facing=up": {
+      "model": "automagia:block/melding_mirror_eye"
+    },
+    "eye=false,facing=down": {
+      "model": "automagia:block/melding_mirror",
+      "x": 180
+    },
+    "eye=true,facing=down": {
+      "model": "automagia:block/melding_mirror_eye",
+      "x": 180
+    },
+    "eye=false,facing=north": {
+      "model": "automagia:block/melding_mirror",
+      "x": 90
+    },
+    "eye=true,facing=north": {
+      "model": "automagia:block/melding_mirror_eye",
+      "x": 90
+    },
+    "eye=false,facing=south": {
+      "model": "automagia:block/melding_mirror",
+      "x": 90,
+      "y": 180
+    },
+    "eye=true,facing=south": {
+      "model": "automagia:block/melding_mirror_eye",
+      "x": 90,
+      "y": 180
+    },
+    "eye=false,facing=west": {
+      "model": "automagia:block/melding_mirror",
+      "x": 90,
+      "y": 270
+    },
+    "eye=true,facing=west": {
+      "model": "automagia:block/melding_mirror_eye",
+      "x": 90,
+      "y": 270
+    },
+    "eye=false,facing=east": {
+      "model": "automagia:block/melding_mirror",
+      "x": 90,
+      "y": 90
+    },
+    "eye=true,facing=east": {
+      "model": "automagia:block/melding_mirror_eye",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

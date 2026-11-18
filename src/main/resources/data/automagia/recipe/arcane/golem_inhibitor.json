@@ -1,0 +1,33 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:perditio",
+      "amount": 1
+    },
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "P": "thaumaturge:plate_iron",
+    "R": "minecraft:redstone",
+    "I": "minecraft:iron_ingot",
+    "B": "automagia:crystal_brain_perditio",
+    "F": "thaumaturge:golem_fetter"
+  },
+  "pattern": [
+    "PRP",
+    "IBI",
+    "PFP"
+  ],
+  "research": {
+    "entry": "automagia:golem_inhibitor",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:golem_inhibitor"
+  },
+  "vis": 30
+}

@@ -1,0 +1,35 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:perditio",
+      "amount": 1
+    },
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "thaumaturge:hand_mirror"
+    },
+    {
+      "item": "automagia:finical_maw"
+    },
+    {
+      "item": "automagia:sliver_perditio"
+    },
+    {
+      "item": "automagia:sliver_ordo"
+    }
+  ],
+  "research": {
+    "entry": "automagia:auto_hand_mirror",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:hungry_hand_mirror"
+  },
+  "vis": 40
+}

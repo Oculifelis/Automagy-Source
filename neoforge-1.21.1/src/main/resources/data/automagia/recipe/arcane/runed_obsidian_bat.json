@@ -1,0 +1,28 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ignis",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "automagia:runed_obsidian"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    }
+  ],
+  "research": {
+    "entry": "automagia:netherrune_bat",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:runed_obsidian_bat"
+  },
+  "vis": 15
+}

@@ -1,0 +1,22 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:perditio",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    "minecraft:ender_pearl",
+    "minecraft:gold_ingot",
+    "automagia:sliver_perditio"
+  ],
+  "research": {
+    "entry": "automagia:greedy_chest",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:avarice_pearl"
+  },
+  "vis": 15
+}

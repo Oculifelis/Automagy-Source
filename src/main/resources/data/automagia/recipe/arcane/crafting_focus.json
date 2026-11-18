@@ -1,0 +1,53 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    },
+    {
+      "aspect": "thaumaturge:aer",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "P": "automagia:enchanted_paper",
+    "T": "minecraft:crafting_table",
+    "F": "thaumaturge:focus_1"
+  },
+  "pattern": [
+    " P ",
+    "TFT",
+    " P "
+  ],
+  "research": {
+    "entry": "automagia:focus_crafting",
+    "stage": 0
+  },
+  "result": {
+    "id": "thaumaturge:focus_1",
+    "components": {
+      "thaumaturge:spell": {
+        "style": "instant",
+        "root": {
+          "part": "thaumaturge:origin",
+          "settings": {},
+          "children": [
+            {
+              "part": "thaumaturge:self",
+              "settings": {},
+              "children": [
+                {
+                  "part": "automagia:crafting",
+                  "settings": {},
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "vis": 25
+}

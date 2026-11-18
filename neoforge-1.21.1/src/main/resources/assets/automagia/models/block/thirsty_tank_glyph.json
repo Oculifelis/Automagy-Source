@@ -1,0 +1,25 @@
+{
+  "textures": {
+    "mark": "automagia:block/thirsty_tank_glyph"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        -0.01
+      ],
+      "to": [
+        16,
+        16,
+        0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#mark",
+          "cullface": "north"
+        }
+      }
+    }
+  ]
+}

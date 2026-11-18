@@ -1,0 +1,48 @@
+{
+  "category": "automagia:automagy",
+  "name": "research.automagia.overseer.title",
+  "parents": [
+    "automagia:crystal_brain"
+  ],
+  "column": -6,
+  "row": 1,
+  "icons": [
+    "thaumaturge:golem_bell"
+  ],
+  "stages": [
+    {
+      "text": "research.automagia.overseer.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "thaumaturge:golemancy",
+          "amount": 1
+        },
+        {
+          "type": "observation",
+          "category": "thaumaturge:golemancy",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.automagia.overseer.stage_1",
+      "recipes": []
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:sensus",
+      "amount": 4
+    },
+    {
+      "aspect": "thaumaturge:cognitio",
+      "amount": 2
+    },
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 2
+    }
+  ],
+  "complexity": 1
+}

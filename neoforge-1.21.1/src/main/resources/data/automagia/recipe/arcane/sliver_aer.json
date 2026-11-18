@@ -1,0 +1,24 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [],
+  "ingredients": [
+    {
+      "type": "neoforge:components",
+      "items": "thaumaturge:essentia_crystal",
+      "components": {
+        "thaumaturge:crystal_aspect": {
+          "aspect": "thaumaturge:aer"
+        }
+      }
+    }
+  ],
+  "research": {
+    "entry": "automagia:slivers",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:sliver_aer",
+    "count": 4
+  },
+  "vis": 5
+}

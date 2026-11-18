@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "thaumaturge:block/table_wood_side",
+    "up": "automagia:block/unseen_scribe_front",
+    "down": "thaumaturge:block/table_wood_top",
+    "north": "thaumaturge:block/table_wood_side",
+    "south": "thaumaturge:block/table_wood_side",
+    "east": "thaumaturge:block/table_wood_side",
+    "west": "thaumaturge:block/table_wood_side"
+  }
+}

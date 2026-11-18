@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "AA",
+    "AA"
+  ],
+  "key": {
+    "A": "automagia:glowing_amber"
+  },
+  "result": {
+    "id": "automagia:glowing_amber_bricks",
+    "count": 4
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "automagia:entity/chest/greedy"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "automagia:entity/chest/eager"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "automagia:entity/chest/tenacious"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    },
+    {
+      "aspect": "thaumaturge:perditio",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    "minecraft:comparator",
+    "thaumaturge:nugget_quicksilver",
+    "automagia:sliver_ordo",
+    "automagia:sliver_perditio"
+  ],
+  "research": {
+    "entry": "automagia:vis_reader",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:vis_reader"
+  },
+  "vis": 20
+}

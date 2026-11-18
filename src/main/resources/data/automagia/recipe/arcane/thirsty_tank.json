@@ -1,0 +1,27 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:aqua",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "W": "thaumaturge:plank_greatwood",
+    "G": "minecraft:glass",
+    "M": "automagia:hungry_maw"
+  },
+  "pattern": [
+    "WGW",
+    "GMG",
+    "WGW"
+  ],
+  "research": {
+    "entry": "automagia:thirsty_tank",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:thirsty_tank"
+  },
+  "vis": 20
+}

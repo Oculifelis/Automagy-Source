@@ -1,0 +1,33 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:perditio",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:mossy_cobblestone"
+    },
+    "P": {
+      "item": "automagia:sliver_perditio"
+    },
+    "B": {
+      "item": "thaumaturge:brain"
+    }
+  },
+  "pattern": [
+    "SPS",
+    "PBP",
+    "SPS"
+  ],
+  "research": {
+    "entry": "automagia:amnesiastone",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:amnesiac_stone"
+  },
+  "vis": 30
+}

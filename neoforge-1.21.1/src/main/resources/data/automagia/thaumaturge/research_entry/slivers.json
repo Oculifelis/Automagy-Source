@@ -1,0 +1,64 @@
+{
+  "category": "automagia:automagy",
+  "name": "research.automagia.slivers.title",
+  "parents": [
+    "thaumaturge:base_artifice"
+  ],
+  "column": 0,
+  "row": 0,
+  "icons": [
+    "automagia:sliver_ordo"
+  ],
+  "stages": [
+    {
+      "text": "research.automagia.slivers.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "thaumaturge:artifice",
+          "amount": 1
+        },
+        {
+          "type": "observation",
+          "category": "thaumaturge:artifice",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.automagia.slivers.stage_1",
+      "recipes": [
+        "automagia:arcane/sliver_aer",
+        "automagia:arcane/crystal_from_slivers_aer",
+        "automagia:arcane/sliver_ignis",
+        "automagia:arcane/crystal_from_slivers_ignis",
+        "automagia:arcane/sliver_aqua",
+        "automagia:arcane/crystal_from_slivers_aqua",
+        "automagia:arcane/sliver_terra",
+        "automagia:arcane/crystal_from_slivers_terra",
+        "automagia:arcane/sliver_ordo",
+        "automagia:arcane/crystal_from_slivers_ordo",
+        "automagia:arcane/sliver_perditio",
+        "automagia:arcane/crystal_from_slivers_perditio"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 5
+    },
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 4
+    },
+    {
+      "aspect": "thaumaturge:praecantatio",
+      "amount": 3
+    }
+  ],
+  "complexity": 1,
+  "meta": [
+    "round"
+  ]
+}

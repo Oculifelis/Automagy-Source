@@ -1,0 +1,22 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ignis",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    "automagia:runed_obsidian",
+    "minecraft:quartz",
+    "minecraft:quartz"
+  ],
+  "research": {
+    "entry": "automagia:netherrune_crystal",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:runed_obsidian_crystal"
+  },
+  "vis": 15
+}

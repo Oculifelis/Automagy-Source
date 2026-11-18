@@ -1,0 +1,28 @@
+{
+  "type": "automagia:infusion_enchanting",
+  "enchantment": "minecraft:luck_of_the_sea",
+  "catalyst": "minecraft:fishing_rod",
+  "components": [
+    "minecraft:prismarine_crystals",
+    "minecraft:gold_nugget",
+    "thaumaturge:quicksilver"
+  ],
+  "aspects": [
+    {
+      "aspect": "thaumaturge:aqua",
+      "amount": 8
+    },
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 6
+    },
+    {
+      "aspect": "thaumaturge:praecantatio",
+      "amount": 4
+    }
+  ],
+  "instability": 2,
+  "research": {
+    "entry": "automagia:enchant_fishing"
+  }
+}

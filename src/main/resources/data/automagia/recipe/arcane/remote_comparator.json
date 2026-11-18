@@ -1,0 +1,22 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:aer",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    "minecraft:comparator",
+    "automagia:sliver_aer",
+    "automagia:sliver_ordo"
+  ],
+  "research": {
+    "entry": "automagia:remote_comparator",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:remote_comparator"
+  },
+  "vis": 15
+}

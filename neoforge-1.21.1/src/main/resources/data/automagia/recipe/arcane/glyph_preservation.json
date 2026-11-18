@@ -1,0 +1,28 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:aqua",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "automagia:aqueous_admixture"
+    },
+    {
+      "item": "minecraft:smooth_stone_slab"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    }
+  ],
+  "research": {
+    "entry": "automagia:thirsty_tank_glyph",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:glyph_preservation"
+  },
+  "vis": 10
+}

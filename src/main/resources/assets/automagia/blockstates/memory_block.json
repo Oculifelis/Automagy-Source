@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "automagia:block/memory_block"
+    }
+  }
+}

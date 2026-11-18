@@ -1,0 +1,11 @@
+{
+  "type": "automagia:list_transmute",
+  "category": "misc",
+  "input": {
+    "item": "automagia:runic_whitelist"
+  },
+  "material": {
+    "item": "automagia:sliver_perditio"
+  },
+  "result": "automagia:runic_blacklist"
+}

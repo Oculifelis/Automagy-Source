@@ -1,0 +1,51 @@
+{
+  "category": "automagia:automagy",
+  "name": "research.automagia.golem_inhibitor.title",
+  "parents": [
+    "automagia:golem_linker",
+    "thaumaturge:golem_fetter"
+  ],
+  "column": -8,
+  "row": 3,
+  "icons": [
+    "automagia:golem_inhibitor"
+  ],
+  "stages": [
+    {
+      "text": "research.automagia.golem_inhibitor.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "thaumaturge:golemancy",
+          "amount": 1
+        },
+        {
+          "type": "observation",
+          "category": "thaumaturge:golemancy",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.automagia.golem_inhibitor.stage_1",
+      "recipes": [
+        "automagia:arcane/golem_inhibitor"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:vinculum",
+      "amount": 4
+    },
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:machina",
+      "amount": 2
+    }
+  ],
+  "complexity": 2
+}

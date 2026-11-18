@@ -1,0 +1,51 @@
+{
+  "category": "automagia:automagy",
+  "name": "research.automagia.mirror_multidest.title",
+  "parents": [
+    "automagia:inventarium_delivery",
+    "automagia:melding_mirror"
+  ],
+  "column": 12,
+  "row": 6,
+  "icons": [
+    "automagia:dispersing_mirror"
+  ],
+  "stages": [
+    {
+      "text": "research.automagia.mirror_multidest.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "thaumaturge:golemancy",
+          "amount": 1
+        },
+        {
+          "type": "observation",
+          "category": "thaumaturge:golemancy",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.automagia.mirror_multidest.stage_1",
+      "recipes": [
+        "automagia:arcane/dispersing_mirror"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 4
+    },
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:motus",
+      "amount": 2
+    }
+  ],
+  "complexity": 3
+}

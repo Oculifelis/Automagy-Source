@@ -1,0 +1,27 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "S": "automagia:sliver_ordo",
+    "A": "thaumaturge:amber",
+    "B": "thaumaturge:brain"
+  },
+  "pattern": [
+    "SAS",
+    "ABA",
+    "SAS"
+  ],
+  "research": {
+    "entry": "automagia:inventarium_delivery",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:memory_block"
+  },
+  "vis": 20
+}

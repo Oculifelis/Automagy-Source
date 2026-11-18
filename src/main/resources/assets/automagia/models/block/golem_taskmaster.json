@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "thaumaturge:block/arcane_brick_stone",
+    "up": "automagia:block/golem_taskmaster_front",
+    "down": "thaumaturge:block/arcane_brick_stone",
+    "north": "thaumaturge:block/arcane_brick_stone",
+    "south": "thaumaturge:block/arcane_brick_stone",
+    "east": "thaumaturge:block/arcane_brick_stone",
+    "west": "thaumaturge:block/arcane_brick_stone"
+  }
+}

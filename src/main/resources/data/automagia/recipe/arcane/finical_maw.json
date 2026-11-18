@@ -1,0 +1,22 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    "automagia:hungry_maw",
+    "automagia:enchanted_paper",
+    "automagia:sliver_ordo"
+  ],
+  "research": {
+    "entry": "automagia:finical_maw",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:finical_maw"
+  },
+  "vis": 15
+}

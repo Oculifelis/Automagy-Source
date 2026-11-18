@@ -1,0 +1,32 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:aer",
+      "amount": 2
+    },
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "A": "minecraft:amethyst_shard",
+    "O": "minecraft:obsidian",
+    "B": "automagia:crystal_brain_aer"
+  },
+  "pattern": [
+    "GAG",
+    "OBO",
+    "GOG"
+  ],
+  "research": {
+    "entry": "automagia:moblure",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:siren_lure"
+  },
+  "vis": 50
+}

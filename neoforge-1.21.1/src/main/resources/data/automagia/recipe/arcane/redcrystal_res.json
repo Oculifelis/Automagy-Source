@@ -1,0 +1,35 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:aer",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "automagia:redcrystal"
+    },
+    {
+      "item": "automagia:redcrystal"
+    },
+    {
+      "item": "automagia:redcrystal"
+    },
+    {
+      "item": "automagia:redcrystal"
+    },
+    {
+      "item": "automagia:sliver_aer"
+    }
+  ],
+  "research": {
+    "entry": "automagia:redcrystal_res",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:redcrystal_res",
+    "count": 4
+  },
+  "vis": 10
+}

@@ -1,0 +1,24 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [],
+  "ingredients": [
+    {
+      "item": "automagia:conflux_disc"
+    },
+    {
+      "item": "thaumaturge:plate_void"
+    },
+    {
+      "item": "thaumaturge:mirrored_glass"
+    }
+  ],
+  "research": {
+    "entry": "automagia:melding_mirror",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:conflux_disc",
+    "count": 2
+  },
+  "vis": 15
+}

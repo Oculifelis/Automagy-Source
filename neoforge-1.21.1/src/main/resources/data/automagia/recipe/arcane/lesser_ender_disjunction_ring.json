@@ -1,0 +1,30 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:perditio",
+      "amount": 2
+    }
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:ender_pearl"
+    },
+    "R": {
+      "item": "thaumaturge:ring_apprentice"
+    }
+  },
+  "pattern": [
+    " P ",
+    "PRP",
+    " P "
+  ],
+  "research": {
+    "entry": "automagia:ender_disjunction",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:lesser_ender_disjunction_ring"
+  },
+  "vis": 30
+}

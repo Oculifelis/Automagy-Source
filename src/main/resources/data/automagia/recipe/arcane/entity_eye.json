@@ -1,0 +1,23 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:aqua",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    "automagia:crystalline_eye",
+    "automagia:crystal_brain_aqua",
+    "minecraft:spider_eye"
+  ],
+  "research": {
+    "entry": "automagia:entity_signal",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:entity_eye",
+    "count": 2
+  },
+  "vis": 15
+}

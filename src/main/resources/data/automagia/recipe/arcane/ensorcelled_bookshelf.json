@@ -1,0 +1,28 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "P": "thaumaturge:plank_silverwood",
+    "B": "automagia:enchanting_bookshelf",
+    "C": "automagia:sliver_ordo"
+  },
+  "pattern": [
+    "PPP",
+    "BCB",
+    "PPP"
+  ],
+  "research": {
+    "entry": "automagia:inventarium_extra",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:ensorcelled_bookshelf",
+    "count": 2
+  },
+  "vis": 30
+}

@@ -1,0 +1,21 @@
+{
+  "type": "thaumaturge:crucible",
+  "aspects": [
+    {
+      "aspect": "thaumaturge:perditio",
+      "amount": 6
+    },
+    {
+      "aspect": "thaumaturge:terra",
+      "amount": 2
+    }
+  ],
+  "catalyst": "thaumaturge:crystal_terra",
+  "research": {
+    "entry": "automagia:entropic_refining"
+  },
+  "result": {
+    "id": "automagia:sliver_terra",
+    "count": 4
+  }
+}

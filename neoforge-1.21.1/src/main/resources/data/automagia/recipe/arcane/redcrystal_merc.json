@@ -1,0 +1,39 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:aer",
+      "amount": 1
+    },
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "automagia:redcrystal_res"
+    },
+    {
+      "item": "automagia:redcrystal_res"
+    },
+    {
+      "item": "automagia:redcrystal_res"
+    },
+    {
+      "item": "automagia:redcrystal_res"
+    },
+    {
+      "item": "thaumaturge:quicksilver"
+    }
+  ],
+  "research": {
+    "entry": "automagia:redcrystal_merc",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:redcrystal_merc",
+    "count": 4
+  },
+  "vis": 20
+}

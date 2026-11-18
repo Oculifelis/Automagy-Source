@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "up": "automagia:block/tally_box_front_none",
+    "down": "automagia:block/tally_box_back_on",
+    "north": "automagia:block/tally_box_side",
+    "south": "automagia:block/tally_box_side",
+    "east": "automagia:block/tally_box_side",
+    "west": "automagia:block/tally_box_side",
+    "particle": "automagia:block/tally_box_side"
+  }
+}

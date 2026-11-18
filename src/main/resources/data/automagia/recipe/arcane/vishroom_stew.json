@@ -1,0 +1,18 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [],
+  "ingredients": [
+    "minecraft:bowl",
+    "thaumaturge:vishroom",
+    "minecraft:brown_mushroom",
+    "minecraft:red_mushroom"
+  ],
+  "research": {
+    "entry": "automagia:vishroom_soup",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:vishroom_stew"
+  },
+  "vis": 5
+}

@@ -1,0 +1,54 @@
+{
+  "category": "automagia:automagy",
+  "name": "research.automagia.melding_mirror.title",
+  "parents": [
+    "automagia:remote_comparator",
+    "thaumaturge:mirror",
+    "thaumaturge:base_eldritch"
+  ],
+  "column": 8,
+  "row": 1,
+  "icons": [
+    "automagia:melding_mirror"
+  ],
+  "stages": [
+    {
+      "text": "research.automagia.melding_mirror.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "thaumaturge:artifice",
+          "amount": 1
+        },
+        {
+          "type": "observation",
+          "category": "thaumaturge:artifice",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.automagia.melding_mirror.stage_1",
+      "recipes": [
+        "automagia:arcane/conflux_disc",
+        "automagia:arcane/conflux_disc_copy",
+        "automagia:arcane/melding_mirror"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:alienis",
+      "amount": 4
+    },
+    {
+      "aspect": "thaumaturge:vacuos",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 3
+    }
+  ],
+  "complexity": 3
+}

@@ -1,0 +1,51 @@
+{
+  "category": "automagia:automagy",
+  "name": "research.automagia.remote_comparator.title",
+  "parents": [
+    "automagia:redstone_theory"
+  ],
+  "column": 2,
+  "row": 3,
+  "icons": [
+    "automagia:remote_comparator"
+  ],
+  "stages": [
+    {
+      "text": "research.automagia.remote_comparator.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "thaumaturge:artifice",
+          "amount": 1
+        },
+        {
+          "type": "observation",
+          "category": "thaumaturge:artifice",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.automagia.remote_comparator.stage_1",
+      "recipes": [
+        "automagia:arcane/crystalline_eye",
+        "automagia:arcane/remote_comparator"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:sensus",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:machina",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 2
+    }
+  ],
+  "complexity": 2
+}

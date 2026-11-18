@@ -1,0 +1,31 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "automagia:sliver_ordo"
+    },
+    {
+      "item": "automagia:sliver_aer"
+    }
+  ],
+  "research": {
+    "entry": "automagia:remote_comparator",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:crystalline_eye"
+  },
+  "vis": 10
+}

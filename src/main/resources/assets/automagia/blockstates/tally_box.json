@@ -1,0 +1,160 @@
+{
+  "variants": {
+    "facing=up,lens=none,powered=false": {
+      "model": "automagia:block/tally_box_none"
+    },
+    "facing=up,lens=none,powered=true": {
+      "model": "automagia:block/tally_box_none_on"
+    },
+    "facing=up,lens=unbound,powered=false": {
+      "model": "automagia:block/tally_box_unbound"
+    },
+    "facing=up,lens=unbound,powered=true": {
+      "model": "automagia:block/tally_box_unbound_on"
+    },
+    "facing=up,lens=yield,powered=false": {
+      "model": "automagia:block/tally_box_yield"
+    },
+    "facing=up,lens=yield,powered=true": {
+      "model": "automagia:block/tally_box_yield_on"
+    },
+    "facing=down,lens=none,powered=false": {
+      "model": "automagia:block/tally_box_none",
+      "x": 180
+    },
+    "facing=down,lens=none,powered=true": {
+      "model": "automagia:block/tally_box_none_on",
+      "x": 180
+    },
+    "facing=down,lens=unbound,powered=false": {
+      "model": "automagia:block/tally_box_unbound",
+      "x": 180
+    },
+    "facing=down,lens=unbound,powered=true": {
+      "model": "automagia:block/tally_box_unbound_on",
+      "x": 180
+    },
+    "facing=down,lens=yield,powered=false": {
+      "model": "automagia:block/tally_box_yield",
+      "x": 180
+    },
+    "facing=down,lens=yield,powered=true": {
+      "model": "automagia:block/tally_box_yield_on",
+      "x": 180
+    },
+    "facing=north,lens=none,powered=false": {
+      "model": "automagia:block/tally_box_none",
+      "x": 90
+    },
+    "facing=north,lens=none,powered=true": {
+      "model": "automagia:block/tally_box_none_on",
+      "x": 90
+    },
+    "facing=north,lens=unbound,powered=false": {
+      "model": "automagia:block/tally_box_unbound",
+      "x": 90
+    },
+    "facing=north,lens=unbound,powered=true": {
+      "model": "automagia:block/tally_box_unbound_on",
+      "x": 90
+    },
+    "facing=north,lens=yield,powered=false": {
+      "model": "automagia:block/tally_box_yield",
+      "x": 90
+    },
+    "facing=north,lens=yield,powered=true": {
+      "model": "automagia:block/tally_box_yield_on",
+      "x": 90
+    },
+    "facing=south,lens=none,powered=false": {
+      "model": "automagia:block/tally_box_none",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,lens=none,powered=true": {
+      "model": "automagia:block/tally_box_none_on",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,lens=unbound,powered=false": {
+      "model": "automagia:block/tally_box_unbound",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,lens=unbound,powered=true": {
+      "model": "automagia:block/tally_box_unbound_on",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,lens=yield,powered=false": {
+      "model": "automagia:block/tally_box_yield",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,lens=yield,powered=true": {
+      "model": "automagia:block/tally_box_yield_on",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,lens=none,powered=false": {
+      "model": "automagia:block/tally_box_none",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,lens=none,powered=true": {
+      "model": "automagia:block/tally_box_none_on",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,lens=unbound,powered=false": {
+      "model": "automagia:block/tally_box_unbound",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,lens=unbound,powered=true": {
+      "model": "automagia:block/tally_box_unbound_on",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,lens=yield,powered=false": {
+      "model": "automagia:block/tally_box_yield",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,lens=yield,powered=true": {
+      "model": "automagia:block/tally_box_yield_on",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,lens=none,powered=false": {
+      "model": "automagia:block/tally_box_none",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,lens=none,powered=true": {
+      "model": "automagia:block/tally_box_none_on",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,lens=unbound,powered=false": {
+      "model": "automagia:block/tally_box_unbound",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,lens=unbound,powered=true": {
+      "model": "automagia:block/tally_box_unbound_on",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,lens=yield,powered=false": {
+      "model": "automagia:block/tally_box_yield",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,lens=yield,powered=true": {
+      "model": "automagia:block/tally_box_yield_on",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

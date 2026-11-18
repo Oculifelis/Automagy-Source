@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "thaumaturge:block/golem_fetter_side",
+    "top": "automagia:block/golem_inhibitor_top",
+    "bottom": "thaumaturge:block/golem_fetter_side"
+  }
+}

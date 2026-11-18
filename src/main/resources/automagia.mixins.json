@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "com.automagy.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "GolemFetterMixin",
+    "InfusionMatcherMixin"
+  ],
+  "client": [
+    "client.WindowNoFocusMixin"
+  ],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

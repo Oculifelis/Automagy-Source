@@ -1,0 +1,51 @@
+{
+  "category": "automagia:automagy",
+  "name": "research.automagia.hungry_maw.title",
+  "parents": [
+    "automagia:slivers",
+    "thaumaturge:hungry_chest"
+  ],
+  "column": 2,
+  "row": 1,
+  "icons": [
+    "automagia:hungry_maw"
+  ],
+  "stages": [
+    {
+      "text": "research.automagia.hungry_maw.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "thaumaturge:artifice",
+          "amount": 1
+        },
+        {
+          "type": "observation",
+          "category": "thaumaturge:artifice",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.automagia.hungry_maw.stage_1",
+      "recipes": [
+        "automagia:arcane/hungry_maw"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:vacuos",
+      "amount": 6
+    },
+    {
+      "aspect": "thaumaturge:desiderium",
+      "amount": 4
+    },
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 3
+    }
+  ],
+  "complexity": 2
+}

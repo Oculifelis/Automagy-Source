@@ -1,0 +1,30 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    },
+    {
+      "aspect": "thaumaturge:perditio",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "V": "thaumaturge:ingot_void",
+    "G": "thaumaturge:mirrored_glass"
+  },
+  "pattern": [
+    " V ",
+    "VGV",
+    " V "
+  ],
+  "research": {
+    "entry": "automagia:melding_mirror",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:conflux_disc"
+  },
+  "vis": 50
+}

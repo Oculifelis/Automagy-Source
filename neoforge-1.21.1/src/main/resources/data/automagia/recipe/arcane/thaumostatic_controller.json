@@ -1,0 +1,40 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:aer",
+      "amount": 2
+    },
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "Q": {
+      "item": "minecraft:quartz_block"
+    },
+    "P": {
+      "item": "thaumaturge:plate_thaumium"
+    },
+    "B": {
+      "item": "automagia:crystal_brain_aer"
+    },
+    "M": {
+      "item": "thaumaturge:mechanism_complex"
+    }
+  },
+  "pattern": [
+    "QPQ",
+    "BMB",
+    "QPQ"
+  ],
+  "research": {
+    "entry": "automagia:thaumostatic_spire",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:thaumostatic_controller"
+  },
+  "vis": 50
+}

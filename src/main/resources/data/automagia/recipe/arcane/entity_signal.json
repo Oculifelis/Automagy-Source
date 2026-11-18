@@ -1,0 +1,32 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:aqua",
+      "amount": 1
+    },
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "S": "thaumaturge:stone_arcane",
+    "R": "minecraft:redstone",
+    "C": "minecraft:comparator",
+    "B": "automagia:crystal_brain_aqua"
+  },
+  "pattern": [
+    "SRS",
+    "CBC",
+    "SRS"
+  ],
+  "research": {
+    "entry": "automagia:entity_signal",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:entity_signal"
+  },
+  "vis": 25
+}

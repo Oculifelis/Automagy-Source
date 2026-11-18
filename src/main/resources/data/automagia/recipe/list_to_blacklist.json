@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:crafting_transmute",
+  "category": "misc",
+  "input": "automagia:runic_whitelist",
+  "material": "automagia:sliver_perditio",
+  "result": "automagia:runic_blacklist"
+}

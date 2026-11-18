@@ -1,0 +1,23 @@
+{
+  "type": "thaumaturge:crucible",
+  "aspects": [
+    {
+      "aspect": "thaumaturge:perditio",
+      "amount": 6
+    },
+    {
+      "aspect": "thaumaturge:aer",
+      "amount": 2
+    }
+  ],
+  "catalyst": {
+    "item": "thaumaturge:crystal_aer"
+  },
+  "research": {
+    "entry": "automagia:entropic_refining"
+  },
+  "result": {
+    "id": "automagia:sliver_aer",
+    "count": 4
+  }
+}

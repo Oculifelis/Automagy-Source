@@ -1,0 +1,25 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [],
+  "key": {
+    "W": {
+      "tag": "minecraft:planks"
+    },
+    "B": {
+      "item": "automagia:bound_enchanting_paper"
+    }
+  },
+  "pattern": [
+    "WWW",
+    "BBB",
+    "WWW"
+  ],
+  "research": {
+    "entry": "automagia:enchanted_paper",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:enchanting_bookshelf"
+  },
+  "vis": 15
+}

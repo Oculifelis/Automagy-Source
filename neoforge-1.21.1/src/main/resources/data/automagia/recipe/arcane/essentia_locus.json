@@ -1,0 +1,40 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:aqua",
+      "amount": 2
+    },
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "E": {
+      "item": "automagia:crystalline_eye"
+    },
+    "L": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "C": {
+      "item": "thaumaturge:crystal_aqua"
+    }
+  },
+  "pattern": [
+    "GEG",
+    "LCL",
+    "GLG"
+  ],
+  "research": {
+    "entry": "automagia:essentia_locus",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:essentia_locus"
+  },
+  "vis": 50
+}

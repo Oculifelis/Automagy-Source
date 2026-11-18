@@ -1,0 +1,33 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    },
+    {
+      "aspect": "thaumaturge:terra",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "P": "thaumaturge:plate_brass",
+    "T": "minecraft:crafting_table",
+    "W": "thaumaturge:plank_greatwood",
+    "B": "automagia:crystal_brain_ordo",
+    "C": "minecraft:chest"
+  },
+  "pattern": [
+    "PTP",
+    "WBW",
+    "WCW"
+  ],
+  "research": {
+    "entry": "automagia:golem_workbench",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:golem_workbench"
+  },
+  "vis": 40
+}

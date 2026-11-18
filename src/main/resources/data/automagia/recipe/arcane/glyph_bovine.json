@@ -1,0 +1,27 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:aqua",
+      "amount": 1
+    },
+    {
+      "aspect": "thaumaturge:terra",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    "automagia:aqueous_admixture",
+    "minecraft:smooth_stone_slab",
+    "minecraft:leather",
+    "minecraft:wheat"
+  ],
+  "research": {
+    "entry": "automagia:thirsty_tank_glyph_bovine",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:glyph_bovine"
+  },
+  "vis": 15
+}

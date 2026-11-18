@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "thaumaturge:block/dioptra_side_off",
+    "top": "automagia:block/scrivener_oculus_top",
+    "bottom": "thaumaturge:block/dioptra_side_off"
+  }
+}

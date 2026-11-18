@@ -1,0 +1,21 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:terra",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    "automagia:tally_lens_clear",
+    "automagia:sliver_terra"
+  ],
+  "research": {
+    "entry": "automagia:tally_box_lens",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:tally_lens_yield"
+  },
+  "vis": 10
+}

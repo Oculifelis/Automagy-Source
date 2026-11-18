@@ -1,0 +1,18 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [],
+  "ingredients": [
+    "automagia:enchanted_paper",
+    "automagia:enchanted_paper",
+    "automagia:enchanted_paper",
+    "minecraft:leather"
+  ],
+  "research": {
+    "entry": "automagia:enchanted_paper",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:bound_enchanting_paper"
+  },
+  "vis": 10
+}

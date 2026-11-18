@@ -1,0 +1,28 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ignis",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "automagia:runed_obsidian"
+    },
+    {
+      "item": "minecraft:magma_cream"
+    },
+    {
+      "item": "minecraft:magma_cream"
+    }
+  ],
+  "research": {
+    "entry": "automagia:netherrune_slime",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:runed_obsidian_slime"
+  },
+  "vis": 15
+}

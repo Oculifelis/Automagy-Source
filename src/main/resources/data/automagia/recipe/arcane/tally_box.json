@@ -1,0 +1,28 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "W": "#minecraft:planks",
+    "C": "minecraft:comparator",
+    "P": "automagia:enchanted_paper",
+    "R": "minecraft:redstone"
+  },
+  "pattern": [
+    "WCW",
+    "WPW",
+    "WRW"
+  ],
+  "research": {
+    "entry": "automagia:tally_box",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:tally_box"
+  },
+  "vis": 20
+}

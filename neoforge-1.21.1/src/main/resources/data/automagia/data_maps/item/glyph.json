@@ -1,0 +1,37 @@
+{
+  "values": {
+    "automagia:glyph_void": {
+      "effect": "void"
+    },
+    "automagia:glyph_consumption": {
+      "effect": "consumption",
+      "amount": 50
+    },
+    "automagia:glyph_siphoning": {
+      "effect": "siphoning",
+      "amount": 250
+    },
+    "automagia:glyph_envy": {
+      "effect": "envy",
+      "amount": 250
+    },
+    "automagia:glyph_temperance": {
+      "effect": "temperance"
+    },
+    "automagia:glyph_preservation": {
+      "effect": "preservation"
+    },
+    "automagia:glyph_guzzler": {
+      "effect": "guzzler",
+      "amount": 100
+    },
+    "automagia:glyph_reservoir": {
+      "effect": "reservoir",
+      "amount": 16000
+    },
+    "automagia:glyph_bovine": {
+      "effect": "bovine",
+      "amount": 6000
+    }
+  }
+}

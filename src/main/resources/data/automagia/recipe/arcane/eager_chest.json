@@ -1,0 +1,26 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:aer",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "P": "automagia:enchanted_paper",
+    "S": "automagia:sliver_aer",
+    "C": "automagia:greedy_chest"
+  },
+  "pattern": [
+    "PSP",
+    "PCP"
+  ],
+  "research": {
+    "entry": "automagia:eager_chest",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:eager_chest"
+  },
+  "vis": 25
+}

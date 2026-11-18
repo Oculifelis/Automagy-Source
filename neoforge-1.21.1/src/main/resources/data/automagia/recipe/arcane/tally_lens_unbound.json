@@ -1,0 +1,25 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:aer",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "automagia:tally_lens_clear"
+    },
+    {
+      "item": "automagia:sliver_aer"
+    }
+  ],
+  "research": {
+    "entry": "automagia:tally_box_lens",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:tally_lens_unbound"
+  },
+  "vis": 10
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "automagia:block/amnesiac_stone_side",
+    "top": "automagia:block/amnesiac_stone_top",
+    "bottom": "automagia:block/amnesiac_stone_side"
+  }
+}

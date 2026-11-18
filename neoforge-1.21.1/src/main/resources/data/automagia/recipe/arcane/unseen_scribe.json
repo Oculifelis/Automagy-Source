@@ -1,0 +1,29 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "T": {
+      "item": "thaumaturge:scribing_tools"
+    },
+    "W": {
+      "item": "thaumaturge:table_wood"
+    }
+  },
+  "pattern": [
+    "T",
+    "W"
+  ],
+  "research": {
+    "entry": "automagia:inventarium",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:unseen_scribe"
+  },
+  "vis": 25
+}

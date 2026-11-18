@@ -1,0 +1,29 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:aqua",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:ink_sac"
+    },
+    {
+      "item": "automagia:sliver_aqua"
+    },
+    {
+      "item": "minecraft:slime_ball"
+    }
+  ],
+  "research": {
+    "entry": "automagia:thirsty_tank_glyph",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:aqueous_admixture",
+    "count": 4
+  },
+  "vis": 10
+}

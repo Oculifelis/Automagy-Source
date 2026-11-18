@@ -1,0 +1,25 @@
+{
+  "values": {
+    "automagia:workbench_upgrade_aer": {
+      "effect": "speed",
+      "amount": 500
+    },
+    "automagia:workbench_upgrade_ignis": {
+      "effect": "pattern"
+    },
+    "automagia:workbench_upgrade_aqua": {
+      "effect": "endurance",
+      "amount": 5
+    },
+    "automagia:workbench_upgrade_terra": {
+      "effect": "strength",
+      "amount": 15
+    },
+    "automagia:workbench_upgrade_ordo": {
+      "effect": "tidy"
+    },
+    "automagia:workbench_upgrade_perditio": {
+      "effect": "placeholder"
+    }
+  }
+}

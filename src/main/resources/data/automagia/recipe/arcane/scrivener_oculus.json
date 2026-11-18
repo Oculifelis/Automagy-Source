@@ -1,0 +1,31 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    },
+    {
+      "aspect": "thaumaturge:aer",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "G": "minecraft:glass_pane",
+    "E": "automagia:crystalline_eye",
+    "B": "thaumaturge:plate_brass",
+    "T": "thaumaturge:table_wood"
+  },
+  "pattern": [
+    "GEG",
+    "BTB"
+  ],
+  "research": {
+    "entry": "automagia:inventarium_pointer",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:scrivener_oculus"
+  },
+  "vis": 25
+}

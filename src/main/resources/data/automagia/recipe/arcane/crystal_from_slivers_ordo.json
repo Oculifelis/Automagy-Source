@@ -1,0 +1,23 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [],
+  "ingredients": [
+    "automagia:sliver_ordo",
+    "automagia:sliver_ordo",
+    "automagia:sliver_ordo",
+    "automagia:sliver_ordo"
+  ],
+  "research": {
+    "entry": "automagia:slivers",
+    "stage": 0
+  },
+  "result": {
+    "id": "thaumaturge:essentia_crystal",
+    "components": {
+      "thaumaturge:crystal_aspect": {
+        "aspect": "thaumaturge:ordo"
+      }
+    }
+  },
+  "vis": 25
+}

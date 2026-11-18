@@ -1,0 +1,10 @@
+{
+  "values": {
+    "minecraft:experience_bottle": {
+      "points": 10
+    },
+    "automagia:concentrate_phial": {
+      "points": 100
+    }
+  }
+}

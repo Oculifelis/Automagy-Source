@@ -1,0 +1,23 @@
+{
+  "type": "thaumaturge:crucible",
+  "aspects": [
+    {
+      "aspect": "thaumaturge:perditio",
+      "amount": 6
+    },
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 2
+    }
+  ],
+  "catalyst": {
+    "item": "thaumaturge:crystal_ordo"
+  },
+  "research": {
+    "entry": "automagia:entropic_refining"
+  },
+  "result": {
+    "id": "automagia:sliver_ordo",
+    "count": 4
+  }
+}

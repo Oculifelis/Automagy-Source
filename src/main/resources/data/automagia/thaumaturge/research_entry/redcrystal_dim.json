@@ -1,0 +1,46 @@
+{
+  "category": "automagia:automagy",
+  "name": "research.automagia.redcrystal_dim.title",
+  "parents": [
+    "automagia:redcrystal"
+  ],
+  "column": -1,
+  "row": 6,
+  "icons": [
+    "automagia:redcrystal_dim"
+  ],
+  "stages": [
+    {
+      "text": "research.automagia.redcrystal_dim.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "thaumaturge:artifice",
+          "amount": 1
+        },
+        {
+          "type": "observation",
+          "category": "thaumaturge:artifice",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.automagia.redcrystal_dim.stage_1",
+      "recipes": [
+        "automagia:arcane/redcrystal_dim"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:perditio",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 3
+    }
+  ],
+  "complexity": 2
+}

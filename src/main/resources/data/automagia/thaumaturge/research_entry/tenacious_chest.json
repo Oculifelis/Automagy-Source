@@ -1,0 +1,50 @@
+{
+  "category": "automagia:automagy",
+  "name": "research.automagia.tenacious_chest.title",
+  "parents": [
+    "automagia:greedy_chest"
+  ],
+  "column": 7,
+  "row": 0,
+  "icons": [
+    "automagia:tenacious_chest"
+  ],
+  "stages": [
+    {
+      "text": "research.automagia.tenacious_chest.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "thaumaturge:artifice",
+          "amount": 1
+        },
+        {
+          "type": "observation",
+          "category": "thaumaturge:artifice",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.automagia.tenacious_chest.stage_1",
+      "recipes": [
+        "automagia:arcane/tenacious_chest"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:praemunio",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:terra",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 2
+    }
+  ],
+  "complexity": 1
+}

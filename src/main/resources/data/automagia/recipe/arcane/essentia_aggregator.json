@@ -1,0 +1,31 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:aqua",
+      "amount": 2
+    },
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 2
+    }
+  ],
+  "key": {
+    "L": "minecraft:lapis_block",
+    "T": "automagia:sliver_ordo",
+    "M": "thaumaturge:mirror_essentia"
+  },
+  "pattern": [
+    "LTL",
+    "TMT",
+    "LTL"
+  ],
+  "research": {
+    "entry": "automagia:essentia_aggregator",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:essentia_aggregator"
+  },
+  "vis": 60
+}

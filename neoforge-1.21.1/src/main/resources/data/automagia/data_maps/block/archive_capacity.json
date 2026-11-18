@@ -1,0 +1,13 @@
+{
+  "values": {
+    "minecraft:bookshelf": {
+      "slots": 81
+    },
+    "automagia:enchanting_bookshelf": {
+      "slots": 216
+    },
+    "automagia:ensorcelled_bookshelf": {
+      "slots": 486
+    }
+  }
+}

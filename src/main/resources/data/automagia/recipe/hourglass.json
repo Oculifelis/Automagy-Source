@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "WRW",
+    "GSG",
+    "WWW"
+  ],
+  "key": {
+    "W": "#minecraft:wooden_slabs",
+    "R": "minecraft:redstone",
+    "G": "minecraft:glass_pane",
+    "S": "#minecraft:sand"
+  },
+  "result": {
+    "id": "automagia:hourglass",
+    "count": 1
+  }
+}

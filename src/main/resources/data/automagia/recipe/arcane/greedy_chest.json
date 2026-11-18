@@ -1,0 +1,28 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:perditio",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "S": "automagia:sliver_perditio",
+    "C": "thaumaturge:hungry_chest",
+    "M": "automagia:hungry_maw"
+  },
+  "pattern": [
+    "GSG",
+    "GCG",
+    " M "
+  ],
+  "research": {
+    "entry": "automagia:greedy_chest",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:greedy_chest"
+  },
+  "vis": 25
+}

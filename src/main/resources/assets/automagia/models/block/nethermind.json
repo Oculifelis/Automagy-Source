@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "automagia:block/nethermind_side",
+    "top": "automagia:block/nethermind_top",
+    "bottom": "automagia:block/nethermind_top"
+  }
+}

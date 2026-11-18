@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "automagia:block/ensorcelled_bookshelf",
+    "end": "thaumaturge:block/plank_silverwood"
+  }
+}

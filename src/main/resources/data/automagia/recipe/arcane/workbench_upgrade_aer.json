@@ -1,0 +1,22 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:aer",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    "thaumaturge:plate_brass",
+    "automagia:crystal_brain_aer",
+    "thaumaturge:mechanism_simple"
+  ],
+  "research": {
+    "entry": "automagia:workbench_upgrades",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:workbench_upgrade_aer"
+  },
+  "vis": 20
+}

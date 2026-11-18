@@ -1,0 +1,23 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [],
+  "ingredients": [
+    {
+      "item": "automagia:enchanted_paper"
+    },
+    {
+      "item": "minecraft:gold_nugget"
+    },
+    {
+      "item": "automagia:sliver_perditio"
+    }
+  ],
+  "research": {
+    "entry": "automagia:enchanted_paper",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:runic_blacklist"
+  },
+  "vis": 5
+}

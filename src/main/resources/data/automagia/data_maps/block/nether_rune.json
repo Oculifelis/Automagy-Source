@@ -1,0 +1,382 @@
+{
+  "values": {
+    "automagia:runed_obsidian": {
+      "kind": "basic",
+      "conjures": [
+        {
+          "block": "minecraft:netherrack",
+          "weight": 12
+        },
+        {
+          "block": "minecraft:soul_sand",
+          "weight": 3
+        },
+        {
+          "block": "minecraft:gravel",
+          "weight": 3
+        },
+        {
+          "block": "minecraft:nether_quartz_ore",
+          "weight": 2
+        },
+        {
+          "block": "minecraft:glowstone",
+          "weight": 1
+        },
+        {
+          "block": "minecraft:magma_block",
+          "weight": 2
+        },
+        {
+          "block": "minecraft:lava",
+          "weight": 1
+        }
+      ],
+      "cost": [
+        {
+          "aspect": "thaumaturge:ignis",
+          "amount": 1
+        },
+        {
+          "aspect": "thaumaturge:terra",
+          "amount": 1
+        }
+      ]
+    },
+    "automagia:runed_obsidian_rock": {
+      "kind": "block",
+      "conjures": [
+        {
+          "block": "minecraft:netherrack",
+          "weight": 1
+        }
+      ],
+      "cost": [
+        {
+          "aspect": "thaumaturge:terra",
+          "amount": 1
+        }
+      ]
+    },
+    "automagia:runed_obsidian_sea": {
+      "kind": "block",
+      "conjures": [
+        {
+          "block": "minecraft:lava",
+          "weight": 1
+        }
+      ],
+      "cost": [
+        {
+          "aspect": "thaumaturge:ignis",
+          "amount": 2
+        },
+        {
+          "aspect": "thaumaturge:aqua",
+          "amount": 1
+        }
+      ]
+    },
+    "automagia:runed_obsidian_crystal": {
+      "kind": "block",
+      "conjures": [
+        {
+          "block": "minecraft:nether_quartz_ore",
+          "weight": 1
+        }
+      ],
+      "cost": [
+        {
+          "aspect": "thaumaturge:terra",
+          "amount": 1
+        },
+        {
+          "aspect": "thaumaturge:vitreus",
+          "amount": 2
+        }
+      ]
+    },
+    "automagia:runed_obsidian_light": {
+      "kind": "block",
+      "conjures": [
+        {
+          "block": "minecraft:glowstone",
+          "weight": 1
+        }
+      ],
+      "cost": [
+        {
+          "aspect": "thaumaturge:lux",
+          "amount": 2
+        },
+        {
+          "aspect": "thaumaturge:terra",
+          "amount": 1
+        }
+      ]
+    },
+    "automagia:runed_obsidian_soul": {
+      "kind": "block",
+      "conjures": [
+        {
+          "block": "minecraft:soul_sand",
+          "weight": 4
+        },
+        {
+          "block": "minecraft:soul_soil",
+          "weight": 1
+        }
+      ],
+      "cost": [
+        {
+          "aspect": "thaumaturge:terra",
+          "amount": 1
+        },
+        {
+          "aspect": "thaumaturge:spiritus",
+          "amount": 1
+        }
+      ]
+    },
+    "automagia:runed_obsidian_pebble": {
+      "kind": "block",
+      "conjures": [
+        {
+          "block": "minecraft:gravel",
+          "weight": 1
+        }
+      ],
+      "cost": [
+        {
+          "aspect": "thaumaturge:terra",
+          "amount": 1
+        },
+        {
+          "aspect": "thaumaturge:perditio",
+          "amount": 1
+        }
+      ]
+    },
+    "automagia:runed_obsidian_celerity": {
+      "kind": "celerity"
+    },
+    "automagia:runed_obsidian_zombie": {
+      "kind": "creature",
+      "conjures": [
+        {
+          "entity": "minecraft:zombified_piglin"
+        }
+      ],
+      "lure_cost": [
+        {
+          "aspect": "thaumaturge:alienis",
+          "amount": 2
+        },
+        {
+          "aspect": "thaumaturge:motus",
+          "amount": 1
+        }
+      ],
+      "lure_every": 4,
+      "instability": 10,
+      "lure_distance": 6,
+      "cost": [
+        {
+          "aspect": "thaumaturge:exanimis",
+          "amount": 2
+        },
+        {
+          "aspect": "thaumaturge:ignis",
+          "amount": 1
+        }
+      ]
+    },
+    "automagia:runed_obsidian_blaze": {
+      "kind": "creature",
+      "conjures": [
+        {
+          "entity": "minecraft:blaze"
+        }
+      ],
+      "lure_cost": [
+        {
+          "aspect": "thaumaturge:alienis",
+          "amount": 2
+        },
+        {
+          "aspect": "thaumaturge:motus",
+          "amount": 1
+        }
+      ],
+      "lure_every": 4,
+      "instability": 15,
+      "lure_distance": 6,
+      "cost": [
+        {
+          "aspect": "thaumaturge:ignis",
+          "amount": 3
+        },
+        {
+          "aspect": "thaumaturge:bestia",
+          "amount": 1
+        }
+      ]
+    },
+    "automagia:runed_obsidian_ghast": {
+      "kind": "creature",
+      "conjures": [
+        {
+          "entity": "minecraft:ghast"
+        }
+      ],
+      "lure_cost": [
+        {
+          "aspect": "thaumaturge:alienis",
+          "amount": 2
+        },
+        {
+          "aspect": "thaumaturge:motus",
+          "amount": 1
+        }
+      ],
+      "lure_every": 4,
+      "instability": 20,
+      "lure_distance": 8,
+      "cost": [
+        {
+          "aspect": "thaumaturge:spiritus",
+          "amount": 2
+        },
+        {
+          "aspect": "thaumaturge:volatus",
+          "amount": 2
+        }
+      ]
+    },
+    "automagia:runed_obsidian_skull": {
+      "kind": "creature",
+      "conjures": [
+        {
+          "entity": "minecraft:wither_skeleton"
+        }
+      ],
+      "lure_cost": [
+        {
+          "aspect": "thaumaturge:alienis",
+          "amount": 2
+        },
+        {
+          "aspect": "thaumaturge:motus",
+          "amount": 1
+        }
+      ],
+      "lure_every": 4,
+      "instability": 25,
+      "lure_distance": 6,
+      "cost": [
+        {
+          "aspect": "thaumaturge:exanimis",
+          "amount": 2
+        },
+        {
+          "aspect": "thaumaturge:mortuus",
+          "amount": 2
+        }
+      ]
+    },
+    "automagia:runed_obsidian_slime": {
+      "kind": "creature",
+      "conjures": [
+        {
+          "entity": "minecraft:magma_cube"
+        }
+      ],
+      "lure_cost": [
+        {
+          "aspect": "thaumaturge:alienis",
+          "amount": 2
+        },
+        {
+          "aspect": "thaumaturge:motus",
+          "amount": 1
+        }
+      ],
+      "lure_every": 4,
+      "instability": 10,
+      "lure_distance": 6,
+      "cost": [
+        {
+          "aspect": "thaumaturge:ignis",
+          "amount": 2
+        },
+        {
+          "aspect": "thaumaturge:aqua",
+          "amount": 1
+        }
+      ]
+    },
+    "automagia:runed_obsidian_bat": {
+      "kind": "creature",
+      "conjures": [
+        {
+          "entity": "thaumaturge:firebat"
+        }
+      ],
+      "lure_cost": [
+        {
+          "aspect": "thaumaturge:alienis",
+          "amount": 2
+        },
+        {
+          "aspect": "thaumaturge:motus",
+          "amount": 1
+        }
+      ],
+      "lure_every": 4,
+      "instability": 10,
+      "lure_distance": 6,
+      "cost": [
+        {
+          "aspect": "thaumaturge:ignis",
+          "amount": 2
+        },
+        {
+          "aspect": "thaumaturge:volatus",
+          "amount": 1
+        }
+      ]
+    },
+    "automagia:runed_obsidian_wisp": {
+      "kind": "creature",
+      "conjures": [
+        {
+          "entity": "thaumaturge:wisp",
+          "aspect": "thaumaturge:ignis"
+        }
+      ],
+      "lure_cost": [
+        {
+          "aspect": "thaumaturge:alienis",
+          "amount": 2
+        },
+        {
+          "aspect": "thaumaturge:motus",
+          "amount": 1
+        }
+      ],
+      "lure_every": 4,
+      "instability": 15,
+      "lure_distance": 6,
+      "cost": [
+        {
+          "aspect": "thaumaturge:auram",
+          "amount": 2
+        },
+        {
+          "aspect": "thaumaturge:ignis",
+          "amount": 1
+        }
+      ]
+    }
+  }
+}

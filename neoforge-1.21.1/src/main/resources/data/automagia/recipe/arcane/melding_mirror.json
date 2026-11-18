@@ -1,0 +1,36 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:aer",
+      "amount": 1
+    },
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "P": {
+      "item": "thaumaturge:plate_void"
+    },
+    "D": {
+      "item": "automagia:conflux_disc"
+    },
+    "G": {
+      "item": "thaumaturge:mirrored_glass"
+    }
+  },
+  "pattern": [
+    "PDP",
+    "PGP"
+  ],
+  "research": {
+    "entry": "automagia:melding_mirror",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:melding_mirror"
+  },
+  "vis": 40
+}

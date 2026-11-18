@@ -1,0 +1,17 @@
+{
+  "type": "thaumaturge:crucible",
+  "aspects": [
+    {
+      "aspect": "thaumaturge:perditio",
+      "amount": 8
+    }
+  ],
+  "catalyst": "thaumaturge:crystal_perditio",
+  "research": {
+    "entry": "automagia:entropic_refining"
+  },
+  "result": {
+    "id": "automagia:sliver_perditio",
+    "count": 4
+  }
+}

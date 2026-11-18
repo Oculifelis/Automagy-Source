@@ -1,0 +1,51 @@
+{
+  "category": "automagia:automagy",
+  "name": "research.automagia.auto_hand_mirror.title",
+  "parents": [
+    "automagia:finical_maw",
+    "thaumaturge:mirror_hand"
+  ],
+  "column": 7,
+  "row": -3,
+  "icons": [
+    "automagia:hungry_hand_mirror"
+  ],
+  "stages": [
+    {
+      "text": "research.automagia.auto_hand_mirror.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "thaumaturge:artifice",
+          "amount": 1
+        },
+        {
+          "type": "observation",
+          "category": "thaumaturge:artifice",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.automagia.auto_hand_mirror.stage_1",
+      "recipes": [
+        "automagia:arcane/hungry_hand_mirror"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:alienis",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:desiderium",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 2
+    }
+  ],
+  "complexity": 3
+}

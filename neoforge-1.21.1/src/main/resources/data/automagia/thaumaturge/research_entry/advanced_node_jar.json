@@ -1,0 +1,48 @@
+{
+  "category": "automagia:automagy",
+  "name": "research.automagia.advanced_node_jar.title",
+  "parents": [
+    "thaumaturge:node_jar"
+  ],
+  "column": -4,
+  "row": -3,
+  "icons": [
+    "thaumaturge:jar_node"
+  ],
+  "stages": [
+    {
+      "text": "research.automagia.advanced_node_jar.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "thaumaturge:auromancy",
+          "amount": 1
+        },
+        {
+          "type": "observation",
+          "category": "thaumaturge:auromancy",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.automagia.advanced_node_jar.stage_1",
+      "recipes": []
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:auram",
+      "amount": 4
+    },
+    {
+      "aspect": "thaumaturge:praemunio",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:vitreus",
+      "amount": 2
+    }
+  ],
+  "complexity": 3
+}

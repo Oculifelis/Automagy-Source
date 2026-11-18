@@ -1,0 +1,22 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ignis",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    "thaumaturge:plate_brass",
+    "automagia:crystal_brain_ignis",
+    "thaumaturge:mechanism_simple"
+  ],
+  "research": {
+    "entry": "automagia:workbench_upgrades",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:workbench_upgrade_ignis"
+  },
+  "vis": 20
+}

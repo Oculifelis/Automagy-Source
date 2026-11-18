@@ -1,0 +1,16 @@
+{
+  "values": {
+    "automagia:ender_disjunction_ring": {
+      "damage": 4.0,
+      "range": 16.0,
+      "perditio": 1,
+      "second_ring": 0.5
+    },
+    "automagia:lesser_ender_disjunction_ring": {
+      "damage": 2.0,
+      "range": 8.0,
+      "perditio": 1,
+      "second_ring": 0.5
+    }
+  }
+}

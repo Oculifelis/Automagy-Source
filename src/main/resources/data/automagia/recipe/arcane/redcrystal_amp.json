@@ -1,0 +1,25 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ignis",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    "automagia:redcrystal",
+    "automagia:redcrystal",
+    "automagia:redcrystal",
+    "automagia:redcrystal",
+    "automagia:sliver_ignis"
+  ],
+  "research": {
+    "entry": "automagia:redcrystal_amp",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:redcrystal_amp",
+    "count": 4
+  },
+  "vis": 10
+}

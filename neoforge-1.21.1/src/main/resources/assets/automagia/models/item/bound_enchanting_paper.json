@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "automagia:item/bound_enchanting_paper"
+  }
+}

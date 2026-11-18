@@ -1,0 +1,23 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [],
+  "ingredients": [
+    "automagia:sliver_terra",
+    "automagia:sliver_terra",
+    "automagia:sliver_terra",
+    "automagia:sliver_terra"
+  ],
+  "research": {
+    "entry": "automagia:slivers",
+    "stage": 0
+  },
+  "result": {
+    "id": "thaumaturge:essentia_crystal",
+    "components": {
+      "thaumaturge:crystal_aspect": {
+        "aspect": "thaumaturge:terra"
+      }
+    }
+  },
+  "vis": 25
+}

@@ -1,0 +1,30 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 1
+    },
+    {
+      "aspect": "thaumaturge:aer",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "P": "automagia:enchanted_paper",
+    "N": "thaumaturge:thaumonomicon",
+    "W": "thaumaturge:table_wood"
+  },
+  "pattern": [
+    "PNP",
+    " W "
+  ],
+  "research": {
+    "entry": "automagia:inventarium_delivery",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:requisition_tome"
+  },
+  "vis": 30
+}

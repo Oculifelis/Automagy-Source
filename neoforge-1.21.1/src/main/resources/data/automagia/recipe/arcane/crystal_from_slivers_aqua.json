@@ -1,0 +1,31 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [],
+  "ingredients": [
+    {
+      "item": "automagia:sliver_aqua"
+    },
+    {
+      "item": "automagia:sliver_aqua"
+    },
+    {
+      "item": "automagia:sliver_aqua"
+    },
+    {
+      "item": "automagia:sliver_aqua"
+    }
+  ],
+  "research": {
+    "entry": "automagia:slivers",
+    "stage": 0
+  },
+  "result": {
+    "id": "thaumaturge:essentia_crystal",
+    "components": {
+      "thaumaturge:crystal_aspect": {
+        "aspect": "thaumaturge:aqua"
+      }
+    }
+  },
+  "vis": 25
+}

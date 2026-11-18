@@ -1,0 +1,50 @@
+{
+  "category": "automagia:automagy",
+  "name": "research.automagia.dimensionlure.title",
+  "parents": [
+    "automagia:nethermind"
+  ],
+  "column": 16,
+  "row": 4,
+  "icons": [
+    "automagia:dimensional_lure"
+  ],
+  "stages": [
+    {
+      "text": "research.automagia.dimensionlure.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "thaumaturge:infusion",
+          "amount": 1
+        },
+        {
+          "type": "observation",
+          "category": "thaumaturge:infusion",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.automagia.dimensionlure.stage_1",
+      "recipes": [
+        "automagia:arcane/dimensional_lure"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:alienis",
+      "amount": 5
+    },
+    {
+      "aspect": "thaumaturge:motus",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:ignis",
+      "amount": 3
+    }
+  ],
+  "complexity": 3
+}

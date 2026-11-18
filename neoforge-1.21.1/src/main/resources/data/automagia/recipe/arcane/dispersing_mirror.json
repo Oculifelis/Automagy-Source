@@ -1,0 +1,37 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 2
+    },
+    {
+      "aspect": "thaumaturge:aer",
+      "amount": 2
+    }
+  ],
+  "key": {
+    "T": {
+      "item": "thaumaturge:plate_thaumium"
+    },
+    "G": {
+      "item": "thaumaturge:mirrored_glass"
+    },
+    "M": {
+      "item": "automagia:melding_mirror"
+    }
+  },
+  "pattern": [
+    "TGT",
+    "GMG",
+    "TGT"
+  ],
+  "research": {
+    "entry": "automagia:mirror_multidest",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:dispersing_mirror"
+  },
+  "vis": 50
+}

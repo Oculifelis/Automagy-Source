@@ -1,0 +1,21 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ignis",
+      "amount": 1
+    }
+  ],
+  "ingredients": [
+    "thaumaturge:amber_block",
+    "#thaumaturge:nitors"
+  ],
+  "research": {
+    "entry": "automagia:glowing_amber",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:glowing_amber"
+  },
+  "vis": 10
+}

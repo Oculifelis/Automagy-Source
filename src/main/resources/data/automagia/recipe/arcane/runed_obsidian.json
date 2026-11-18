@@ -1,0 +1,27 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:ignis",
+      "amount": 1
+    }
+  ],
+  "key": {
+    "O": "minecraft:obsidian",
+    "S": "automagia:sliver_ignis"
+  },
+  "pattern": [
+    "OOO",
+    "OSO",
+    "OOO"
+  ],
+  "research": {
+    "entry": "automagia:nethermind",
+    "stage": 0
+  },
+  "result": {
+    "id": "automagia:runed_obsidian",
+    "count": 8
+  },
+  "vis": 20
+}

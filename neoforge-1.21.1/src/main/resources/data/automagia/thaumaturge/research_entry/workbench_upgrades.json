@@ -1,0 +1,55 @@
+{
+  "category": "automagia:automagy",
+  "name": "research.automagia.workbench_upgrades.title",
+  "parents": [
+    "automagia:golem_workbench"
+  ],
+  "column": -6,
+  "row": 5,
+  "icons": [
+    "automagia:workbench_upgrade_ignis"
+  ],
+  "stages": [
+    {
+      "text": "research.automagia.workbench_upgrades.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "thaumaturge:golemancy",
+          "amount": 1
+        },
+        {
+          "type": "observation",
+          "category": "thaumaturge:golemancy",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.automagia.workbench_upgrades.stage_1",
+      "recipes": [
+        "automagia:arcane/workbench_upgrade_aer",
+        "automagia:arcane/workbench_upgrade_ignis",
+        "automagia:arcane/workbench_upgrade_aqua",
+        "automagia:arcane/workbench_upgrade_terra",
+        "automagia:arcane/workbench_upgrade_ordo",
+        "automagia:arcane/workbench_upgrade_perditio"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:fabrico",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:motus",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:ordo",
+      "amount": 2
+    }
+  ],
+  "complexity": 3
+}
