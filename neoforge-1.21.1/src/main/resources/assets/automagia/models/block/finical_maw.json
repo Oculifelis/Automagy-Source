@@ -1,7 +1,0 @@
-{
-  "parent": "automagia:block/hungry_maw",
-  "textures": {
-    "maw": "automagia:block/finical_maw",
-    "particle": "automagia:block/finical_maw"
-  }
-}

@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "side": "thaumaturge:block/levitator_side_off",
-    "end": "thaumaturge:block/levitator_top_off"
-  }
-}

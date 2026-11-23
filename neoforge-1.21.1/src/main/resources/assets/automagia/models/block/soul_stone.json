@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_bottom_top",
-  "textures": {
-    "side": "automagia:block/soul_stone_side",
-    "top": "automagia:block/soul_stone_top",
-    "bottom": "automagia:block/soul_stone_side"
-  }
-}
