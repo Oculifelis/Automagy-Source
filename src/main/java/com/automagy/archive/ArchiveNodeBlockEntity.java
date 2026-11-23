@@ -6,12 +6,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import org.jspecify.annotations.Nullable;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
+import org.jetbrains.annotations.Nullable;
 
 /** Something a wand links to an Inventarium core: a scribe, taskmaster, requisition tome or dispersing mirror. */
-public abstract class ArchiveNodeBlockEntity extends BlockEntity {
+public abstract class ArchiveNodeBlockEntity extends BlockEntity implements com.automagy.port.PreRemove {
     protected @Nullable BlockPos corePos;
 
     protected ArchiveNodeBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -50,9 +50,7 @@ public abstract class ArchiveNodeBlockEntity extends BlockEntity {
         return Component.translatable("automagia.inventarium.no_room");
     }
 
-    @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
-        super.preRemoveSideEffects(pos, state);
         InventariumCoreBlockEntity core = core();
         if (core != null) {
             core.unlink(kind(), worldPosition);
@@ -60,14 +58,16 @@ public abstract class ArchiveNodeBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         corePos = in.read("core", BlockPos.CODEC).orElse(null);
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         Optional.ofNullable(corePos).ifPresent(p -> out.store("core", BlockPos.CODEC, p));
     }
 }

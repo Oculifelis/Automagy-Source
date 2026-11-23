@@ -2,10 +2,18 @@
   "type": "thaumaturge:arcane_workbench_shapeless",
   "crystals": [],
   "ingredients": [
-    "automagia:sliver_ordo",
-    "automagia:sliver_ordo",
-    "automagia:sliver_ordo",
-    "automagia:sliver_ordo"
+    {
+      "item": "automagia:sliver_ordo"
+    },
+    {
+      "item": "automagia:sliver_ordo"
+    },
+    {
+      "item": "automagia:sliver_ordo"
+    },
+    {
+      "item": "automagia:sliver_ordo"
+    }
   ],
   "research": {
     "entry": "automagia:slivers",

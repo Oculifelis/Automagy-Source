@@ -11,8 +11,12 @@
     }
   ],
   "key": {
-    "V": "thaumaturge:ingot_void",
-    "G": "thaumaturge:mirrored_glass"
+    "V": {
+      "item": "thaumaturge:ingot_void"
+    },
+    "G": {
+      "item": "thaumaturge:mirrored_glass"
+    }
   },
   "pattern": [
     " V ",

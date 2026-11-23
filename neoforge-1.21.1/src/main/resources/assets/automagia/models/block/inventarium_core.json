@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_bottom_top",
-  "textures": {
-    "side": "automagia:block/inventarium_core_side",
-    "top": "automagia:block/inventarium_core_top",
-    "bottom": "automagia:block/inventarium_core_top"
-  }
-}

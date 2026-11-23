@@ -20,7 +20,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
@@ -30,7 +30,7 @@ import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
+import com.leclowndu93150.thaumaturge.api.transaction.Transaction;
 
 /**
  * The crafting focus's grid: Thaumaturge's arcane workbench layout (3x3 grid, six crystal slots) with no wand slot, since
@@ -129,7 +129,7 @@ public class FocusCraftingMenu extends AbstractContainerMenu {
                     out = arcane.output();
                 }
             } else {
-                out = vanilla(sp).map(r -> r.value().assemble(grid.asCraftInput())).orElse(ItemStack.EMPTY);
+                out = vanilla(sp).map(r -> r.value().assemble(grid.asCraftInput(), sp.registryAccess())).orElse(ItemStack.EMPTY);
             }
             result.setItem(0, out);
             visLow.set(low ? 1 : 0);
@@ -144,7 +144,7 @@ public class FocusCraftingMenu extends AbstractContainerMenu {
     }
 
     private Optional<RecipeHolder<CraftingRecipe>> vanilla(ServerPlayer sp) {
-        return sp.level().recipeAccess().getRecipeFor(RecipeType.CRAFTING, grid.asCraftInput(), sp.level());
+        return sp.level().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, grid.asCraftInput(), sp.level());
     }
 
     /** One craft, consuming the grid; empty if nothing could be made. */
@@ -168,7 +168,7 @@ public class FocusCraftingMenu extends AbstractContainerMenu {
                     CraftingInput.Positioned pos = grid.asPositionedCraftInput();
                     WorkbenchCraftingStore store = new WorkbenchCraftingStore(grid, sp, pos.left(), pos.top(),
                             pos.input().width(), pos.input().height());
-                    ItemStack made = recipe.get().value().assemble(pos.input());
+                    ItemStack made = recipe.get().value().assemble(pos.input(), sp.registryAccess());
                     if (store.consume(new IArcaneCraftingStore.Consumption(pos.input().items(),
                             recipe.get().value().getRemainingItems(pos.input()), AspectList.EMPTY, grid.wandStack()), tx)) {
                         out = made;
@@ -190,14 +190,14 @@ public class FocusCraftingMenu extends AbstractContainerMenu {
             if (resultArcane && surcharge()) {
                 caster.consumeVis(caster(), sp, craftVis, true, false);
             }
-            out.onCraftedBy(sp, out.getCount());
+            out.onCraftedBy(sp.level(), sp, out.getCount());
         }
         updateResult();
         return out;
     }
 
     @Override
-    public void clicked(int slotId, int button, ContainerInput input, Player who) {
+    public void clicked(int slotId, int button, ClickType input, Player who) {
         if (slotId != RESULT) {
             super.clicked(slotId, button, input, who);
             return;
@@ -205,7 +205,7 @@ public class FocusCraftingMenu extends AbstractContainerMenu {
         if (!(who instanceof ServerPlayer sp)) {
             return;
         }
-        if (input == ContainerInput.QUICK_MOVE) {
+        if (input == ClickType.QUICK_MOVE) {
             for (int n = 0; n < 64; n++) {
                 ItemStack made = craft(sp);
                 if (made.isEmpty()) {
@@ -219,7 +219,7 @@ public class FocusCraftingMenu extends AbstractContainerMenu {
                     who.drop(made, false);
                 }
             }
-        } else if (input == ContainerInput.PICKUP) {
+        } else if (input == ClickType.PICKUP) {
             ItemStack carried = getCarried();
             ItemStack shown = result.getItem(0);
             if (shown.isEmpty() || (!carried.isEmpty() && (!ItemStack.isSameItemSameComponents(carried, shown)

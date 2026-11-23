@@ -1,6 +1,6 @@
 package com.automagy;
 
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import com.automagy.nether.NethermindBlock;
 import com.automagy.nether.NethermindBlockEntity;
@@ -85,8 +85,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.Consumables;
-import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.Fluid;
@@ -149,7 +147,7 @@ public final class AMRegistry {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
     public static final DeferredRegister.DataComponents COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, MODID);
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, MODID);
-    public static final DeferredRegister.Entities ENTITIES = DeferredRegister.createEntities(MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, MODID);
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, MODID);
     public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, MODID);
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, MODID);
@@ -170,10 +168,10 @@ public final class AMRegistry {
             TransparentBlock::new, AMRegistry::amber);
 
     public static final DeferredBlock<HungryMawBlock> HUNGRY_MAW = block("hungry_maw", HungryMawBlock::new,
-            p -> p.mapColor(MapColor.COLOR_BLACK).strength(1.5f).sound(SoundType.STONE).noCollision().noOcclusion()
+            p -> p.mapColor(MapColor.COLOR_BLACK).strength(1.5f).sound(SoundType.STONE).noCollission().noOcclusion()
                     .pushReaction(PushReaction.DESTROY));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<HungryMawBlockEntity>> HUNGRY_MAW_BE = BLOCK_ENTITIES.register("hungry_maw",
-            () -> new BlockEntityType<>(HungryMawBlockEntity::new, HUNGRY_MAW.get()));
+            () -> BlockEntityType.Builder.of(HungryMawBlockEntity::new, HUNGRY_MAW.get()).build(null));
 
     /** A bound place: the mirror a mercurial redcrystal is bound to, or the block a crystalline eye watches. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<GlobalPos>> LINK = COMPONENTS.registerComponentType("link",
@@ -181,13 +179,13 @@ public final class AMRegistry {
 
     // ---- phase 2: redstone devices
     public static final DeferredBlock<InversionTorchBlock> INVERSION_TORCH = block("inversion_torch", InversionTorchBlock::new,
-            p -> p.noCollision().instabreak().sound(SoundType.WOOD).lightLevel(s -> s.getValue(InversionTorchBlock.POWER) > 0 ? 5 : 0)
+            p -> p.noCollission().instabreak().sound(SoundType.WOOD).lightLevel(s -> s.getValue(InversionTorchBlock.POWER) > 0 ? 5 : 0)
                     .pushReaction(PushReaction.DESTROY));
     public static final DeferredBlock<HourglassBlock> HOURGLASS = block("hourglass", HourglassBlock::new, AMRegistry::hourglass);
     public static final DeferredBlock<HourglassBlock.Magic> MAGIC_HOURGLASS = block("magic_hourglass", HourglassBlock.Magic::new,
             AMRegistry::hourglass);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<HourglassBlockEntity>> HOURGLASS_BE = BLOCK_ENTITIES.register("hourglass",
-            () -> new BlockEntityType<>(HourglassBlockEntity::new, HOURGLASS.get(), MAGIC_HOURGLASS.get()));
+            () -> BlockEntityType.Builder.of(HourglassBlockEntity::new, HOURGLASS.get(), MAGIC_HOURGLASS.get()).build(null));
 
     public static final DeferredBlock<RedcrystalBlock> REDCRYSTAL = block("redcrystal", RedcrystalBlock::new, AMRegistry::redcrystal);
     public static final DeferredBlock<AmplifiedRedcrystalBlock> REDCRYSTAL_AMP = block("redcrystal_amp", AmplifiedRedcrystalBlock::new,
@@ -198,23 +196,23 @@ public final class AMRegistry {
             AMRegistry::redcrystal);
     public static final DeferredBlock<ResonatingRedcrystalBlock> REDCRYSTAL_RES = block("redcrystal_res", ResonatingRedcrystalBlock::new,
             AMRegistry::redcrystal);
-    public static final DeferredBlock<MercurialRedcrystalBlock> REDCRYSTAL_MERC = BLOCKS.registerBlock("redcrystal_merc",
+    public static final DeferredBlock<MercurialRedcrystalBlock> REDCRYSTAL_MERC = blockP("redcrystal_merc",
             MercurialRedcrystalBlock::new, AMRegistry::redcrystal);
     public static final DeferredItem<MercurialRedcrystalItem> REDCRYSTAL_MERC_ITEM = tabbed(ITEMS.registerItem("redcrystal_merc",
-            p -> new MercurialRedcrystalItem(REDCRYSTAL_MERC.get(), p.useBlockDescriptionPrefix())));
+            p -> new MercurialRedcrystalItem(REDCRYSTAL_MERC.get(), p)));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MercurialRedcrystalBlockEntity>> MERCURIAL_REDCRYSTAL_BE =
-            BLOCK_ENTITIES.register("redcrystal_merc", () -> new BlockEntityType<>(MercurialRedcrystalBlockEntity::new, REDCRYSTAL_MERC.get()));
+            BLOCK_ENTITIES.register("redcrystal_merc", () -> BlockEntityType.Builder.of(MercurialRedcrystalBlockEntity::new, REDCRYSTAL_MERC.get()).build(null));
 
     public static final DeferredItem<CrystallineEyeItem> CRYSTALLINE_EYE = tabbed(ITEMS.registerItem("crystalline_eye",
             p -> new CrystallineEyeItem(p.stacksTo(16))));
     public static final DeferredBlock<RemoteComparatorBlock> REMOTE_COMPARATOR = block("remote_comparator", RemoteComparatorBlock::new,
             p -> p.mapColor(MapColor.STONE).instabreak().sound(SoundType.STONE).noOcclusion().pushReaction(PushReaction.DESTROY));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RemoteComparatorBlockEntity>> REMOTE_COMPARATOR_BE =
-            BLOCK_ENTITIES.register("remote_comparator", () -> new BlockEntityType<>(RemoteComparatorBlockEntity::new, REMOTE_COMPARATOR.get()));
+            BLOCK_ENTITIES.register("remote_comparator", () -> BlockEntityType.Builder.of(RemoteComparatorBlockEntity::new, REMOTE_COMPARATOR.get()).build(null));
     public static final DeferredBlock<VisReaderBlock> VIS_READER = block("vis_reader", VisReaderBlock::new,
             p -> p.mapColor(MapColor.WOOD).strength(0.5f).sound(SoundType.WOOD).noOcclusion().pushReaction(PushReaction.DESTROY));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<VisReaderBlockEntity>> VIS_READER_BE =
-            BLOCK_ENTITIES.register("vis_reader", () -> new BlockEntityType<>(VisReaderBlockEntity::new, VIS_READER.get()));
+            BLOCK_ENTITIES.register("vis_reader", () -> BlockEntityType.Builder.of(VisReaderBlockEntity::new, VIS_READER.get()).build(null));
 
     // ---- phase 3: lists, chests, maws, tally box, mirrors
     /** What a runic whitelist or blacklist names. */
@@ -224,6 +222,8 @@ public final class AMRegistry {
             () -> IMenuTypeExtension.create(RunicListMenu::new));
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ListCopyRecipe>> LIST_COPY = RECIPE_SERIALIZERS.register("list_copy",
             () -> ListCopyRecipe.SERIALIZER);
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<com.automagy.filter.ListTransmuteRecipe>> LIST_TRANSMUTE = RECIPE_SERIALIZERS.register("list_transmute",
+            () -> com.automagy.filter.ListTransmuteRecipe.SERIALIZER);
 
     public static final DeferredItem<Item> ENCHANTED_PAPER = simple("enchanted_paper");
     public static final DeferredItem<RunicListItem> RUNIC_WHITELIST = tabbed(ITEMS.registerItem("runic_whitelist",
@@ -238,30 +238,31 @@ public final class AMRegistry {
     public static final DeferredBlock<DeviceChests.Eager> EAGER_CHEST = block("eager_chest", DeviceChests.Eager::new, AMRegistry::chest);
     public static final DeferredBlock<DeviceChests.Tenacious> TENACIOUS_CHEST = block("tenacious_chest", DeviceChests.Tenacious::new, AMRegistry::chest);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GreedyChestBlockEntity>> GREEDY_CHEST_BE = BLOCK_ENTITIES.register("greedy_chest",
-            () -> new BlockEntityType<>(GreedyChestBlockEntity::new, GREEDY_CHEST.get()));
+            () -> BlockEntityType.Builder.of(GreedyChestBlockEntity::new, GREEDY_CHEST.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<EagerChestBlockEntity>> EAGER_CHEST_BE = BLOCK_ENTITIES.register("eager_chest",
-            () -> new BlockEntityType<>(EagerChestBlockEntity::new, EAGER_CHEST.get()));
+            () -> BlockEntityType.Builder.of(EagerChestBlockEntity::new, EAGER_CHEST.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TenaciousChestBlockEntity>> TENACIOUS_CHEST_BE = BLOCK_ENTITIES.register("tenacious_chest",
-            () -> new BlockEntityType<>(TenaciousChestBlockEntity::new, TENACIOUS_CHEST.get()));
+            () -> BlockEntityType.Builder.of(TenaciousChestBlockEntity::new, TENACIOUS_CHEST.get()).build(null));
 
     public static final DeferredItem<AvaricePearlItem> AVARICE_PEARL = tabbed(ITEMS.registerItem("avarice_pearl",
             p -> new AvaricePearlItem(false, p.stacksTo(16))));
     public static final DeferredItem<AvaricePearlItem> MISERS_PEARL = tabbed(ITEMS.registerItem("misers_pearl",
             p -> new AvaricePearlItem(true, p.stacksTo(16).rarity(Rarity.UNCOMMON))));
     public static final DeferredItem<Item> SHATTERED_AVARICE_PEARL = simple("shattered_avarice_pearl");
-    public static final DeferredHolder<EntityType<?>, EntityType<AvaricePearlEntity>> AVARICE_PEARL_ENTITY = ENTITIES.registerEntityType("avarice_pearl",
-            AvaricePearlEntity::new, MobCategory.MISC, b -> b.sized(0.25f, 0.25f).clientTrackingRange(4).updateInterval(10));
+    public static final DeferredHolder<EntityType<?>, EntityType<AvaricePearlEntity>> AVARICE_PEARL_ENTITY = ENTITIES.register("avarice_pearl",
+            () -> EntityType.Builder.<AvaricePearlEntity>of(AvaricePearlEntity::new, MobCategory.MISC).sized(0.25f, 0.25f)
+                    .clientTrackingRange(4).updateInterval(10).build("avarice_pearl"));
 
     public static final DeferredBlock<FinicalMawBlock> FINICAL_MAW = block("finical_maw", FinicalMawBlock::new,
-            p -> p.mapColor(MapColor.COLOR_BLACK).strength(1.5f).sound(SoundType.STONE).noCollision().noOcclusion()
+            p -> p.mapColor(MapColor.COLOR_BLACK).strength(1.5f).sound(SoundType.STONE).noCollission().noOcclusion()
                     .pushReaction(PushReaction.DESTROY));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FinicalMawBlockEntity>> FINICAL_MAW_BE = BLOCK_ENTITIES.register("finical_maw",
-            () -> new BlockEntityType<>(FinicalMawBlockEntity::new, FINICAL_MAW.get()));
+            () -> BlockEntityType.Builder.of(FinicalMawBlockEntity::new, FINICAL_MAW.get()).build(null));
 
     public static final DeferredBlock<TallyBoxBlock> TALLY_BOX = block("tally_box", TallyBoxBlock::new,
             p -> p.mapColor(MapColor.WOOD).strength(2.0f).sound(SoundType.WOOD).isRedstoneConductor((s, l, pos) -> false));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TallyBoxBlockEntity>> TALLY_BOX_BE = BLOCK_ENTITIES.register("tally_box",
-            () -> new BlockEntityType<>(TallyBoxBlockEntity::new, TALLY_BOX.get()));
+            () -> BlockEntityType.Builder.of(TallyBoxBlockEntity::new, TALLY_BOX.get()).build(null));
     public static final DeferredItem<TallyLensItem> TALLY_LENS_CLEAR = lens("tally_lens_clear", TallyBoxBlock.Lens.NONE);
     public static final DeferredItem<TallyLensItem> TALLY_LENS_UNBOUND = lens("tally_lens_unbound", TallyBoxBlock.Lens.UNBOUND);
     public static final DeferredItem<TallyLensItem> TALLY_LENS_YIELD = lens("tally_lens_yield", TallyBoxBlock.Lens.YIELD);
@@ -272,13 +273,13 @@ public final class AMRegistry {
     public static final DeferredBlock<MeldingMirrorBlock> MELDING_MIRROR = block("melding_mirror", MeldingMirrorBlock::new,
             p -> p.mapColor(MapColor.METAL).strength(1.0f).sound(SoundType.GLASS).noOcclusion().pushReaction(PushReaction.DESTROY));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MeldingMirrorBlockEntity>> MELDING_MIRROR_BE = BLOCK_ENTITIES.register("melding_mirror",
-            () -> new BlockEntityType<>(MeldingMirrorBlockEntity::new, MELDING_MIRROR.get()));
+            () -> BlockEntityType.Builder.of(MeldingMirrorBlockEntity::new, MELDING_MIRROR.get()).build(null));
 
     // ---- phase 4: liquids and essentia
     public static final DeferredBlock<ThirstyTankBlock> THIRSTY_TANK = block("thirsty_tank", ThirstyTankBlock::new,
             p -> p.mapColor(MapColor.WOOD).strength(2f).sound(SoundType.WOOD));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ThirstyTankBlockEntity>> THIRSTY_TANK_BE = BLOCK_ENTITIES.register("thirsty_tank",
-            () -> new BlockEntityType<>(ThirstyTankBlockEntity::new, THIRSTY_TANK.get()));
+            () -> BlockEntityType.Builder.of(ThirstyTankBlockEntity::new, THIRSTY_TANK.get()).build(null));
     /** The aqua-imbued ink glyphs are pressed from; each glyph's effect is in the {@code automagia:glyph} data map. */
     public static final DeferredItem<Item> AQUEOUS_ADMIXTURE = simple("aqueous_admixture");
     public static final List<DeferredItem<Item>> GLYPHS = List.of(glyph("void"), glyph("consumption"), glyph("siphoning"),
@@ -286,10 +287,10 @@ public final class AMRegistry {
 
     /** Vishroom stew: a poor meal that leaves you queasy and seeing more than you should. */
     public static final DeferredItem<Item> VISHROOM_STEW = tabbed(ITEMS.registerItem("vishroom_stew", p -> new Item(p.stacksTo(1)
-            .usingConvertsTo(Items.BOWL)
-            .food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.2f).build(), Consumables.defaultFood()
-                    .onConsume(new ApplyStatusEffectsConsumeEffect(List.of(new MobEffectInstance(MobEffects.NAUSEA, 600),
-                            new MobEffectInstance(MobEffects.HUNGER, 300), new MobEffectInstance(MobEffects.NIGHT_VISION, 1200))))
+            .food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.2f).usingConvertsTo(Items.BOWL)
+                    .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 600), 1.0f)
+                    .effect(() -> new MobEffectInstance(MobEffects.HUNGER, 300), 1.0f)
+                    .effect(() -> new MobEffectInstance(MobEffects.NIGHT_VISION, 1200), 1.0f)
                     .build()))));
     /** Vishroom soup: the stew settled in a thirsty tank, a liquid that grows fungi and brings on the whispers. */
     public static final DeferredHolder<FluidType, FluidType> VISHROOM_SOUP_TYPE = FLUID_TYPES.register("vishroom_soup",
@@ -299,8 +300,8 @@ public final class AMRegistry {
             () -> new VishroomSoupFluid.Source(soup()));
     public static final DeferredHolder<Fluid, VishroomSoupFluid.Flowing> VISHROOM_SOUP_FLOWING = FLUIDS.register("flowing_vishroom_soup",
             () -> new VishroomSoupFluid.Flowing(soup()));
-    public static final DeferredBlock<LiquidBlock> VISHROOM_SOUP_BLOCK = BLOCKS.registerBlock("vishroom_soup",
-            p -> new LiquidBlock(VISHROOM_SOUP.get(), p), p -> p.mapColor(MapColor.COLOR_PURPLE).replaceable().noCollision()
+    public static final DeferredBlock<LiquidBlock> VISHROOM_SOUP_BLOCK = blockP("vishroom_soup",
+            p -> new VishroomSoupFluid.SoupBlock(VISHROOM_SOUP.get(), p), p -> p.mapColor(MapColor.COLOR_PURPLE).replaceable().noCollission()
                     .strength(100f).pushReaction(PushReaction.DESTROY).noLootTable().liquid().sound(SoundType.EMPTY));
     public static final DeferredItem<BucketItem> VISHROOM_SOUP_BUCKET = tabbed(ITEMS.registerItem("vishroom_soup_bucket",
             p -> new BucketItem(VISHROOM_SOUP.get(), p.craftRemainder(Items.BUCKET).stacksTo(1))));
@@ -309,12 +310,12 @@ public final class AMRegistry {
             p -> p.mapColor(MapColor.METAL).strength(3f).sound(SoundType.METAL).requiresCorrectToolForDrops()
                     .lightLevel(s -> s.getValue(BoilerBlock.LIT) ? 9 : 0));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BoilerBlockEntity>> BOILER_BE = BLOCK_ENTITIES.register("alchemical_boiler",
-            () -> new BlockEntityType<>(BoilerBlockEntity::new, BOILER.get()));
+            () -> BlockEntityType.Builder.of(BoilerBlockEntity::new, BOILER.get()).build(null));
 
     public static final DeferredBlock<EssentiaLocusBlock> ESSENTIA_LOCUS = block("essentia_locus", EssentiaLocusBlock::new,
             p -> p.mapColor(MapColor.LAPIS).strength(2f).sound(SoundType.AMETHYST).lightLevel(s -> 6));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<EssentiaLocusBlockEntity>> ESSENTIA_LOCUS_BE = BLOCK_ENTITIES.register("essentia_locus",
-            () -> new BlockEntityType<>(EssentiaLocusBlockEntity::new, ESSENTIA_LOCUS.get()));
+            () -> BlockEntityType.Builder.of(EssentiaLocusBlockEntity::new, ESSENTIA_LOCUS.get()).build(null));
     public static final DeferredBlock<Block> ESSENTIA_AGGREGATOR = block("essentia_aggregator", Block::new,
             p -> p.mapColor(MapColor.LAPIS).strength(2f).sound(SoundType.AMETHYST).lightLevel(s -> 4));
 
@@ -323,13 +324,13 @@ public final class AMRegistry {
             .map(a -> simple("crystal_brain_" + a)).toList();
     /** The device a golem is linked to with the golem linking bell. */
     public static final DeferredHolder<AttachmentType<?>, AttachmentType<GlobalPos>> GOLEM_LINK = ATTACHMENT_TYPES.register("golem_link",
-            () -> AttachmentType.<GlobalPos>builder(() -> null).serialize(GlobalPos.CODEC.fieldOf("device")).build());
+            () -> AttachmentType.<GlobalPos>builder(() -> null).serialize(GlobalPos.CODEC).build());
     public static final DeferredItem<GolemLinkerItem> GOLEM_LINKER = tabbed(ITEMS.registerItem("golem_linker",
             p -> new GolemLinkerItem(p.stacksTo(1))));
     public static final DeferredBlock<GolemInhibitorBlock> GOLEM_INHIBITOR = block("golem_inhibitor", GolemInhibitorBlock::new,
             p -> p.mapColor(MapColor.METAL).strength(2f).sound(SoundType.METAL));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GolemInhibitorBlockEntity>> GOLEM_INHIBITOR_BE = BLOCK_ENTITIES.register("golem_inhibitor",
-            () -> new BlockEntityType<>(GolemInhibitorBlockEntity::new, GOLEM_INHIBITOR.get()));
+            () -> BlockEntityType.Builder.of(GolemInhibitorBlockEntity::new, GOLEM_INHIBITOR.get()).build(null));
 
     /** What an Oculo Anima watches for. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<EntityWatch>> ENTITY_WATCH = COMPONENTS.registerComponentType("entity_watch",
@@ -339,12 +340,12 @@ public final class AMRegistry {
     public static final DeferredBlock<EntitySignalBlock> ENTITY_SIGNAL = block("entity_signal", EntitySignalBlock::new,
             p -> p.mapColor(MapColor.STONE).strength(1.5f).sound(SoundType.STONE));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<EntitySignalBlockEntity>> ENTITY_SIGNAL_BE = BLOCK_ENTITIES.register("entity_signal",
-            () -> new BlockEntityType<>(EntitySignalBlockEntity::new, ENTITY_SIGNAL.get()));
+            () -> BlockEntityType.Builder.of(EntitySignalBlockEntity::new, ENTITY_SIGNAL.get()).build(null));
 
     public static final DeferredBlock<GolemWorkbenchBlock> GOLEM_WORKBENCH = block("golem_workbench", GolemWorkbenchBlock::new,
             p -> p.mapColor(MapColor.WOOD).strength(2.5f).sound(SoundType.WOOD).noOcclusion());
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GolemWorkbenchBlockEntity>> GOLEM_WORKBENCH_BE = BLOCK_ENTITIES.register("golem_workbench",
-            () -> new BlockEntityType<>(GolemWorkbenchBlockEntity::new, GOLEM_WORKBENCH.get()));
+            () -> BlockEntityType.Builder.of(GolemWorkbenchBlockEntity::new, GOLEM_WORKBENCH.get()).build(null));
     public static final DeferredHolder<MenuType<?>, MenuType<GolemWorkbenchMenu>> GOLEM_WORKBENCH_MENU = MENUS.register("golem_workbench",
             () -> IMenuTypeExtension.create(GolemWorkbenchMenu::new));
     /** Workbench upgrades, one per primal; what each does is the item data map automagia:workbench_upgrade. */
@@ -356,7 +357,7 @@ public final class AMRegistry {
     public static final DeferredBlock<SpireControllerBlock> SPIRE_CONTROLLER = block("thaumostatic_controller", SpireControllerBlock::new,
             p -> p.mapColor(MapColor.QUARTZ).strength(2f).sound(SoundType.STONE).requiresCorrectToolForDrops());
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SpireControllerBlockEntity>> SPIRE_CONTROLLER_BE = BLOCK_ENTITIES.register("thaumostatic_controller",
-            () -> new BlockEntityType<>(SpireControllerBlockEntity::new, SPIRE_CONTROLLER.get()));
+            () -> BlockEntityType.Builder.of(SpireControllerBlockEntity::new, SPIRE_CONTROLLER.get()).build(null));
 
     // ---- phase 6: the Inventarium, the crafting focus, ender disjunction, fishing enchantments
     public static final DeferredRegister<SpellBehaviorType<?>> SPELL_BEHAVIORS = DeferredRegister.create(SpellBehaviorType.REGISTRY_KEY, MODID);
@@ -368,29 +369,29 @@ public final class AMRegistry {
     public static final DeferredBlock<InventariumCoreBlock> INVENTARIUM_CORE = block("inventarium_core", InventariumCoreBlock::new,
             p -> p.mapColor(MapColor.COLOR_ORANGE).strength(2f).sound(SoundType.AMETHYST).lightLevel(s -> 7));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<InventariumCoreBlockEntity>> INVENTARIUM_CORE_BE = BLOCK_ENTITIES.register("inventarium_core",
-            () -> new BlockEntityType<>(InventariumCoreBlockEntity::new, INVENTARIUM_CORE.get()));
+            () -> BlockEntityType.Builder.of(InventariumCoreBlockEntity::new, INVENTARIUM_CORE.get()).build(null));
     public static final DeferredBlock<UnseenScribeBlock> UNSEEN_SCRIBE = block("unseen_scribe", UnseenScribeBlock::new,
             p -> p.mapColor(MapColor.WOOD).strength(1.5f).sound(SoundType.WOOD).noOcclusion());
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<UnseenScribeBlockEntity>> UNSEEN_SCRIBE_BE = BLOCK_ENTITIES.register("unseen_scribe",
-            () -> new BlockEntityType<>(UnseenScribeBlockEntity::new, UNSEEN_SCRIBE.get()));
+            () -> BlockEntityType.Builder.of(UnseenScribeBlockEntity::new, UNSEEN_SCRIBE.get()).build(null));
     public static final DeferredBlock<ScrivenerOculusBlock> SCRIVENER_OCULUS = block("scrivener_oculus", ScrivenerOculusBlock::new,
             p -> p.mapColor(MapColor.METAL).strength(1.5f).sound(SoundType.METAL).noOcclusion());
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ScrivenerOculusBlockEntity>> SCRIVENER_OCULUS_BE = BLOCK_ENTITIES.register("scrivener_oculus",
-            () -> new BlockEntityType<>(ScrivenerOculusBlockEntity::new, SCRIVENER_OCULUS.get()));
+            () -> BlockEntityType.Builder.of(ScrivenerOculusBlockEntity::new, SCRIVENER_OCULUS.get()).build(null));
     public static final DeferredBlock<Block> MEMORY_BLOCK = block("memory_block", Block::new,
             p -> p.mapColor(MapColor.COLOR_ORANGE).strength(2f).sound(SoundType.AMETHYST).lightLevel(s -> 3));
     public static final DeferredBlock<GolemTaskmasterBlock> GOLEM_TASKMASTER = block("golem_taskmaster", GolemTaskmasterBlock::new,
             p -> p.mapColor(MapColor.METAL).strength(2f).sound(SoundType.METAL));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GolemTaskmasterBlockEntity>> GOLEM_TASKMASTER_BE = BLOCK_ENTITIES.register("golem_taskmaster",
-            () -> new BlockEntityType<>(GolemTaskmasterBlockEntity::new, GOLEM_TASKMASTER.get()));
+            () -> BlockEntityType.Builder.of(GolemTaskmasterBlockEntity::new, GOLEM_TASKMASTER.get()).build(null));
     public static final DeferredBlock<RequisitionTomeBlock> REQUISITION_TOME = block("requisition_tome", RequisitionTomeBlock::new,
             p -> p.mapColor(MapColor.WOOD).strength(1.5f).sound(SoundType.WOOD).noOcclusion());
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RequisitionTomeBlockEntity>> REQUISITION_TOME_BE = BLOCK_ENTITIES.register("requisition_tome",
-            () -> new BlockEntityType<>(RequisitionTomeBlockEntity::new, REQUISITION_TOME.get()));
+            () -> BlockEntityType.Builder.of(RequisitionTomeBlockEntity::new, REQUISITION_TOME.get()).build(null));
     public static final DeferredBlock<DispersingMirrorBlock> DISPERSING_MIRROR = block("dispersing_mirror", DispersingMirrorBlock::new,
             p -> p.mapColor(MapColor.METAL).strength(1.0f).sound(SoundType.GLASS).noOcclusion());
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DispersingMirrorBlockEntity>> DISPERSING_MIRROR_BE = BLOCK_ENTITIES.register("dispersing_mirror",
-            () -> new BlockEntityType<>(DispersingMirrorBlockEntity::new, DISPERSING_MIRROR.get()));
+            () -> BlockEntityType.Builder.of(DispersingMirrorBlockEntity::new, DISPERSING_MIRROR.get()).build(null));
     public static final DeferredHolder<MenuType<?>, MenuType<ArchiveMenu>> ARCHIVE_MENU = MENUS.register("archive",
             () -> IMenuTypeExtension.create(ArchiveMenu::new));
 
@@ -418,18 +419,18 @@ public final class AMRegistry {
             RECIPE_SERIALIZERS.register("infusion_enchanting", () -> InfusionEnchantingRecipe.SERIALIZER);
 
     /** Phase 7, the Nethermind: an ember heart, the runed obsidian (see {@link NetherRune}), the brain and the lures. */
-    public static final DeferredItem<Item> EMBER_HEART = tabbed(ITEMS.registerSimpleItem("ember_heart", p -> p.rarity(Rarity.UNCOMMON)));
+    public static final DeferredItem<Item> EMBER_HEART = tabbed(ITEMS.registerSimpleItem("ember_heart", new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final List<String> RUNE_NAMES = List.of("", "rock", "sea", "crystal", "light", "soul", "pebble", "celerity",
             "zombie", "blaze", "ghast", "skull", "slime", "bat", "wisp");
     public static final Map<String, DeferredBlock<Block>> RUNED_OBSIDIAN = runes();
     public static final DeferredBlock<NethermindBlock> NETHERMIND = block("nethermind", NethermindBlock::new,
             p -> p.mapColor(MapColor.COLOR_RED).strength(3f, 1200f).sound(SoundType.GLASS).lightLevel(s -> 9).requiresCorrectToolForDrops());
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NethermindBlockEntity>> NETHERMIND_BE = BLOCK_ENTITIES.register("nethermind",
-            () -> new BlockEntityType<>(NethermindBlockEntity::new, NETHERMIND.get()));
+            () -> BlockEntityType.Builder.of(NethermindBlockEntity::new, NETHERMIND.get()).build(null));
     public static final DeferredBlock<SirenLureBlock> SIREN_LURE = block("siren_lure", SirenLureBlock::new,
             p -> p.mapColor(MapColor.COLOR_BLACK).strength(20f, 1200f).sound(SoundType.STONE).lightLevel(s -> 5).requiresCorrectToolForDrops());
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SirenLureBlockEntity>> SIREN_LURE_BE = BLOCK_ENTITIES.register("siren_lure",
-            () -> new BlockEntityType<>(SirenLureBlockEntity::new, SIREN_LURE.get()));
+            () -> BlockEntityType.Builder.of(SirenLureBlockEntity::new, SIREN_LURE.get()).build(null));
     public static final DeferredBlock<Block> DIMENSIONAL_LURE = block("dimensional_lure", Block::new,
             p -> p.mapColor(MapColor.COLOR_PURPLE).strength(20f, 1200f).sound(SoundType.STONE).lightLevel(s -> 7).requiresCorrectToolForDrops());
 
@@ -439,17 +440,17 @@ public final class AMRegistry {
     public static final DeferredBlock<AmnesiacStoneBlock> AMNESIAC_STONE = block("amnesiac_stone", AmnesiacStoneBlock::new,
             p -> p.mapColor(MapColor.COLOR_LIGHT_GREEN).strength(2f, 6f).sound(SoundType.STONE).requiresCorrectToolForDrops());
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AmnesiacStoneBlockEntity>> AMNESIAC_STONE_BE = BLOCK_ENTITIES.register("amnesiac_stone",
-            () -> new BlockEntityType<>(AmnesiacStoneBlockEntity::new, AMNESIAC_STONE.get()));
+            () -> BlockEntityType.Builder.of(AmnesiacStoneBlockEntity::new, AMNESIAC_STONE.get()).build(null));
     public static final DeferredBlock<SoulStoneBlock> SOUL_STONE = block("soul_stone", SoulStoneBlock::new,
             p -> p.mapColor(MapColor.COLOR_LIGHT_GREEN).strength(2f, 6f).sound(SoundType.STONE).lightLevel(s -> 4).requiresCorrectToolForDrops());
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SoulStoneBlockEntity>> SOUL_STONE_BE = BLOCK_ENTITIES.register("soul_stone",
-            () -> new BlockEntityType<>(SoulStoneBlockEntity::new, SOUL_STONE.get()));
-    public static final DeferredBlock<ConcentrateJarBlock> CONCENTRATE_JAR = BLOCKS.registerBlock("concentrate_jar", ConcentrateJarBlock::new,
+            () -> BlockEntityType.Builder.of(SoulStoneBlockEntity::new, SOUL_STONE.get()).build(null));
+    public static final DeferredBlock<ConcentrateJarBlock> CONCENTRATE_JAR = blockP("concentrate_jar", ConcentrateJarBlock::new,
             p -> p.mapColor(MapColor.COLOR_LIGHT_GREEN).strength(0.3f).sound(SoundType.GLASS).lightLevel(s -> 6).noOcclusion());
-    public static final DeferredItem<BlockItem> CONCENTRATE_JAR_ITEM = tabbed(ITEMS.registerSimpleBlockItem(CONCENTRATE_JAR,
-            p -> p.stacksTo(1).component(STORED_XP.get(), ConcentrateJarBlockEntity.CAPACITY)));
+    public static final DeferredItem<BlockItem> CONCENTRATE_JAR_ITEM = tabbed(ITEMS.registerItem("concentrate_jar",
+            p -> new BlockItem(CONCENTRATE_JAR.get(), p.stacksTo(1).component(STORED_XP.get(), ConcentrateJarBlockEntity.CAPACITY))));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ConcentrateJarBlockEntity>> CONCENTRATE_JAR_BE = BLOCK_ENTITIES.register("concentrate_jar",
-            () -> new BlockEntityType<>(ConcentrateJarBlockEntity::new, CONCENTRATE_JAR.get()));
+            () -> BlockEntityType.Builder.of(ConcentrateJarBlockEntity::new, CONCENTRATE_JAR.get()).build(null));
     public static final DeferredItem<ConcentratePhialItem> CONCENTRATE_PHIAL = tabbed(ITEMS.registerItem("concentrate_phial",
             p -> new ConcentratePhialItem(p.stacksTo(16).rarity(Rarity.UNCOMMON))));
 
@@ -487,7 +488,7 @@ public final class AMRegistry {
     }
 
     private static Block.Properties redcrystal(Block.Properties p) {
-        return p.mapColor(MapColor.COLOR_RED).strength(0.3f).sound(SoundType.AMETHYST_CLUSTER).noCollision().noOcclusion()
+        return p.mapColor(MapColor.COLOR_RED).strength(0.3f).sound(SoundType.AMETHYST_CLUSTER).noCollission().noOcclusion()
                 .lightLevel(s -> s.getValue(RedcrystalBlock.POWER) > 0 ? 3 : 0).pushReaction(PushReaction.DESTROY);
     }
 
@@ -496,7 +497,7 @@ public final class AMRegistry {
     }
 
     private static DeferredItem<Item> glyph(String name) {
-        return tabbed(ITEMS.registerSimpleItem("glyph_" + name, p -> p.stacksTo(16)));
+        return tabbed(ITEMS.registerSimpleItem("glyph_" + name, new Item.Properties().stacksTo(16)));
     }
 
     private static DeferredItem<Item> simple(String name) {
@@ -520,9 +521,14 @@ public final class AMRegistry {
 
     private static <B extends Block> DeferredBlock<B> block(String name, Function<Block.Properties, B> factory,
                                                            UnaryOperator<Block.Properties> props) {
-        DeferredBlock<B> block = BLOCKS.registerBlock(name, factory, props);
+        DeferredBlock<B> block = blockP(name, factory, props);
         TAB_ITEMS.add(ITEMS.registerSimpleBlockItem(block));
         return block;
+    }
+
+    private static <B extends Block> DeferredBlock<B> blockP(String name, Function<Block.Properties, ? extends B> factory,
+                                                            UnaryOperator<Block.Properties> props) {
+        return BLOCKS.registerBlock(name, factory, props.apply(Block.Properties.of()));
     }
 
     static void register(IEventBus bus) {
@@ -557,7 +563,7 @@ public final class AMRegistry {
 
     private static void oldIds(DeferredRegister<?> reg) {
         for (var holder : reg.getEntries()) {
-            reg.addAlias(Identifier.fromNamespaceAndPath(LegacyIds.OLD, holder.getId().getPath()), holder.getId());
+            reg.addAlias(ResourceLocation.fromNamespaceAndPath(LegacyIds.OLD, holder.getId().getPath()), holder.getId());
         }
     }
 }

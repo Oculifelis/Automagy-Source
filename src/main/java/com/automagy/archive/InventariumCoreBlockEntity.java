@@ -22,10 +22,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import org.jspecify.annotations.Nullable;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
+import com.automagy.port.ItemResource;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The Inventarium core. It stands on an order crystal cluster over amber, ringed at its own height by eight archive
@@ -339,8 +339,9 @@ public class InventariumCoreBlockEntity extends BlockEntity implements TallySour
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         setFormation(in.getBooleanOr("formed", false), in.getIntOr("capacity", 0), in.getIntOr("clusters", 0),
                 in.getIntOr("memory", 0));
         preferred = in.getBooleanOr("preferred", false);
@@ -352,8 +353,9 @@ public class InventariumCoreBlockEntity extends BlockEntity implements TallySour
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         out.putBoolean("formed", formed);
         out.putBoolean("preferred", preferred);
         if (formed) {

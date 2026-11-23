@@ -2,10 +2,18 @@
   "type": "thaumaturge:arcane_workbench_shapeless",
   "crystals": [],
   "ingredients": [
-    "automagia:sliver_aqua",
-    "automagia:sliver_aqua",
-    "automagia:sliver_aqua",
-    "automagia:sliver_aqua"
+    {
+      "item": "automagia:sliver_aqua"
+    },
+    {
+      "item": "automagia:sliver_aqua"
+    },
+    {
+      "item": "automagia:sliver_aqua"
+    },
+    {
+      "item": "automagia:sliver_aqua"
+    }
   ],
   "research": {
     "entry": "automagia:slivers",

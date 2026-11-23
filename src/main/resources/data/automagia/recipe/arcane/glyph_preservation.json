@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "automagia:aqueous_admixture",
-    "minecraft:smooth_stone_slab",
-    "minecraft:honeycomb"
+    {
+      "item": "automagia:aqueous_admixture"
+    },
+    {
+      "item": "minecraft:smooth_stone_slab"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    }
   ],
   "research": {
     "entry": "automagia:thirsty_tank_glyph",

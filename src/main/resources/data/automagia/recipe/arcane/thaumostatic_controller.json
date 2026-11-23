@@ -11,10 +11,18 @@
     }
   ],
   "key": {
-    "Q": "minecraft:quartz_block",
-    "P": "thaumaturge:plate_thaumium",
-    "B": "automagia:crystal_brain_aer",
-    "M": "thaumaturge:mechanism_complex"
+    "Q": {
+      "item": "minecraft:quartz_block"
+    },
+    "P": {
+      "item": "thaumaturge:plate_thaumium"
+    },
+    "B": {
+      "item": "automagia:crystal_brain_aer"
+    },
+    "M": {
+      "item": "thaumaturge:mechanism_complex"
+    }
   },
   "pattern": [
     "QPQ",

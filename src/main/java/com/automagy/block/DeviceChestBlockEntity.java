@@ -12,16 +12,16 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import org.jspecify.annotations.Nullable;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
+import com.automagy.port.ItemResource;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Shared by the greedy, eager and tenacious chests: wand settings (right-click steps the selected setting, sneak +
  * right-click selects the next one, the action bar shows the result) and slots for runic lists.
  */
-public abstract class DeviceChestBlockEntity extends ChestBlockEntity {
+public abstract class DeviceChestBlockEntity extends ChestBlockEntity implements com.automagy.port.PreRemove {
     private final ItemStack[] lists;
     private int selected;
 
@@ -63,8 +63,8 @@ public abstract class DeviceChestBlockEntity extends ChestBlockEntity {
             step(selected);
         }
         changed();
-        player.sendOverlayMessage(Component.translatable("automagia.msg.setting",
-                Component.translatable("automagia.setting." + settingKey(selected)), valueName(selected)));
+        player.displayClientMessage(Component.translatable("automagia.msg.setting",
+                Component.translatable("automagia.setting." + settingKey(selected)), valueName(selected)), true);
     }
 
     protected void changed() {
@@ -102,7 +102,7 @@ public abstract class DeviceChestBlockEntity extends ChestBlockEntity {
             player.getInventory().placeItemBackInInventory(old);
         }
         changed();
-        player.sendOverlayMessage(Component.translatable("automagia.msg.list_in", lists[slot].getHoverName()));
+        player.displayClientMessage(Component.translatable("automagia.msg.list_in", lists[slot].getHoverName()), true);
     }
 
     void takeLists(Player player) {
@@ -134,9 +134,7 @@ public abstract class DeviceChestBlockEntity extends ChestBlockEntity {
         return n;
     }
 
-    @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
-        super.preRemoveSideEffects(pos, state);
         if (level != null) {
             for (ItemStack s : lists) {
                 if (!s.isEmpty()) {
@@ -147,8 +145,9 @@ public abstract class DeviceChestBlockEntity extends ChestBlockEntity {
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         selected = in.getIntOr("selected", 0);
         for (int i = 0; i < lists.length; i++) {
             lists[i] = in.read("list" + i, ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);
@@ -156,8 +155,9 @@ public abstract class DeviceChestBlockEntity extends ChestBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         out.putInt("selected", selected);
         for (int i = 0; i < lists.length; i++) {
             out.store("list" + i, ItemStack.OPTIONAL_CODEC, lists[i]);

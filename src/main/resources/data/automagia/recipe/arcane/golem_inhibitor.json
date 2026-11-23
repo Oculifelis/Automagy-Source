@@ -11,11 +11,21 @@
     }
   ],
   "key": {
-    "P": "thaumaturge:plate_iron",
-    "R": "minecraft:redstone",
-    "I": "minecraft:iron_ingot",
-    "B": "automagia:crystal_brain_perditio",
-    "F": "thaumaturge:golem_fetter"
+    "P": {
+      "item": "thaumaturge:plate_iron"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "item": "automagia:crystal_brain_perditio"
+    },
+    "F": {
+      "item": "thaumaturge:golem_fetter"
+    }
   },
   "pattern": [
     "PRP",

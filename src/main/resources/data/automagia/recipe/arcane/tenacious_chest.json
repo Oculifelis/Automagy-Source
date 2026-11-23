@@ -7,9 +7,15 @@
     }
   ],
   "key": {
-    "T": "thaumaturge:tallow",
-    "S": "automagia:sliver_terra",
-    "C": "minecraft:chest"
+    "T": {
+      "item": "thaumaturge:tallow"
+    },
+    "S": {
+      "item": "automagia:sliver_terra"
+    },
+    "C": {
+      "item": "minecraft:chest"
+    }
   },
   "pattern": [
     "TST",

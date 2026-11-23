@@ -14,8 +14,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
 
 /**
  * The Siren's Lure: set into a vertical line of obsidian totems (at least two besides itself, blocks of the
@@ -111,14 +111,16 @@ public class SirenLureBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         active = in.getBooleanOr("active", true);
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         out.putBoolean("active", active);
     }
 }

@@ -2,8 +2,6 @@ package com.automagy.block;
 
 import com.automagy.AMRegistry;
 import com.leclowndu93150.thaumaturge.content.device.mirror.BlockEntityMirror;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerLevel;
@@ -16,22 +14,19 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
-import org.jspecify.annotations.Nullable;
+import net.neoforged.neoforge.items.IItemHandler;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A one-way mirror. Its crystalline eye watches a magic mirror; while that mirror is paired, whatever is thrown into
  * the melding mirror or piped into it comes out of the watched mirror's partner.
  */
-public class MeldingMirrorBlockEntity extends BlockEntity {
+public class MeldingMirrorBlockEntity extends BlockEntity implements com.automagy.port.PreRemove {
     private ItemStack eye = ItemStack.EMPTY;
-    private @Nullable ResourceHandler<ItemResource> handler;
+    private @Nullable IItemHandler handler;
 
     public MeldingMirrorBlockEntity(BlockPos pos, BlockState state) {
         super(AMRegistry.MELDING_MIRROR_BE.get(), pos, state);
@@ -55,7 +50,7 @@ public class MeldingMirrorBlockEntity extends BlockEntity {
         ServerLevel there = server.getServer().getLevel(watched.dimension());
         if (there == null || !there.isLoaded(watched.pos())
                 || !(there.getBlockEntity(watched.pos()) instanceof BlockEntityMirror mirror)
-                || !mirror.paired || mirror.link == null || !mirror.verifyPairing()) {
+                || !mirror.linked || mirror.link == null || !mirror.isLinkValid()) {
             return null;
         }
         ServerLevel far = server.getServer().getLevel(mirror.link.dimension());
@@ -84,81 +79,53 @@ public class MeldingMirrorBlockEntity extends BlockEntity {
         }
     }
 
-    /** Pipes and hoppers can put items in, never take any out. Items go through when the transfer commits. */
-    public ResourceHandler<ItemResource> handler() {
+    /** Pipes and hoppers can put items in, never take any out. Items go through at once. */
+    public IItemHandler handler() {
         if (handler == null) {
             handler = new InputHandler();
         }
         return handler;
     }
 
-    private final class InputHandler extends SnapshotJournal<List<ItemStack>> implements ResourceHandler<ItemResource> {
-        private List<ItemStack> pending = new ArrayList<>();
-
+    private final class InputHandler implements IItemHandler {
         @Override
-        public int size() {
+        public int getSlots() {
             return 1;
         }
 
         @Override
-        public ItemResource getResource(int i) {
-            return ItemResource.EMPTY;
+        public ItemStack getStackInSlot(int i) {
+            return ItemStack.EMPTY;
         }
 
         @Override
-        public long getAmountAsLong(int i) {
-            return 0;
+        public ItemStack insertItem(int i, ItemStack stack, boolean simulate) {
+            if (stack.isEmpty() || destination() == null) {
+                return stack;
+            }
+            if (!simulate && !send(stack.copy())) {
+                // the pair broke between the check and the send: drop rather than lose the items
+                Containers.dropItemStack(level, worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, stack.copy());
+            }
+            return ItemStack.EMPTY;
         }
 
         @Override
-        public long getCapacityAsLong(int i, ItemResource res) {
-            return res.getMaxStackSize();
+        public ItemStack extractItem(int i, int amount, boolean simulate) {
+            return ItemStack.EMPTY;
         }
 
         @Override
-        public boolean isValid(int i, ItemResource res) {
+        public int getSlotLimit(int i) {
+            return 64;
+        }
+
+        @Override
+        public boolean isItemValid(int i, ItemStack stack) {
             return destination() != null;
-        }
-
-        @Override
-        public int insert(int i, ItemResource res, int amount, TransactionContext tx) {
-            if (res.isEmpty() || amount <= 0 || destination() == null) {
-                return 0;
-            }
-            updateSnapshots(tx);
-            pending.add(res.toStack(amount));
-            return amount;
-        }
-
-        @Override
-        public int extract(int i, ItemResource res, int amount, TransactionContext tx) {
-            return 0;
-        }
-
-        @Override
-        protected List<ItemStack> createSnapshot() {
-            return new ArrayList<>(pending);
-        }
-
-        @Override
-        protected void revertToSnapshot(List<ItemStack> snapshot) {
-            pending = snapshot;
-        }
-
-        @Override
-        protected void onRootCommit(List<ItemStack> original) {
-            List<ItemStack> go = pending;
-            pending = new ArrayList<>();
-            for (ItemStack stack : go) {
-                if (!send(stack)) {
-                    // the pair broke between the check and the commit: drop rather than lose the items
-                    Containers.dropItemStack(level, worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, stack);
-                }
-            }
         }
     }
 
-    @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         if (level != null && !eye.isEmpty()) {
             Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, eye);
@@ -166,14 +133,16 @@ public class MeldingMirrorBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         eye = in.read("eye", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         out.store("eye", ItemStack.OPTIONAL_CODEC, eye);
     }
 }

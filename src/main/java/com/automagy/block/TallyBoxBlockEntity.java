@@ -23,13 +23,13 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import org.jspecify.annotations.Nullable;
+import net.neoforged.neoforge.items.IItemHandler;
+import com.automagy.port.ItemResource;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Twice a second, counts what its list names at its target and sets its signal. A whitelist gives a signal when the
@@ -37,7 +37,7 @@ import org.jspecify.annotations.Nullable;
  * gives a signal unless it does. With a remote comparator on top, the box reads the comparator's watched block instead;
  * pointed at another tally box, it reads that box's target, and so on down the chain.
  */
-public class TallyBoxBlockEntity extends ConfigurableBlockEntity {
+public class TallyBoxBlockEntity extends ConfigurableBlockEntity implements com.automagy.port.PreRemove {
     private static final int MAX_CHAIN = 16;
     private ItemStack list = ItemStack.EMPTY;
     private boolean matchAll = true;
@@ -57,7 +57,7 @@ public class TallyBoxBlockEntity extends ConfigurableBlockEntity {
             player.getInventory().placeItemBackInInventory(old);
         }
         setChanged();
-        player.sendOverlayMessage(Component.translatable("automagia.msg.list_in", list.getHoverName()));
+        player.displayClientMessage(Component.translatable("automagia.msg.list_in", list.getHoverName()), true);
     }
 
     void takeList(Player player) {
@@ -99,12 +99,13 @@ public class TallyBoxBlockEntity extends ConfigurableBlockEntity {
                 // the Inventarium is counted by asking it: its core, one of its ring shelves, or a tome (what is on order)
                 TallySource asked = level.getBlockEntity(src.pos()) instanceof TallySource t ? t
                         : InventariumCoreBlockEntity.atShelf(level, src.pos());
-                ResourceHandler<ItemResource> h = asked != null ? null : level.getCapability(Capabilities.Item.BLOCK, src.pos(), src.face());
+                IItemHandler h = asked != null ? null : level.getCapability(Capabilities.ItemHandler.BLOCK, src.pos(), src.face());
                 if (asked != null) {
                     asked.tally((res, n) -> add(out, f, res, n));
                 } else if (h != null) {
-                    for (int i = 0; i < h.size(); i++) {
-                        add(out, f, h.getResource(i), h.getAmountAsInt(i));
+                    for (int i = 0; i < h.getSlots(); i++) {
+                        ItemStack s = h.getStackInSlot(i);
+                        add(out, f, ItemResource.of(s), s.getCount());
                     }
                 }
             }
@@ -197,27 +198,28 @@ public class TallyBoxBlockEntity extends ConfigurableBlockEntity {
         matchAll = !matchAll;
     }
 
-    @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         if (level != null && !list.isEmpty()) {
             Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, list);
         }
-        if (level != null && state.getValue(TallyBoxBlock.LENS) != TallyBoxBlock.Lens.NONE) {
+        if (level != null && state.hasProperty(TallyBoxBlock.LENS) && state.getValue(TallyBoxBlock.LENS) != TallyBoxBlock.Lens.NONE) {
             Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
                     com.automagy.item.TallyLensItem.stackFor(state.getValue(TallyBoxBlock.LENS)));
         }
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         list = in.read("list", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);
         matchAll = in.getBooleanOr("match_all", true);
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         out.store("list", ItemStack.OPTIONAL_CODEC, list);
         out.putBoolean("match_all", matchAll);
     }

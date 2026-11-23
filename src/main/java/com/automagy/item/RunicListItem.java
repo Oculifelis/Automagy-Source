@@ -13,7 +13,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 
 /**
@@ -34,7 +33,12 @@ public class RunicListItem extends Item {
     }
 
     @Override
-    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+    public net.minecraft.world.InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        InteractionResult result = useItem(level, player, hand);
+        return new net.minecraft.world.InteractionResultHolder<>(result, player.getItemInHand(hand));
+    }
+
+    private InteractionResult useItem(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide()) {
             player.openMenu(new SimpleMenuProvider((id, inv, p) -> new RunicListMenu(id, inv, hand),
                     player.getItemInHand(hand).getHoverName()), buf -> buf.writeEnum(hand));
@@ -43,20 +47,20 @@ public class RunicListItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> out, TooltipFlag flag) {
-        super.appendHoverText(stack, context, display, out, flag);
+    public void appendHoverText(ItemStack stack, TooltipContext context, java.util.List<Component> out, TooltipFlag flag) {
+        super.appendHoverText(stack, context, out, flag);
         RunicList list = stack.getOrDefault(AMRegistry.RUNIC_LIST.get(), RunicList.EMPTY);
         if (list.entries().isEmpty()) {
-            out.accept(Component.translatable("automagia.tip.list_blank").withStyle(ChatFormatting.GRAY));
+            out.add(Component.translatable("automagia.tip.list_blank").withStyle(ChatFormatting.GRAY));
             return;
         }
         for (RunicList.Entry e : list.entries()) {
-            Component name = e.item().create().getHoverName();
-            out.accept((e.hasQty() ? Component.translatable("automagia.tip.list_qty", e.qty(), name)
+            Component name = e.item().copy().getHoverName();
+            out.add((e.hasQty() ? Component.translatable("automagia.tip.list_qty", e.qty(), name)
                     : Component.translatable("automagia.tip.list_item", name)).withStyle(ChatFormatting.GRAY));
         }
         if (list.partial()) {
-            out.accept(Component.translatable("automagia.tip.list_partial").withStyle(ChatFormatting.DARK_GRAY));
+            out.add(Component.translatable("automagia.tip.list_partial").withStyle(ChatFormatting.DARK_GRAY));
         }
     }
 }

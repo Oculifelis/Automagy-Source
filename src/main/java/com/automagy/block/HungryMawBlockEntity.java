@@ -16,9 +16,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.item.ItemUtil;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 /** Every few ticks, pulls dropped items within reach of the maw into the container it is stuck to. */
 public class HungryMawBlockEntity extends BlockEntity {
@@ -33,7 +32,7 @@ public class HungryMawBlockEntity extends BlockEntity {
     }
 
     /** How many of a dropped stack the maw will eat into its container; the hungry maw eats everything. */
-    protected int appetite(ItemStack stack, ResourceHandler<ItemResource> target) {
+    protected int appetite(ItemStack stack, IItemHandler target) {
         return stack.getCount();
     }
 
@@ -42,7 +41,7 @@ public class HungryMawBlockEntity extends BlockEntity {
             return;
         }
         Direction facing = state.getValue(HungryMawBlock.FACING);
-        ResourceHandler<ItemResource> target = level.getCapability(Capabilities.Item.BLOCK, pos.relative(facing.getOpposite()), facing);
+        IItemHandler target = level.getCapability(Capabilities.ItemHandler.BLOCK, pos.relative(facing.getOpposite()), facing);
         if (target == null) {
             return;
         }
@@ -54,7 +53,7 @@ public class HungryMawBlockEntity extends BlockEntity {
             if (n <= 0) {
                 continue;
             }
-            ItemStack left = ItemUtil.insertItemReturnRemaining(target, stack.copyWithCount(n), false, null);
+            ItemStack left = ItemHandlerHelper.insertItemStacked(target, stack.copyWithCount(n), false);
             int eaten = n - left.getCount();
             if (eaten > 0) {
                 ate = true;
@@ -67,7 +66,7 @@ public class HungryMawBlockEntity extends BlockEntity {
         }
         if (ate) {
             ((ServerLevel) level).sendParticles(ParticleTypes.PORTAL, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 6, 0.2, 0.2, 0.2, 0.05);
-            level.playSound(null, pos, SoundEvents.GENERIC_EAT.value(), SoundSource.BLOCKS, 0.3f, 1.4f);
+            level.playSound(null, pos, SoundEvents.GENERIC_EAT, SoundSource.BLOCKS, 0.3f, 1.4f);
         }
     }
 }

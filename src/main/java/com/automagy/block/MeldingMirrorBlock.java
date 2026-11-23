@@ -12,6 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -33,7 +34,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The melding mirror: a framed pane facing out of the block it is placed against. Right-click it with an attuned
@@ -84,19 +85,19 @@ public class MeldingMirrorBlock extends BaseEntityBlock implements IInteractWith
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
                                           InteractionHand hand, BlockHitResult hit) {
         if (stack.getItem() instanceof ICaster) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
         }
         if (!(stack.getItem() instanceof CrystallineEyeItem) || !(level.getBlockEntity(pos) instanceof MeldingMirrorBlockEntity mirror)) {
-            return InteractionResult.TRY_WITH_EMPTY_HAND;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         if (!stack.has(AMRegistry.LINK.get())) {
             if (!level.isClientSide()) {
-                player.sendOverlayMessage(Component.translatable("automagia.msg.eye_unattuned"));
+                player.displayClientMessage(Component.translatable("automagia.msg.eye_unattuned"), true);
             }
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
         if (!level.isClientSide()) {
             ItemStack old = mirror.eye();
@@ -106,7 +107,7 @@ public class MeldingMirrorBlock extends BaseEntityBlock implements IInteractWith
             }
             level.setBlock(pos, state.setValue(EYE, true), Block.UPDATE_ALL);
         }
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
     }
 
     @Override

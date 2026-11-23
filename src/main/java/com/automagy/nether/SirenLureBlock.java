@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /** The Siren's Lure block; a wand switches it on and off. */
 public class SirenLureBlock extends BaseEntityBlock implements IInteractWithCaster {
@@ -45,8 +45,8 @@ public class SirenLureBlock extends BaseEntityBlock implements IInteractWithCast
         }
         if (!level.isClientSide()) {
             boolean on = lure.toggle();
-            player.sendOverlayMessage(Component.translatable(!on ? "automagia.siren_lure.off"
-                    : lure.totems() < 2 ? "automagia.siren_lure.totems" : "automagia.siren_lure.on"));
+            player.displayClientMessage(Component.translatable(!on ? "automagia.siren_lure.off"
+                    : lure.totems() < 2 ? "automagia.siren_lure.totems" : "automagia.siren_lure.on"), true);
         }
         return true;
     }

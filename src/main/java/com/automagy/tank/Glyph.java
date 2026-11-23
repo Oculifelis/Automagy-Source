@@ -9,7 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * What an item does when pressed onto a thirsty tank's side. Read from the item data map {@code automagia:glyph}, so a
@@ -33,7 +33,7 @@ public record Glyph(Effect effect, int amount) {
     }
 
     public static @Nullable Glyph of(ItemStack stack) {
-        return stack.isEmpty() ? null : stack.typeHolder().getData(DATA);
+        return stack.isEmpty() ? null : stack.getItemHolder().getData(DATA);
     }
 
     public enum Effect implements StringRepresentable {

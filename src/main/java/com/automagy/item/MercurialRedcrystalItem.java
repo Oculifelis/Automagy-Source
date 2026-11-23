@@ -11,7 +11,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
@@ -30,7 +29,7 @@ public class MercurialRedcrystalItem extends BlockItem {
                 context.getItemInHand().set(AMRegistry.LINK.get(), mirror);
                 Player player = context.getPlayer();
                 if (player != null) {
-                    player.sendOverlayMessage(Component.translatable("automagia.msg.bound_mirror"));
+                    player.displayClientMessage(Component.translatable("automagia.msg.bound_mirror"), true);
                 }
             }
             return InteractionResult.SUCCESS;
@@ -44,8 +43,8 @@ public class MercurialRedcrystalItem extends BlockItem {
         if (mirror == null || !MercurialRedcrystalBlock.inReach(mirror, context.getLevel(), context.getClickedPos())) {
             Player player = context.getPlayer();
             if (player != null && !context.getLevel().isClientSide()) {
-                player.sendOverlayMessage(Component.translatable(mirror == null
-                        ? "automagia.msg.unbound" : "automagia.msg.too_far", MercurialRedcrystalBlock.REACH));
+                player.displayClientMessage(Component.translatable(mirror == null
+                        ? "automagia.msg.unbound" : "automagia.msg.too_far", MercurialRedcrystalBlock.REACH), true);
             }
             return InteractionResult.FAIL;
         }
@@ -53,8 +52,8 @@ public class MercurialRedcrystalItem extends BlockItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> out, TooltipFlag flag) {
-        super.appendHoverText(stack, context, display, out, flag);
-        LinkTooltip.add(stack.get(AMRegistry.LINK.get()), out);
+    public void appendHoverText(ItemStack stack, TooltipContext context, java.util.List<Component> out, TooltipFlag flag) {
+        super.appendHoverText(stack, context, out, flag);
+        LinkTooltip.add(stack.get(AMRegistry.LINK.get()), out::add);
     }
 }

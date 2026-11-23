@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.EntityType;
@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * What a block does in a Nethermind structure, from the block data map {@code automagia:nether_rune}. Only blocks in
@@ -41,11 +41,11 @@ public record NetherRune(Kind kind, List<Conjure> conjures, AspectList cost, Asp
     }
 
     /** One thing a rune can bring across: a block, or a creature (a Thaumaturge wisp can be given its aspect). */
-    public record Conjure(Optional<Block> block, Optional<EntityType<?>> entity, Optional<Identifier> aspect, int weight) {
+    public record Conjure(Optional<Block> block, Optional<EntityType<?>> entity, Optional<ResourceLocation> aspect, int weight) {
         public static final Codec<Conjure> CODEC = RecordCodecBuilder.create(i -> i.group(
                 BuiltInRegistries.BLOCK.byNameCodec().optionalFieldOf("block").forGetter(Conjure::block),
                 BuiltInRegistries.ENTITY_TYPE.byNameCodec().optionalFieldOf("entity").forGetter(Conjure::entity),
-                Identifier.CODEC.optionalFieldOf("aspect").forGetter(Conjure::aspect),
+                ResourceLocation.CODEC.optionalFieldOf("aspect").forGetter(Conjure::aspect),
                 Codec.INT.optionalFieldOf("weight", 1).forGetter(Conjure::weight)).apply(i, Conjure::new));
     }
 
@@ -66,7 +66,7 @@ public record NetherRune(Kind kind, List<Conjure> conjures, AspectList cost, Asp
     }
 
     public static @Nullable NetherRune of(BlockState state) {
-        return state.typeHolder().getData(DATA);
+        return state.getBlockHolder().getData(DATA);
     }
 
     public @Nullable Conjure pick(RandomSource random) {

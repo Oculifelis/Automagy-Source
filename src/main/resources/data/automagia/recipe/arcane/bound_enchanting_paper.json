@@ -2,10 +2,18 @@
   "type": "thaumaturge:arcane_workbench_shapeless",
   "crystals": [],
   "ingredients": [
-    "automagia:enchanted_paper",
-    "automagia:enchanted_paper",
-    "automagia:enchanted_paper",
-    "minecraft:leather"
+    {
+      "item": "automagia:enchanted_paper"
+    },
+    {
+      "item": "automagia:enchanted_paper"
+    },
+    {
+      "item": "automagia:enchanted_paper"
+    },
+    {
+      "item": "minecraft:leather"
+    }
   ],
   "research": {
     "entry": "automagia:enchanted_paper",

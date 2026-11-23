@@ -1,11 +1,19 @@
 {
   "type": "automagia:infusion_enchanting",
   "enchantment": "minecraft:lure",
-  "catalyst": "minecraft:fishing_rod",
+  "catalyst": {
+    "item": "minecraft:fishing_rod"
+  },
   "components": [
-    "minecraft:cod",
-    "minecraft:string",
-    "thaumaturge:quicksilver"
+    {
+      "item": "minecraft:cod"
+    },
+    {
+      "item": "minecraft:string"
+    },
+    {
+      "item": "thaumaturge:quicksilver"
+    }
   ],
   "aspects": [
     {

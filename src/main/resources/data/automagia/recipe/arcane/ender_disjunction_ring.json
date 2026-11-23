@@ -11,9 +11,15 @@
     }
   ],
   "key": {
-    "E": "minecraft:ender_eye",
-    "V": "thaumaturge:ingot_void",
-    "R": "automagia:lesser_ender_disjunction_ring"
+    "E": {
+      "item": "minecraft:ender_eye"
+    },
+    "V": {
+      "item": "thaumaturge:ingot_void"
+    },
+    "R": {
+      "item": "automagia:lesser_ender_disjunction_ring"
+    }
   },
   "pattern": [
     "EVE",

@@ -18,7 +18,7 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.CuriosApi;
 
 /** Opening the crafting focus's grid: by casting it, or by the crafting key with a caster on the hotbar. */
@@ -46,7 +46,7 @@ public final class FocusCrafting {
     static void openFromCast(ServerPlayer player, CraftingGridEffect effect, Upgrades upgrades) {
         for (InteractionHand hand : InteractionHand.values()) {
             if (player.getItemInHand(hand).getItem() instanceof ICaster) {
-                open(player, hand == InteractionHand.MAIN_HAND ? player.getInventory().getSelectedSlot() : Inventory.SLOT_OFFHAND,
+                open(player, hand == InteractionHand.MAIN_HAND ? player.getInventory().selected : Inventory.SLOT_OFFHAND,
                         effect, upgrades);
                 return;
             }
@@ -150,7 +150,7 @@ public final class FocusCrafting {
             return;
         }
         if (!upgrades.gratis() && effect.openVis() > 0 && !caster.consumeVis(casterStack, player, effect.openVis(), false, false)) {
-            player.sendOverlayMessage(Component.translatable("automagia.focus_crafting.vis_low"));
+            player.displayClientMessage(Component.translatable("automagia.focus_crafting.vis_low"), true);
             return;
         }
         player.openMenu(new SimpleMenuProvider((id, inv, p) -> new FocusCraftingMenu(id, inv, casterSlot, effect.craftVis(), upgrades),

@@ -9,9 +9,9 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemStackTemplate;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import org.jspecify.annotations.Nullable;
+
+import com.automagy.port.ItemResource;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * What a runic whitelist or blacklist has written on it: up to nine items, each with an optional quantity, and whether
@@ -23,18 +23,28 @@ public record RunicList(List<Entry> entries, boolean partial) {
     public static final int MAX_QTY = 9999;
     public static final RunicList EMPTY = new RunicList(List.of(), false);
 
-    public record Entry(int slot, ItemStackTemplate item, int qty) {
+    public record Entry(int slot, ItemStack item, int qty) {
         public static final Codec<Entry> CODEC = RecordCodecBuilder.create(i -> i.group(
                 Codec.intRange(0, SIZE - 1).fieldOf("slot").forGetter(Entry::slot),
-                ItemStackTemplate.CODEC.fieldOf("item").forGetter(Entry::item),
+                ItemStack.CODEC.fieldOf("item").forGetter(Entry::item),
                 Codec.intRange(1, MAX_QTY).optionalFieldOf("qty", 1).forGetter(Entry::qty)
         ).apply(i, Entry::new));
         public static final StreamCodec<RegistryFriendlyByteBuf, Entry> STREAM_CODEC = StreamCodec.composite(
-                ByteBufCodecs.VAR_INT, Entry::slot, ItemStackTemplate.STREAM_CODEC, Entry::item, ByteBufCodecs.VAR_INT, Entry::qty,
+                ByteBufCodecs.VAR_INT, Entry::slot, ItemStack.STREAM_CODEC, Entry::item, ByteBufCodecs.VAR_INT, Entry::qty,
                 Entry::new);
 
         public boolean hasQty() {
             return qty > 1;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return o instanceof Entry e && slot == e.slot && qty == e.qty && ItemStack.matches(item, e.item);
+        }
+
+        @Override
+        public int hashCode() {
+            return 31 * (31 * slot + qty) + ItemStack.hashItemAndComponents(item);
         }
     }
 
@@ -61,7 +71,7 @@ public record RunicList(List<Entry> entries, boolean partial) {
             return null;
         }
         for (Entry e : entries) {
-            if (partial ? res.is(e.item.item().value()) : res.equals(ItemResource.of(e.item))) {
+            if (partial ? res.is(e.item.getItem()) : res.equals(ItemResource.of(e.item))) {
                 return e;
             }
         }

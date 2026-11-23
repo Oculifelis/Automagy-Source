@@ -7,10 +7,18 @@
     "WWW"
   ],
   "key": {
-    "W": "#minecraft:wooden_slabs",
-    "R": "minecraft:redstone",
-    "G": "minecraft:glass_pane",
-    "S": "#minecraft:sand"
+    "W": {
+      "tag": "minecraft:wooden_slabs"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "S": {
+      "tag": "minecraft:sand"
+    }
   },
   "result": {
     "id": "automagia:hourglass",

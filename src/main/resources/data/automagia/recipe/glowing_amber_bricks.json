@@ -6,7 +6,9 @@
     "AA"
   ],
   "key": {
-    "A": "automagia:glowing_amber"
+    "A": {
+      "item": "automagia:glowing_amber"
+    }
   },
   "result": {
     "id": "automagia:glowing_amber_bricks",

@@ -7,9 +7,15 @@
     }
   ],
   "key": {
-    "P": "thaumaturge:plank_silverwood",
-    "B": "automagia:enchanting_bookshelf",
-    "C": "automagia:sliver_ordo"
+    "P": {
+      "item": "thaumaturge:plank_silverwood"
+    },
+    "B": {
+      "item": "automagia:enchanting_bookshelf"
+    },
+    "C": {
+      "item": "automagia:sliver_ordo"
+    }
   },
   "pattern": [
     "PPP",

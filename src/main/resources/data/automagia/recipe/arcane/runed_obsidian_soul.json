@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "automagia:runed_obsidian",
-    "minecraft:soul_sand",
-    "minecraft:soul_sand"
+    {
+      "item": "automagia:runed_obsidian"
+    },
+    {
+      "item": "minecraft:soul_sand"
+    },
+    {
+      "item": "minecraft:soul_sand"
+    }
   ],
   "research": {
     "entry": "automagia:netherrune_soul",

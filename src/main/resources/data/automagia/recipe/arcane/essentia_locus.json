@@ -11,10 +11,18 @@
     }
   ],
   "key": {
-    "G": "minecraft:gold_ingot",
-    "E": "automagia:crystalline_eye",
-    "L": "minecraft:lapis_lazuli",
-    "C": "thaumaturge:crystal_aqua"
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "E": {
+      "item": "automagia:crystalline_eye"
+    },
+    "L": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "C": {
+      "item": "thaumaturge:crystal_aqua"
+    }
   },
   "pattern": [
     "GEG",

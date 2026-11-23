@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "automagia:runed_obsidian",
-    "minecraft:gravel",
-    "minecraft:gravel"
+    {
+      "item": "automagia:runed_obsidian"
+    },
+    {
+      "item": "minecraft:gravel"
+    },
+    {
+      "item": "minecraft:gravel"
+    }
   ],
   "research": {
     "entry": "automagia:nethermind",

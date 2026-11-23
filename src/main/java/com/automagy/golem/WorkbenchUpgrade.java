@@ -9,7 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * What an item does when put on a side of the golem's workbench. Read from the item data map
@@ -32,7 +32,7 @@ public record WorkbenchUpgrade(Effect effect, int amount) {
     }
 
     public static @Nullable WorkbenchUpgrade of(ItemStack stack) {
-        return stack.isEmpty() ? null : stack.typeHolder().getData(DATA);
+        return stack.isEmpty() ? null : stack.getItemHolder().getData(DATA);
     }
 
     public enum Effect implements StringRepresentable {

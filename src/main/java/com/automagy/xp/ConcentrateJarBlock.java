@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
@@ -24,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The jar of enchanter's concentrate. An empty phial draws a Phial of Enchanter's Concentrate (100 points), which
@@ -55,15 +56,15 @@ public class ConcentrateJarBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
                                           InteractionHand hand, BlockHitResult hit) {
         if (!(level.getBlockEntity(pos) instanceof ConcentrateJarBlockEntity jar)) {
-            return InteractionResult.TRY_WITH_EMPTY_HAND;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         ItemStack result;
         if (stack.is(AMRegistry.CONCENTRATE_PHIAL.get())) {
             if (jar.xp() + PHIAL > ConcentrateJarBlockEntity.CAPACITY) {
-                return InteractionResult.FAIL;
+                return ItemInteractionResult.FAIL;
             }
             if (!level.isClientSide()) {
                 jar.add(PHIAL);
@@ -71,7 +72,7 @@ public class ConcentrateJarBlock extends BaseEntityBlock {
             result = new ItemStack(TTItems.PHIAL.get());
         } else if (stack.is(TTItems.PHIAL.get()) && !stack.has(TTDataComponents.ESSENTIA_CONTENTS.get())) {
             if (jar.xp() < PHIAL) {
-                return InteractionResult.FAIL;
+                return ItemInteractionResult.FAIL;
             }
             if (!level.isClientSide()) {
                 jar.take(PHIAL);
@@ -79,14 +80,14 @@ public class ConcentrateJarBlock extends BaseEntityBlock {
             result = new ItemStack(AMRegistry.CONCENTRATE_PHIAL.get());
         } else if (stack.is(Items.GLASS_BOTTLE)) {
             if (jar.xp() < BOTTLE) {
-                return InteractionResult.FAIL;
+                return ItemInteractionResult.FAIL;
             }
             if (!level.isClientSide()) {
                 jar.take(BOTTLE);
             }
             result = new ItemStack(Items.EXPERIENCE_BOTTLE);
         } else {
-            return InteractionResult.TRY_WITH_EMPTY_HAND;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         if (!level.isClientSide()) {
             player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, result));
@@ -95,7 +96,7 @@ public class ConcentrateJarBlock extends BaseEntityBlock {
                 level.setBlockAndUpdate(pos, TTBlocks.JAR_NORMAL.get().defaultBlockState());
             }
         }
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
     }
 
     @Override
@@ -104,7 +105,7 @@ public class ConcentrateJarBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
         return level.getBlockEntity(pos) instanceof ConcentrateJarBlockEntity jar
                 ? (int) Math.ceil(15.0 * jar.xp() / ConcentrateJarBlockEntity.CAPACITY) : 0;
     }

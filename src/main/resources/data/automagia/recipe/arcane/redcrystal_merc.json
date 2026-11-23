@@ -11,11 +11,21 @@
     }
   ],
   "ingredients": [
-    "automagia:redcrystal_res",
-    "automagia:redcrystal_res",
-    "automagia:redcrystal_res",
-    "automagia:redcrystal_res",
-    "thaumaturge:quicksilver"
+    {
+      "item": "automagia:redcrystal_res"
+    },
+    {
+      "item": "automagia:redcrystal_res"
+    },
+    {
+      "item": "automagia:redcrystal_res"
+    },
+    {
+      "item": "automagia:redcrystal_res"
+    },
+    {
+      "item": "thaumaturge:quicksilver"
+    }
   ],
   "research": {
     "entry": "automagia:redcrystal_merc",

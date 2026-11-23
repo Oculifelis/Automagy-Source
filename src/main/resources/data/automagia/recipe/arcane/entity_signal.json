@@ -11,10 +11,18 @@
     }
   ],
   "key": {
-    "S": "thaumaturge:stone_arcane",
-    "R": "minecraft:redstone",
-    "C": "minecraft:comparator",
-    "B": "automagia:crystal_brain_aqua"
+    "S": {
+      "item": "thaumaturge:stone_arcane"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "C": {
+      "item": "minecraft:comparator"
+    },
+    "B": {
+      "item": "automagia:crystal_brain_aqua"
+    }
   },
   "pattern": [
     "SRS",

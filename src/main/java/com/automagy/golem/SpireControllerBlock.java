@@ -6,7 +6,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /** The thaumostatic controller block: a wand forms the spire, then sets which aspect the clicked side takes. */
 public class SpireControllerBlock extends BaseEntityBlock implements IInteractWithCaster {
@@ -46,11 +46,11 @@ public class SpireControllerBlock extends BaseEntityBlock implements IInteractWi
         }
         if (!level.isClientSide()) {
             if (!spire.formed()) {
-                player.sendOverlayMessage(Component.translatable(spire.form() ? "automagia.spire.formed" : "automagia.spire.structure"));
+                player.displayClientMessage(Component.translatable(spire.form() ? "automagia.spire.formed" : "automagia.spire.structure"), true);
             } else {
-                Identifier aspect = spire.cycle(side).identifier();
-                player.sendOverlayMessage(Component.translatable("automagia.spire.side",
-                        Component.translatable("aspect." + aspect.getNamespace() + "." + aspect.getPath())));
+                ResourceLocation aspect = spire.cycle(side).location();
+                player.displayClientMessage(Component.translatable("automagia.spire.side",
+                        Component.translatable("aspect." + aspect.getNamespace() + "." + aspect.getPath())), true);
             }
         }
         return true;

@@ -2,8 +2,12 @@
   "type": "thaumaturge:arcane_workbench_shaped",
   "crystals": [],
   "key": {
-    "W": "#minecraft:planks",
-    "B": "automagia:bound_enchanting_paper"
+    "W": {
+      "tag": "minecraft:planks"
+    },
+    "B": {
+      "item": "automagia:bound_enchanting_paper"
+    }
   },
   "pattern": [
     "WWW",

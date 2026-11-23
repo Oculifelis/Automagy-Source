@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /** The golemic inhibitor block; a wand switches whether its linked golems are spared or are the only ones held. */
 public class GolemInhibitorBlock extends BaseEntityBlock implements IInteractWithCaster {
@@ -45,8 +45,8 @@ public class GolemInhibitorBlock extends BaseEntityBlock implements IInteractWit
         }
         if (!level.isClientSide()) {
             inhibitor.toggleMode();
-            player.sendOverlayMessage(Component.translatable(inhibitor.exclusive()
-                    ? "automagia.golem_inhibitor.exclusive" : "automagia.golem_inhibitor.omit"));
+            player.displayClientMessage(Component.translatable(inhibitor.exclusive()
+                    ? "automagia.golem_inhibitor.exclusive" : "automagia.golem_inhibitor.omit"), true);
         }
         return true;
     }

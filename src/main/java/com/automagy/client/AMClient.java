@@ -3,42 +3,85 @@ package com.automagy.client;
 import com.automagy.AMRegistry;
 import com.automagy.Automagy;
 import com.automagy.block.DeviceChestBlockEntity;
+import com.automagy.focus.CraftingKeyPayload;
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.ChestRenderer;
-import net.minecraft.client.renderer.blockentity.state.ChestRenderState;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.client.resources.model.sprite.SpriteId;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.properties.ChestType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.client.event.RegisterFluidModelsEvent;
-import net.minecraft.client.renderer.block.FluidModel;
-import net.minecraft.client.resources.model.sprite.Material;
-import net.minecraft.resources.Identifier;
-import com.automagy.focus.CraftingKeyPayload;
-import net.minecraft.client.KeyMapping;
-import net.minecraft.client.Minecraft;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
-import net.neoforged.neoforge.client.network.ClientPacketDistributor;
-import com.mojang.blaze3d.platform.InputConstants;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 
-@EventBusSubscriber(modid = Automagy.MODID, value = Dist.CLIENT)
+import java.util.function.Function;
+
+@EventBusSubscriber(modid = Automagy.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public final class AMClient {
     private AMClient() {
     }
 
     @SubscribeEvent
-    static void fluids(RegisterFluidModelsEvent event) {
-        Identifier still = Identifier.fromNamespaceAndPath(Automagy.MODID, "block/vishroom_soup_still");
-        event.register(new FluidModel.Unbaked(new Material(still),
-                new Material(Identifier.fromNamespaceAndPath(Automagy.MODID, "block/vishroom_soup_flow")), new Material(Identifier.withDefaultNamespace("block/water_overlay")),
-                net.neoforged.neoforge.client.fluid.FluidTintSources.constant(0xFFFFFFFF), FluidTextures.macroStill(still)),
-                AMRegistry.VISHROOM_SOUP, AMRegistry.VISHROOM_SOUP_FLOWING);
+    static void setup(FMLClientSetupEvent event) {
+        event.enqueueWork(() -> {
+            ItemBlockRenderTypes.setRenderLayer(AMRegistry.VISHROOM_SOUP.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(AMRegistry.VISHROOM_SOUP_FLOWING.get(), RenderType.translucent());
+        });
     }
 
+    @SubscribeEvent
+    static void extensions(RegisterClientExtensionsEvent event) {
+        ResourceLocation still = Automagy.id("block/vishroom_soup_still");
+        event.registerFluidType(FluidTextures.extensions(still, Automagy.id("block/vishroom_soup_flow"),
+                ResourceLocation.withDefaultNamespace("block/water_overlay")), AMRegistry.VISHROOM_SOUP_TYPE.get());
+        chestItem(event, AMRegistry.GREEDY_CHEST.get(), b -> AMRegistry.GREEDY_CHEST_BE.get().create(BlockPos.ZERO, b.defaultBlockState()));
+        chestItem(event, AMRegistry.EAGER_CHEST.get(), b -> AMRegistry.EAGER_CHEST_BE.get().create(BlockPos.ZERO, b.defaultBlockState()));
+        chestItem(event, AMRegistry.TENACIOUS_CHEST.get(), b -> AMRegistry.TENACIOUS_CHEST_BE.get().create(BlockPos.ZERO, b.defaultBlockState()));
+    }
+
+    /** The chest item drawn by its block entity renderer, as vanilla chests are. */
+    private static void chestItem(RegisterClientExtensionsEvent event, Block block, Function<Block, BlockEntity> make) {
+        event.registerItem(new IClientItemExtensions() {
+            private BlockEntityWithoutLevelRenderer renderer;
+
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                if (renderer == null) {
+                    Minecraft mc = Minecraft.getInstance();
+                    BlockEntity shown = make.apply(block);
+                    renderer = new BlockEntityWithoutLevelRenderer(mc.getBlockEntityRenderDispatcher(), mc.getEntityModels()) {
+                        @Override
+                        public void renderByItem(ItemStack stack, ItemDisplayContext context, PoseStack pose,
+                                                 MultiBufferSource buffers, int light, int overlay) {
+                            Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(shown, pose, buffers, light, overlay);
+                        }
+                    };
+                }
+                return renderer;
+            }
+        }, block.asItem());
+    }
 
     @SubscribeEvent
     static void screens(RegisterMenuScreensEvent event) {
@@ -49,7 +92,7 @@ public final class AMClient {
     }
 
     /** Opens the crafting focus on the hotbar (the key the original's research page names). */
-    static final KeyMapping CRAFTING_KEY = new KeyMapping("key.automagia.focus_crafting", InputConstants.KEY_K, KeyMapping.Category.GAMEPLAY);
+    static final KeyMapping CRAFTING_KEY = new KeyMapping("key.automagia.focus_crafting", InputConstants.KEY_K, "key.categories.gameplay");
 
     @SubscribeEvent
     static void keys(RegisterKeyMappingsEvent event) {
@@ -60,7 +103,7 @@ public final class AMClient {
     static void clientTick() {
         while (CRAFTING_KEY.consumeClick()) {
             if (Minecraft.getInstance().player != null) {
-                ClientPacketDistributor.sendToServer(CraftingKeyPayload.INSTANCE);
+                PacketDistributor.sendToServer(CraftingKeyPayload.INSTANCE);
             }
         }
     }
@@ -76,15 +119,15 @@ public final class AMClient {
 
     /** A vanilla chest drawn with the device's own texture, textures/entity/chest/&lt;name&gt;.png. */
     static final class DeviceChestRenderer<T extends DeviceChestBlockEntity> extends ChestRenderer<T> {
-        private final SpriteId sprite;
+        private final Material sprite;
 
         DeviceChestRenderer(BlockEntityRendererProvider.Context context, String name) {
             super(context);
-            sprite = Sheets.CHEST_MAPPER.apply(Automagy.id(name));
+            sprite = new Material(Sheets.CHEST_SHEET, Automagy.id("entity/chest/" + name));
         }
 
         @Override
-        protected SpriteId getCustomSprite(T be, ChestRenderState state) {
+        protected Material getMaterial(T be, ChestType type) {
             return sprite;
         }
     }

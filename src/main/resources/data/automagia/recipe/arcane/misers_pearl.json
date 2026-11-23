@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "automagia:avarice_pearl",
-    "automagia:shattered_avarice_pearl",
-    "automagia:sliver_ordo"
+    {
+      "item": "automagia:avarice_pearl"
+    },
+    {
+      "item": "automagia:shattered_avarice_pearl"
+    },
+    {
+      "item": "automagia:sliver_ordo"
+    }
   ],
   "research": {
     "entry": "automagia:avaricious",

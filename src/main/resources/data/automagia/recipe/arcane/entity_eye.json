@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "automagia:crystalline_eye",
-    "automagia:crystal_brain_aqua",
-    "minecraft:spider_eye"
+    {
+      "item": "automagia:crystalline_eye"
+    },
+    {
+      "item": "automagia:crystal_brain_aqua"
+    },
+    {
+      "item": "minecraft:spider_eye"
+    }
   ],
   "research": {
     "entry": "automagia:entity_signal",

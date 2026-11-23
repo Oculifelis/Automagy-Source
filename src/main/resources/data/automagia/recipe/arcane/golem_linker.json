@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "thaumaturge:golem_bell",
-    "automagia:crystal_brain_aer",
-    "automagia:sliver_ordo"
+    {
+      "item": "thaumaturge:golem_bell"
+    },
+    {
+      "item": "automagia:crystal_brain_aer"
+    },
+    {
+      "item": "automagia:sliver_ordo"
+    }
   ],
   "research": {
     "entry": "automagia:golem_linker",

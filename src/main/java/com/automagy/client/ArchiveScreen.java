@@ -4,13 +4,11 @@ import com.automagy.archive.ArchiveMenu;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 /**
@@ -19,14 +17,16 @@ import net.minecraft.world.entity.player.Inventory;
  * alt to ask for more than is stored.
  */
 public class ArchiveScreen extends AbstractContainerScreen<ArchiveMenu> {
-    private static final Identifier BACKGROUND = Identifier.withDefaultNamespace("textures/gui/container/generic_54.png");
+    private static final ResourceLocation BACKGROUND = ResourceLocation.withDefaultNamespace("textures/gui/container/generic_54.png");
     private static final int PAGE = ArchiveMenu.COLUMNS * ArchiveMenu.ROWS;
     private boolean showAll;
     private int scroll;
     private Button toggle;
 
     public ArchiveScreen(ArchiveMenu menu, Inventory inventory, Component title) {
-        super(menu, inventory, title, 176, 222);
+        super(menu, inventory, title);
+        imageWidth = 176;
+        imageHeight = 222;
         inventoryLabelY = imageHeight - 94;
         showAll = menu.isTome();
     }
@@ -86,28 +86,33 @@ public class ArchiveScreen extends AbstractContainerScreen<ArchiveMenu> {
     }
 
     @Override
-    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-        int i = indexAt(event.x(), event.y());
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        int i = indexAt(mouseX, mouseY);
         if (i >= 0 && menu.isTome()) {
-            boolean plus = event.button() == 0;
-            int code = event.hasShiftDown() ? (plus ? ArchiveMenu.PLUS_STACK : ArchiveMenu.MINUS_STACK)
-                    : event.hasControlDown() ? (plus ? ArchiveMenu.PLUS_TEN : ArchiveMenu.MINUS_TEN)
+            boolean plus = button == 0;
+            int code = hasShiftDown() ? (plus ? ArchiveMenu.PLUS_STACK : ArchiveMenu.MINUS_STACK)
+                    : hasControlDown() ? (plus ? ArchiveMenu.PLUS_TEN : ArchiveMenu.MINUS_TEN)
                     : (plus ? ArchiveMenu.PLUS : ArchiveMenu.MINUS);
-            if (event.hasAltDown()) {
+            if (hasAltDown()) {
                 code |= ArchiveMenu.ALT;
             }
             menu.apply(i, code);
             minecraft.gameMode.handleInventoryButtonClick(menu.containerId, ArchiveMenu.clickId(i, code));
             return true;
         }
-        return super.mouseClicked(event, doubleClick);
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        super.extractBackground(graphics, mouseX, mouseY, a);
-        graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, leftPos, topPos, 0.0F, 0.0F, imageWidth, 125, 256, 256);
-        graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, leftPos, topPos + 125, 0.0F, 126.0F, imageWidth, 96, 256, 256);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float a) {
+        super.render(graphics, mouseX, mouseY, a);
+        renderTooltip(graphics, mouseX, mouseY);
+    }
+
+    @Override
+    protected void renderBg(GuiGraphics graphics, float a, int mouseX, int mouseY) {
+        graphics.blit(BACKGROUND, leftPos, topPos, 0.0F, 0.0F, imageWidth, 125, 256, 256);
+        graphics.blit(BACKGROUND, leftPos, topPos + 125, 0.0F, 126.0F, imageWidth, 96, 256, 256);
         // the sixth row holds the tome's three slots and the buttons: cover the slots the buttons sit on
         int from = menu.isTome() ? 3 : 0;
         graphics.fill(leftPos + 7 + from * 18, topPos + 107, leftPos + 169, topPos + 125, 0xFFC6C6C6);
@@ -120,18 +125,18 @@ public class ArchiveScreen extends AbstractContainerScreen<ArchiveMenu> {
             int x = leftPos + 8 + (slot % ArchiveMenu.COLUMNS) * 18;
             int y = topPos + 18 + (slot / ArchiveMenu.COLUMNS) * 18;
             ArchiveMenu.Entry e = list.get(i);
-            graphics.item(e.item(), x, y);
-            graphics.itemDecorations(font, e.item(), x, y, compact(e.stored()));
+            graphics.renderItem(e.item(), x, y);
+            graphics.renderItemDecorations(font, e.item(), x, y, compact(e.stored()));
             int ordered = menu.isTome() ? menu.sheet(i) : 0;
             if (ordered > 0) {
-                graphics.text(font, compact(ordered), x, y, 0xFFFFE040, true);
+                graphics.drawString(font, compact(ordered), x, y, 0xFFFFE040, true);
             }
         }
     }
 
     @Override
-    protected void extractTooltip(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-        super.extractTooltip(graphics, mouseX, mouseY);
+    protected void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY) {
+        super.renderTooltip(graphics, mouseX, mouseY);
         int i = indexAt(mouseX, mouseY);
         if (i < 0) {
             return;
@@ -143,7 +148,7 @@ public class ArchiveScreen extends AbstractContainerScreen<ArchiveMenu> {
         if (menu.isTome()) {
             lines.add(Component.translatable("automagia.archive.ordered", menu.sheet(i)).withStyle(ChatFormatting.YELLOW));
         }
-        graphics.setComponentTooltipForNextFrame(font, lines, mouseX, mouseY);
+        graphics.renderComponentTooltip(font, lines, mouseX, mouseY);
     }
 
     private static String compact(int n) {

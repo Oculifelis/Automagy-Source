@@ -31,26 +31,33 @@ public class AvaricePearlItem extends Item {
     }
 
     @Override
-    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+    public net.minecraft.world.InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        InteractionResult result = useItem(level, player, hand);
+        return new net.minecraft.world.InteractionResultHolder<>(result, player.getItemInHand(hand));
+    }
+
+    private InteractionResult useItem(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (miser && !player.getAbilities().instabuild && !payOrdo(player)) {
             if (!level.isClientSide()) {
-                player.sendOverlayMessage(Component.translatable("automagia.msg.needs_ordo"));
+                player.displayClientMessage(Component.translatable("automagia.msg.needs_ordo"), true);
             }
             return InteractionResult.FAIL;
         }
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5f,
                 0.4f / (level.getRandom().nextFloat() * 0.4f + 0.8f));
         if (level instanceof ServerLevel server) {
-            Projectile.spawnProjectileFromRotation(AvaricePearlEntity::new, server, stack.copyWithCount(1), player, 0.0f, 1.5f, 1.0f);
+            AvaricePearlEntity pearl = new AvaricePearlEntity(server, player, stack.copyWithCount(1));
+            pearl.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 1.5f, 1.0f);
+            server.addFreshEntity(pearl);
         }
-        player.getCooldowns().addCooldown(stack, 20);
+        player.getCooldowns().addCooldown(stack.getItem(), 20);
         stack.consume(1, player);
         return InteractionResult.SUCCESS;
     }
 
     private static boolean payOrdo(Player player) {
-        var items = player.getInventory().getNonEquipmentItems();
+        var items = player.getInventory().items;
         for (int i = 0; i < items.size(); i++) {
             ItemStack s = items.get(i);
             if (s.getItem() instanceof ICaster) {

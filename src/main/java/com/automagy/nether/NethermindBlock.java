@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /** The Nethermind block: a wand starts it (paying vis from the wand) or stops it. */
 public class NethermindBlock extends BaseEntityBlock implements IInteractWithCaster {
@@ -49,9 +49,9 @@ public class NethermindBlock extends BaseEntityBlock implements IInteractWithCas
         if (!level.isClientSide()) {
             if (mind.active()) {
                 mind.stop();
-                player.sendOverlayMessage(Component.translatable("automagia.nethermind.stopped"));
+                player.displayClientMessage(Component.translatable("automagia.nethermind.stopped"), true);
             } else if (mind.survey().problem() == null && !caster.consumeVis(stack, player, START_VIS, false, true)) {
-                player.sendOverlayMessage(Component.translatable("automagia.nethermind.noVis"));
+                player.displayClientMessage(Component.translatable("automagia.nethermind.noVis"), true);
             } else {
                 String key = mind.start();
                 if (mind.active()) {

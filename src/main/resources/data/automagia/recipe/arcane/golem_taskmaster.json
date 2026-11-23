@@ -11,10 +11,18 @@
     }
   ],
   "key": {
-    "B": "thaumaturge:stone_arcane_brick",
-    "S": "thaumaturge:seal_provider",
-    "M": "thaumaturge:mechanism_simple",
-    "C": "automagia:crystal_brain_ordo"
+    "B": {
+      "item": "thaumaturge:stone_arcane_brick"
+    },
+    "S": {
+      "item": "thaumaturge:seal_provider"
+    },
+    "M": {
+      "item": "thaumaturge:mechanism_simple"
+    },
+    "C": {
+      "item": "automagia:crystal_brain_ordo"
+    }
   },
   "pattern": [
     "BSB",

@@ -10,7 +10,9 @@
       "amount": 8
     }
   ],
-  "catalyst": "thaumaturge:brain",
+  "catalyst": {
+    "item": "thaumaturge:brain"
+  },
   "research": {
     "entry": "automagia:crystal_brain"
   },

@@ -11,7 +11,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 
 /**
@@ -32,7 +31,12 @@ public class EntityEyeItem extends Item {
     }
 
     @Override
-    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+    public net.minecraft.world.InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        InteractionResult result = useItem(level, player, hand);
+        return new net.minecraft.world.InteractionResultHolder<>(result, player.getItemInHand(hand));
+    }
+
+    private InteractionResult useItem(Level level, Player player, InteractionHand hand) {
         if (!player.isSecondaryUseActive()) {
             return InteractionResult.PASS;
         }
@@ -47,15 +51,15 @@ public class EntityEyeItem extends Item {
     private static void imprint(ItemStack stack, EntityWatch watch, Player player) {
         stack.set(AMRegistry.ENTITY_WATCH.get(), watch);
         stack.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true);
-        player.sendOverlayMessage(Component.translatable("automagia.entity_eye.imprinted", watch.describe()));
+        player.displayClientMessage(Component.translatable("automagia.entity_eye.imprinted", watch.describe()), true);
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> out, TooltipFlag flag) {
-        super.appendHoverText(stack, context, display, out, flag);
+    public void appendHoverText(ItemStack stack, TooltipContext context, java.util.List<Component> out, TooltipFlag flag) {
+        super.appendHoverText(stack, context, out, flag);
         EntityWatch watch = stack.get(AMRegistry.ENTITY_WATCH.get());
         if (watch != null) {
-            out.accept(Component.translatable("automagia.entity_eye.watching", watch.describe()).withStyle(net.minecraft.ChatFormatting.GRAY));
+            out.add(Component.translatable("automagia.entity_eye.watching", watch.describe()).withStyle(net.minecraft.ChatFormatting.GRAY));
         }
     }
 }

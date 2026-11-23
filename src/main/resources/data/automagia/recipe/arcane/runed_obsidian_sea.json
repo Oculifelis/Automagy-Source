@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "automagia:runed_obsidian",
-    "minecraft:magma_block",
-    "minecraft:magma_block"
+    {
+      "item": "automagia:runed_obsidian"
+    },
+    {
+      "item": "minecraft:magma_block"
+    },
+    {
+      "item": "minecraft:magma_block"
+    }
   ],
   "research": {
     "entry": "automagia:nethermind",

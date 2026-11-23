@@ -12,15 +12,13 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.PlacementInfo;
-import net.minecraft.world.item.crafting.RecipeBookCategories;
-import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -54,7 +52,17 @@ public record InfusionEnchantingRecipe(Holder<Enchantment> enchantment, Ingredie
             ByteBufCodecs.VAR_INT, InfusionEnchantingRecipe::instability,
             ByteBufCodecs.optional(ResearchGate.STREAM_CODEC), InfusionEnchantingRecipe::research,
             InfusionEnchantingRecipe::new);
-    public static final RecipeSerializer<InfusionEnchantingRecipe> SERIALIZER = new RecipeSerializer<>(CODEC, STREAM_CODEC);
+    public static final RecipeSerializer<InfusionEnchantingRecipe> SERIALIZER = new RecipeSerializer<>() {
+        @Override
+        public MapCodec<InfusionEnchantingRecipe> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public StreamCodec<RegistryFriendlyByteBuf, InfusionEnchantingRecipe> streamCodec() {
+            return STREAM_CODEC;
+        }
+    };
 
     private int nextLevel(ItemStack stack) {
         return EnchantmentHelper.getItemEnchantmentLevel(enchantment, stack) + 1;
@@ -78,12 +86,12 @@ public record InfusionEnchantingRecipe(Holder<Enchantment> enchantment, Ingredie
     }
 
     @Override
-    public ItemStack jobResult(InfusionInput input, RandomSource random) {
-        return assemble(input);
+    public ItemStack jobResult(InfusionInput input, RandomSource random, HolderLookup.Provider registries) {
+        return assemble(input, registries);
     }
 
     @Override
-    public ItemStack assemble(InfusionInput input) {
+    public ItemStack assemble(InfusionInput input, HolderLookup.Provider registries) {
         ItemStack out = input.catalyst().copyWithCount(1);
         int level = nextLevel(out);
         EnchantmentHelper.updateEnchantments(out, m -> m.set(enchantment, level));
@@ -116,22 +124,17 @@ public record InfusionEnchantingRecipe(Holder<Enchantment> enchantment, Ingredie
     }
 
     @Override
-    public PlacementInfo placementInfo() {
-        return PlacementInfo.NOT_PLACEABLE;
+    public boolean canCraftInDimensions(int width, int height) {
+        return true;
     }
 
     @Override
-    public RecipeBookCategory recipeBookCategory() {
-        return RecipeBookCategories.CRAFTING_MISC;
+    public ItemStack getResultItem(HolderLookup.Provider registries) {
+        return ItemStack.EMPTY;
     }
 
     @Override
     public boolean showNotification() {
         return false;
-    }
-
-    @Override
-    public String group() {
-        return "";
     }
 }

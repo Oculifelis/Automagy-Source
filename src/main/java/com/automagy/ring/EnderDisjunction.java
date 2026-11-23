@@ -57,8 +57,8 @@ public record EnderDisjunction(float damage, double range, int perditio, float s
                 continue;
             }
             List<EnderDisjunction> rings = new ArrayList<>();
-            CuriosApi.getCuriosInventory(player).ifPresent(curios -> curios.findCurios(s -> s.typeHolder().getData(DATA) != null)
-                    .forEach(r -> rings.add(r.stack().typeHolder().getData(DATA))));
+            CuriosApi.getCuriosInventory(player).ifPresent(curios -> curios.findCurios(s -> s.getItemHolder().getData(DATA) != null)
+                    .forEach(r -> rings.add(r.stack().getItemHolder().getData(DATA))));
             if (rings.isEmpty()) {
                 continue;
             }
@@ -70,7 +70,7 @@ public record EnderDisjunction(float damage, double range, int perditio, float s
             }
             float damage = first.damage() + (rings.size() > 1 ? rings.get(1).damage() * first.secondRing() : 0f);
             if (pay(player, first.perditio())) {
-                creature.hurtServer(level, level.damageSources().indirectMagic(player, player), damage);
+                creature.hurt(level.damageSources().indirectMagic(player, player), damage);
             }
         }
     }
@@ -81,7 +81,7 @@ public record EnderDisjunction(float damage, double range, int perditio, float s
             return true;
         }
         Holder<IAspect> perditio = player.registryAccess().lookupOrThrow(IAspect.REGISTRY_KEY).getOrThrow(TTAspects.PERDITIO);
-        List<ItemStack> items = player.getInventory().getNonEquipmentItems();
+        List<ItemStack> items = player.getInventory().items;
         for (Function<ItemStack, ComponentEssentia<?>> kind : List.<Function<ItemStack, ComponentEssentia<?>>>of(
                 ComponentEssentia::phial, ComponentEssentia::jar)) {
             for (ItemStack stack : items) {

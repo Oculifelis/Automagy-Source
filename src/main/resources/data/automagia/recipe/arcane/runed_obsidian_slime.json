@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "automagia:runed_obsidian",
-    "minecraft:magma_cream",
-    "minecraft:magma_cream"
+    {
+      "item": "automagia:runed_obsidian"
+    },
+    {
+      "item": "minecraft:magma_cream"
+    },
+    {
+      "item": "minecraft:magma_cream"
+    }
   ],
   "research": {
     "entry": "automagia:netherrune_slime",

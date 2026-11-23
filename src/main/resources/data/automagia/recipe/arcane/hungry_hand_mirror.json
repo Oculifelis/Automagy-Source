@@ -11,10 +11,18 @@
     }
   ],
   "ingredients": [
-    "thaumaturge:hand_mirror",
-    "automagia:finical_maw",
-    "automagia:sliver_perditio",
-    "automagia:sliver_ordo"
+    {
+      "item": "thaumaturge:hand_mirror"
+    },
+    {
+      "item": "automagia:finical_maw"
+    },
+    {
+      "item": "automagia:sliver_perditio"
+    },
+    {
+      "item": "automagia:sliver_ordo"
+    }
   ],
   "research": {
     "entry": "automagia:auto_hand_mirror",

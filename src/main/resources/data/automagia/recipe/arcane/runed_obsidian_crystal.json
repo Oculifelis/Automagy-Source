@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "automagia:runed_obsidian",
-    "minecraft:quartz",
-    "minecraft:quartz"
+    {
+      "item": "automagia:runed_obsidian"
+    },
+    {
+      "item": "minecraft:quartz"
+    },
+    {
+      "item": "minecraft:quartz"
+    }
   ],
   "research": {
     "entry": "automagia:netherrune_crystal",

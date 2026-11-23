@@ -7,10 +7,18 @@
     }
   ],
   "key": {
-    "W": "#minecraft:planks",
-    "C": "minecraft:comparator",
-    "P": "automagia:enchanted_paper",
-    "R": "minecraft:redstone"
+    "W": {
+      "tag": "minecraft:planks"
+    },
+    "C": {
+      "item": "minecraft:comparator"
+    },
+    "P": {
+      "item": "automagia:enchanted_paper"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
   },
   "pattern": [
     "WCW",

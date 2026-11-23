@@ -7,8 +7,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
 
 /**
  * A device whose settings a Thaumaturge wand edits in place: wand right-click steps the selected setting to its next
@@ -41,19 +41,21 @@ public abstract class ConfigurableBlockEntity extends BlockEntity {
         if (level != null) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
         }
-        player.sendOverlayMessage(Component.translatable("automagia.msg.setting",
-                Component.translatable("automagia.setting." + settingKey(selected)), valueName(selected)));
+        player.displayClientMessage(Component.translatable("automagia.msg.setting",
+                Component.translatable("automagia.setting." + settingKey(selected)), valueName(selected)), true);
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         selected = in.getIntOr("selected", 0);
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         out.putInt("selected", selected);
     }
 }

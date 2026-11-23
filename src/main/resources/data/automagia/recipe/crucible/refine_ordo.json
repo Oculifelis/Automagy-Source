@@ -10,7 +10,9 @@
       "amount": 2
     }
   ],
-  "catalyst": "thaumaturge:crystal_ordo",
+  "catalyst": {
+    "item": "thaumaturge:crystal_ordo"
+  },
   "research": {
     "entry": "automagia:entropic_refining"
   },

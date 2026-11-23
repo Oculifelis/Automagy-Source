@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "automagia:item/shattered_avarice_pearl"
-  }
-}

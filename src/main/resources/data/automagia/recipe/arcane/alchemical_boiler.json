@@ -11,11 +11,21 @@
     }
   ],
   "key": {
-    "C": "minecraft:copper_ingot",
-    "B": "minecraft:bucket",
-    "T": "automagia:thirsty_tank",
-    "S": "minecraft:smooth_stone",
-    "F": "minecraft:furnace"
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "B": {
+      "item": "minecraft:bucket"
+    },
+    "T": {
+      "item": "automagia:thirsty_tank"
+    },
+    "S": {
+      "item": "minecraft:smooth_stone"
+    },
+    "F": {
+      "item": "minecraft:furnace"
+    }
   },
   "pattern": [
     "CBC",

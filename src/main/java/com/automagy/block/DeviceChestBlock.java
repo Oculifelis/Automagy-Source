@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A chest with a will of its own (greedy, eager, tenacious). It never pairs into a double chest. A wand configures it
@@ -29,12 +30,20 @@ import org.jspecify.annotations.Nullable;
  */
 public abstract class DeviceChestBlock extends ChestBlock implements IInteractWithCaster {
     protected DeviceChestBlock(Supplier<BlockEntityType<? extends ChestBlockEntity>> type, Properties properties) {
-        super(type, SoundEvents.CHEST_OPEN, SoundEvents.CHEST_CLOSE, properties);
+        super(properties, type);
     }
 
     @Override
-    public boolean chestCanConnectTo(BlockState state) {
-        return false;
+    public BlockState getStateForPlacement(net.minecraft.world.item.context.BlockPlaceContext context) {
+        BlockState s = super.getStateForPlacement(context);
+        return s == null ? null : s.setValue(TYPE, net.minecraft.world.level.block.state.properties.ChestType.SINGLE);
+    }
+
+    @Override
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
+                                     net.minecraft.world.level.LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+        BlockState s = super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+        return s.hasProperty(TYPE) ? s.setValue(TYPE, net.minecraft.world.level.block.state.properties.ChestType.SINGLE) : s;
     }
 
     @Override
@@ -59,19 +68,19 @@ public abstract class DeviceChestBlock extends ChestBlock implements IInteractWi
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
                                           InteractionHand hand, BlockHitResult hit) {
         if (stack.getItem() instanceof ICaster) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
         }
         if (stack.getItem() instanceof RunicListItem && !player.isSecondaryUseActive()
                 && level.getBlockEntity(pos) instanceof DeviceChestBlockEntity chest && chest.listSlots() > 0) {
             if (!level.isClientSide()) {
                 chest.putList(player, hand);
             }
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
-        return InteractionResult.TRY_WITH_EMPTY_HAND;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override

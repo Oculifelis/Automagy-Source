@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "automagia:runed_obsidian",
-    "minecraft:coal",
-    "minecraft:coal"
+    {
+      "item": "automagia:runed_obsidian"
+    },
+    {
+      "item": "minecraft:coal"
+    },
+    {
+      "item": "minecraft:coal"
+    }
   ],
   "research": {
     "entry": "automagia:netherrune_skeleton",

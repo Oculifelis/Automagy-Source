@@ -11,10 +11,18 @@
     }
   ],
   "ingredients": [
-    "minecraft:comparator",
-    "thaumaturge:nugget_quicksilver",
-    "automagia:sliver_ordo",
-    "automagia:sliver_perditio"
+    {
+      "item": "minecraft:comparator"
+    },
+    {
+      "item": "thaumaturge:nugget_quicksilver"
+    },
+    {
+      "item": "automagia:sliver_ordo"
+    },
+    {
+      "item": "automagia:sliver_perditio"
+    }
   ],
   "research": {
     "entry": "automagia:vis_reader",

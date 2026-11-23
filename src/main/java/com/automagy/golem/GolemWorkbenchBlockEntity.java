@@ -42,9 +42,9 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import org.jspecify.annotations.Nullable;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The golem's workbench. Up to three 3x3 patterns (one, plus one per fire upgrade) and 27 storage slots holding
@@ -54,7 +54,7 @@ import org.jspecify.annotations.Nullable;
  * bench busy. Golems below rank 2 that are not smart only follow patterns that fit 2x2 or use one kind of ingredient.
  * The golem tires with each craft and slows; a jar of fabrico within four blocks refreshes it.
  */
-public class GolemWorkbenchBlockEntity extends BlockEntity implements GolemLinks.Device, MenuProvider {
+public class GolemWorkbenchBlockEntity extends BlockEntity implements com.automagy.port.PreRemove, GolemLinks.Device, MenuProvider {
     public static final int PATTERNS = 3;
     public static final int STORAGE = 27;
     private static final int WORK = 100;
@@ -320,11 +320,11 @@ public class GolemWorkbenchBlockEntity extends BlockEntity implements GolemLinks
 
     private boolean tryCraft(ServerLevel level, List<ItemStack> grid) {
         CraftingInput input = CraftingInput.of(3, 3, grid.stream().map(s -> s.copyWithCount(1)).toList());
-        RecipeHolder<CraftingRecipe> recipe = level.recipeAccess().getRecipeFor(RecipeType.CRAFTING, input, level).orElse(null);
+        RecipeHolder<CraftingRecipe> recipe = level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, input, level).orElse(null);
         if (recipe == null) {
             return false;
         }
-        ItemStack result = recipe.value().assemble(input);
+        ItemStack result = recipe.value().assemble(input, level.registryAccess());
         if (result.isEmpty() || held(result) >= result.getCount()) {
             return false;
         }
@@ -408,7 +408,6 @@ public class GolemWorkbenchBlockEntity extends BlockEntity implements GolemLinks
         return new GolemWorkbenchMenu(id, inv, patterns, storage, data, worldPosition);
     }
 
-    @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         if (level != null) {
             Containers.dropContents(level, pos, storage);
@@ -419,8 +418,9 @@ public class GolemWorkbenchBlockEntity extends BlockEntity implements GolemLinks
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         golems.clear();
         in.read("golems", UUIDUtil.CODEC.listOf()).ifPresent(golems::addAll);
         readList(in, "patterns", patterns);
@@ -435,8 +435,9 @@ public class GolemWorkbenchBlockEntity extends BlockEntity implements GolemLinks
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         out.store("golems", UUIDUtil.CODEC.listOf(), List.copyOf(golems));
         writeList(out, "patterns", patterns);
         writeList(out, "storage", storage);

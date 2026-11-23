@@ -15,11 +15,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.minecraft.world.item.ItemStack;
+import com.automagy.port.ItemResource;
 
 /**
  * The unseen scribe. The container behind it sets the one kind of container it reads (a scrivener's oculus on top adds
@@ -102,20 +103,19 @@ public class UnseenScribeBlockEntity extends ArchiveNodeBlockEntity {
             if (s.getBlock() instanceof ChestBlock && s.getValue(ChestBlock.TYPE) != ChestType.SINGLE) {
                 seen.add(p.relative(ChestBlock.getConnectedDirection(s)).immutable());
             }
-            ResourceHandler<ItemResource> h = level.getCapability(Capabilities.Item.BLOCK, p, null);
+            IItemHandler h = level.getCapability(Capabilities.ItemHandler.BLOCK, p, null);
             if (h == null) {
                 continue;
             }
-            if (taken + h.size() > free) {
+            if (taken + h.getSlots() > free) {
                 leftOut = true;
                 continue;
             }
-            taken += h.size();
-            for (int i = 0; i < h.size(); i++) {
-                ItemResource res = h.getResource(i);
-                int n = h.getAmountAsInt(i);
-                if (!res.isEmpty() && n > 0) {
-                    out.merge(res, n, Integer::sum);
+            taken += h.getSlots();
+            for (int i = 0; i < h.getSlots(); i++) {
+                ItemStack st = h.getStackInSlot(i);
+                if (!st.isEmpty()) {
+                    out.merge(ItemResource.of(st), st.getCount(), Integer::sum);
                 }
             }
         }
@@ -145,14 +145,16 @@ public class UnseenScribeBlockEntity extends ArchiveNodeBlockEntity {
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         used = in.getIntOr("used", 0);
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         out.putInt("used", used);
     }
 }

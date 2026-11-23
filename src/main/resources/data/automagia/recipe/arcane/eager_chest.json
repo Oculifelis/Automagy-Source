@@ -7,9 +7,15 @@
     }
   ],
   "key": {
-    "P": "automagia:enchanted_paper",
-    "S": "automagia:sliver_aer",
-    "C": "automagia:greedy_chest"
+    "P": {
+      "item": "automagia:enchanted_paper"
+    },
+    "S": {
+      "item": "automagia:sliver_aer"
+    },
+    "C": {
+      "item": "automagia:greedy_chest"
+    }
   },
   "pattern": [
     "PSP",

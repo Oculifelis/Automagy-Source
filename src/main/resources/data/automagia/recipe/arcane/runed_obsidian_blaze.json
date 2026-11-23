@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "automagia:runed_obsidian",
-    "minecraft:blaze_rod",
-    "minecraft:blaze_rod"
+    {
+      "item": "automagia:runed_obsidian"
+    },
+    {
+      "item": "minecraft:blaze_rod"
+    },
+    {
+      "item": "minecraft:blaze_rod"
+    }
   ],
   "research": {
     "entry": "automagia:netherrune_zombie",

@@ -7,11 +7,21 @@
     }
   ],
   "ingredients": [
-    "automagia:redcrystal",
-    "automagia:redcrystal",
-    "automagia:redcrystal",
-    "automagia:redcrystal",
-    "automagia:sliver_perditio"
+    {
+      "item": "automagia:redcrystal"
+    },
+    {
+      "item": "automagia:redcrystal"
+    },
+    {
+      "item": "automagia:redcrystal"
+    },
+    {
+      "item": "automagia:redcrystal"
+    },
+    {
+      "item": "automagia:sliver_perditio"
+    }
   ],
   "research": {
     "entry": "automagia:redcrystal_dim",

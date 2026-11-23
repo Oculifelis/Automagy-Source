@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /** The Amnesiac's Stone block; a comparator reads how full the brain jar on it is. */
 public class AmnesiacStoneBlock extends BaseEntityBlock {
@@ -52,7 +52,7 @@ public class AmnesiacStoneBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
         return level.getBlockEntity(pos.above()) instanceof BlockEntityJarBrain brain
                 ? (int) Math.ceil(15.0 * brain.xp() / BlockEntityJarBrain.XP_MAX) : 0;
     }

@@ -7,9 +7,15 @@
     }
   ],
   "key": {
-    "Q": "minecraft:quartz_block",
-    "P": "thaumaturge:plate_thaumium",
-    "R": "thaumaturge:vis_resonator"
+    "Q": {
+      "item": "minecraft:quartz_block"
+    },
+    "P": {
+      "item": "thaumaturge:plate_thaumium"
+    },
+    "R": {
+      "item": "thaumaturge:vis_resonator"
+    }
   },
   "pattern": [
     "QPQ",

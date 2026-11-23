@@ -2,20 +2,19 @@ package com.automagy.client;
 
 import com.automagy.filter.RunicList;
 import com.automagy.menu.RunicListMenu;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /** The runic list on the dispenser's 3x3 background; each ghost slot shows its quantity, scroll changes it. */
 public class RunicListScreen extends AbstractContainerScreen<RunicListMenu> {
-    private static final Identifier BACKGROUND = Identifier.withDefaultNamespace("textures/gui/container/dispenser.png");
+    private static final ResourceLocation BACKGROUND = ResourceLocation.withDefaultNamespace("textures/gui/container/dispenser.png");
     private Button partial;
 
     public RunicListScreen(RunicListMenu menu, Inventory inventory, Component title) {
@@ -46,13 +45,18 @@ public class RunicListScreen extends AbstractContainerScreen<RunicListMenu> {
     }
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        super.extractBackground(graphics, mouseX, mouseY, a);
-        graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float a) {
+        super.render(graphics, mouseX, mouseY, a);
+        renderTooltip(graphics, mouseX, mouseY);
     }
 
     @Override
-    protected void renderSlotContents(GuiGraphicsExtractor graphics, ItemStack stack, Slot slot, @Nullable String itemCount) {
+    protected void renderBg(GuiGraphics graphics, float a, int mouseX, int mouseY) {
+        graphics.blit(BACKGROUND, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
+    }
+
+    @Override
+    protected void renderSlotContents(GuiGraphics graphics, ItemStack stack, Slot slot, @Nullable String itemCount) {
         if (slot.index < RunicList.SIZE && !stack.isEmpty()) {
             RunicList.Entry e = menu.list().at(slot.index);
             itemCount = e != null && e.hasQty() ? Integer.toString(e.qty()) : null;

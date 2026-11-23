@@ -7,8 +7,12 @@
     }
   ],
   "ingredients": [
-    "thaumaturge:amber_block",
-    "#thaumaturge:nitors"
+    {
+      "item": "thaumaturge:amber_block"
+    },
+    {
+      "tag": "thaumaturge:nitors"
+    }
   ],
   "research": {
     "entry": "automagia:glowing_amber",

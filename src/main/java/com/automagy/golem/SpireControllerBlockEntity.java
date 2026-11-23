@@ -27,9 +27,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import org.jspecify.annotations.Nullable;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The thaumostatic controller, the working part of a thaumostatic spire: a column with a block of the
@@ -261,8 +261,9 @@ public class SpireControllerBlockEntity extends BlockEntity implements IEssentia
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         sides.clear();
         for (Direction d : Direction.values()) {
             int i = in.getIntOr("side_" + d.getSerializedName(), 0);
@@ -279,8 +280,9 @@ public class SpireControllerBlockEntity extends BlockEntity implements IEssentia
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         sides.forEach((d, i) -> out.putInt("side_" + d.getSerializedName(), i));
         out.putInt("potentia", potentia);
         out.putInt("aer", aer);

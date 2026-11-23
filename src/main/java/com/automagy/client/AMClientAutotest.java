@@ -66,6 +66,16 @@ public final class AMClientAutotest {
     }
 
     private static void step(Minecraft mc) {
+        if ("icons".equals(MODE)) {
+            // page pictures only: no world, so nothing grabs the mouse; export once the title screen is up, then stop
+            if (mc.screen instanceof TitleScreen && mc.getOverlay() == null && ++idleTicks > 40) {
+                mc.options.getSoundSourceOptionInstance(net.minecraft.sounds.SoundSource.MASTER).set(0.0);
+                exportIcons(mc);
+                LOG.info("AMTEST done");
+                finish(mc);
+            }
+            return;
+        }
         if (mc.level == null || mc.player == null) {
             if (!creating && mc.screen != null && !(mc.screen instanceof TitleScreen) && mc.getOverlay() == null && ++idleTicks > 200) {
                 LOG.info("AMTEST dismissing {}", mc.screen.getClass().getName());
@@ -83,9 +93,9 @@ public final class AMClientAutotest {
                 mc.options.renderDistance().set(4);
                 mc.options.simulationDistance().set(4);
                 deleteOldWorld(mc);
-                LevelSettings settings = new LevelSettings(WORLD, GameType.CREATIVE, LevelSettings.DifficultySettings.DEFAULT, true, WorldDataConfiguration.DEFAULT);
+                LevelSettings settings = new LevelSettings(WORLD, GameType.CREATIVE, false, net.minecraft.world.Difficulty.NORMAL, true, new net.minecraft.world.level.GameRules(), WorldDataConfiguration.DEFAULT);
                 LOG.info("AMTEST creating world {}", WORLD);
-                mc.createWorldOpenFlows().createFreshLevel(WORLD, settings, new WorldOptions(20261101L, false, false), WorldPresets::createFlatWorldDimensions, title);
+                mc.createWorldOpenFlows().createFreshLevel(WORLD, settings, new WorldOptions(20261101L, false, false), ra -> ra.registryOrThrow(net.minecraft.core.registries.Registries.WORLD_PRESET).getHolderOrThrow(WorldPresets.FLAT).value().createWorldDimensions(), title);
             }
             return;
         }
@@ -176,8 +186,53 @@ public final class AMClientAutotest {
     private static void shot(Minecraft mc, String view) {
         String name = "amtest_" + view + "_" + (System.currentTimeMillis() / 1000) + ".png";
         File file = new File(new File(mc.gameDirectory, "screenshots"), name);
-        Screenshot.grab(mc.gameDirectory, name, mc.getMainRenderTarget(), 1, msg -> LOG.info("AMTEST screenshot message: {}", msg.getString()));
+        Screenshot.grab(mc.gameDirectory, name, mc.getMainRenderTarget(), msg -> LOG.info("AMTEST screenshot message: {}", msg.getString()));
         LOG.info("AMTEST shot {}", file.getAbsolutePath());
+    }
+
+    /** Every automagia item's inventory icon, drawn by the game's own item renderer into a 256 px target (16 px per GUI
+     *  pixel) and saved to run/client/icons/&lt;id&gt;.png on a clear background: the CurseForge page pictures. */
+    private static void exportIcons(Minecraft mc) {
+        int size = 256;
+        var target = new com.mojang.blaze3d.pipeline.TextureTarget(size, size, true, Minecraft.ON_OSX);
+        target.setClearColor(0, 0, 0, 0);
+        com.mojang.blaze3d.systems.RenderSystem.backupProjectionMatrix();
+        com.mojang.blaze3d.systems.RenderSystem.setProjectionMatrix(new org.joml.Matrix4f().setOrtho(0, 16, 16, 0, 1000, 21000),
+                com.mojang.blaze3d.vertex.VertexSorting.ORTHOGRAPHIC_Z);
+        var view = com.mojang.blaze3d.systems.RenderSystem.getModelViewStack();
+        view.pushMatrix();
+        view.translation(0, 0, -11000);
+        com.mojang.blaze3d.systems.RenderSystem.applyModelViewMatrix();
+        java.nio.file.Path dir = mc.gameDirectory.toPath().resolve("icons");
+        int n = 0;
+        try {
+            java.nio.file.Files.createDirectories(dir);
+            for (var e : net.minecraft.core.registries.BuiltInRegistries.ITEM.entrySet()) {
+                net.minecraft.resources.ResourceLocation id = e.getKey().location();
+                if (!id.getNamespace().equals(Automagy.MODID)) continue;
+                target.clear(Minecraft.ON_OSX);
+                target.bindWrite(true);
+                var g = new net.minecraft.client.gui.GuiGraphics(mc, mc.renderBuffers().bufferSource());
+                g.renderItem(new net.minecraft.world.item.ItemStack(e.getValue()), 0, 0);
+                g.flush();
+                try (var img = new com.mojang.blaze3d.platform.NativeImage(size, size, false)) {
+                    com.mojang.blaze3d.systems.RenderSystem.bindTexture(target.getColorTextureId());
+                    img.downloadTexture(0, false);
+                    img.flipY();
+                    img.writeToFile(dir.resolve(id.getPath() + ".png"));
+                }
+                n++;
+            }
+        } catch (java.io.IOException e) {
+            LOG.error("AMTEST icon export failed", e);
+        } finally {
+            view.popMatrix();
+            com.mojang.blaze3d.systems.RenderSystem.applyModelViewMatrix();
+            com.mojang.blaze3d.systems.RenderSystem.restoreProjectionMatrix();
+            target.destroyBuffers();
+            mc.getMainRenderTarget().bindWrite(true);
+        }
+        LOG.info("AMTEST icons {} saved to {}", n, dir);
     }
 
     private static void finish(Minecraft mc) {

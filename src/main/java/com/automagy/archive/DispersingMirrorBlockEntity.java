@@ -3,8 +3,6 @@ package com.automagy.archive;
 import com.automagy.AMRegistry;
 import com.automagy.block.MeldingMirrorBlockEntity;
 import com.leclowndu93150.thaumaturge.content.device.mirror.BlockEntityMirror;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerLevel;
@@ -14,19 +12,16 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
-import org.jspecify.annotations.Nullable;
+import com.automagy.port.ItemResource;
+import net.neoforged.neoforge.items.IItemHandler;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The dispersing mirror. While it is linked to an Inventarium core, taskmasters send each tome's order to it, and it
  * passes what arrives on to the output mirror of the tome that asked for it. Anything nobody ordered is spat out.
  */
 public class DispersingMirrorBlockEntity extends ArchiveNodeBlockEntity {
-    private @Nullable ResourceHandler<ItemResource> handler;
+    private @Nullable IItemHandler handler;
 
     public DispersingMirrorBlockEntity(BlockPos pos, BlockState state) {
         super(AMRegistry.DISPERSING_MIRROR_BE.get(), pos, state);
@@ -61,86 +56,61 @@ public class DispersingMirrorBlockEntity extends ArchiveNodeBlockEntity {
             return mirror.transportDirect(stack);
         }
         if (there.getBlockEntity(where.pos()) instanceof MeldingMirrorBlockEntity melding) {
-            try (Transaction tx = Transaction.openRoot()) {
-                int n = melding.handler().insert(0, ItemResource.of(stack), stack.getCount(), tx);
-                if (n == stack.getCount()) {
-                    tx.commit();
-                    return true;
-                }
+            IItemHandler h = melding.handler();
+            if (!h.insertItem(0, stack, true).isEmpty()) {
+                return false;
             }
-            return false;
+            h.insertItem(0, stack, false);
+            return true;
         }
         BlockPos p = where.pos();
         there.addFreshEntity(new ItemEntity(there, p.getX() + 0.5, p.getY() + 1.0, p.getZ() + 0.5, stack));
         return true;
     }
 
-    /** Golems and pipes put items in; nothing comes out. Items move on when the transfer commits. */
-    public ResourceHandler<ItemResource> handler() {
+    /** Golems and pipes put items in; nothing comes out. Items move on at once. */
+    public IItemHandler handler() {
         if (handler == null) {
             handler = new InputHandler();
         }
         return handler;
     }
 
-    private final class InputHandler extends SnapshotJournal<List<ItemStack>> implements ResourceHandler<ItemResource> {
-        private List<ItemStack> pending = new ArrayList<>();
-
+    private final class InputHandler implements IItemHandler {
         @Override
-        public int size() {
+        public int getSlots() {
             return 1;
         }
 
         @Override
-        public ItemResource getResource(int i) {
-            return ItemResource.EMPTY;
+        public ItemStack getStackInSlot(int i) {
+            return ItemStack.EMPTY;
         }
 
         @Override
-        public long getAmountAsLong(int i) {
-            return 0;
-        }
-
-        @Override
-        public long getCapacityAsLong(int i, ItemResource res) {
-            return res.getMaxStackSize();
-        }
-
-        @Override
-        public boolean isValid(int i, ItemResource res) {
-            return true;
-        }
-
-        @Override
-        public int insert(int i, ItemResource res, int amount, TransactionContext tx) {
-            if (res.isEmpty() || amount <= 0) {
-                return 0;
+        public ItemStack insertItem(int i, ItemStack stack, boolean simulate) {
+            if (stack.isEmpty()) {
+                return stack;
             }
-            updateSnapshots(tx);
-            pending.add(res.toStack(amount));
-            return amount;
+            if (!simulate) {
+                receive(stack.copy());
+            }
+            return ItemStack.EMPTY;
         }
 
         @Override
-        public int extract(int i, ItemResource res, int amount, TransactionContext tx) {
-            return 0;
+        public ItemStack extractItem(int i, int amount, boolean simulate) {
+            return ItemStack.EMPTY;
         }
 
         @Override
-        protected List<ItemStack> createSnapshot() {
-            return new ArrayList<>(pending);
+        public int getSlotLimit(int i) {
+            return 64;
         }
 
         @Override
-        protected void revertToSnapshot(List<ItemStack> snapshot) {
-            pending = snapshot;
-        }
-
-        @Override
-        protected void onRootCommit(List<ItemStack> original) {
-            List<ItemStack> go = pending;
-            pending = new ArrayList<>();
-            go.forEach(DispersingMirrorBlockEntity.this::receive);
+        public boolean isItemValid(int i, ItemStack stack) {
+            return true;
         }
     }
 }

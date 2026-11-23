@@ -11,9 +11,15 @@
     }
   ],
   "key": {
-    "P": "automagia:enchanted_paper",
-    "N": "thaumaturge:thaumonomicon",
-    "W": "thaumaturge:table_wood"
+    "P": {
+      "item": "automagia:enchanted_paper"
+    },
+    "N": {
+      "item": "thaumaturge:thaumonomicon"
+    },
+    "W": {
+      "item": "thaumaturge:table_wood"
+    }
   },
   "pattern": [
     "PNP",

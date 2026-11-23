@@ -2,12 +2,12 @@ package com.automagy.filter;
 
 import com.automagy.AMRegistry;
 import com.automagy.item.RunicListItem;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -17,9 +17,11 @@ import net.minecraft.world.level.Level;
  * first comes back unused.
  */
 public class ListCopyRecipe extends CustomRecipe {
-    public static final ListCopyRecipe INSTANCE = new ListCopyRecipe();
-    public static final RecipeSerializer<ListCopyRecipe> SERIALIZER = new RecipeSerializer<>(MapCodec.unit(INSTANCE),
-            StreamCodec.<RegistryFriendlyByteBuf, ListCopyRecipe>unit(INSTANCE));
+    public static final RecipeSerializer<ListCopyRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(ListCopyRecipe::new);
+
+    public ListCopyRecipe(CraftingBookCategory category) {
+        super(category);
+    }
 
     /** Slot indices of the source and target lists, or null when the grid is not exactly two lists. */
     private static int[] find(CraftingInput input) {
@@ -44,7 +46,7 @@ public class ListCopyRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingInput input) {
+    public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
         int[] f = find(input);
         if (f == null) {
             return ItemStack.EMPTY;
@@ -62,6 +64,11 @@ public class ListCopyRecipe extends CustomRecipe {
             left.set(f[0], input.getItem(f[0]).copyWithCount(1));
         }
         return left;
+    }
+
+    @Override
+    public boolean canCraftInDimensions(int width, int height) {
+        return width * height >= 2;
     }
 
     @Override

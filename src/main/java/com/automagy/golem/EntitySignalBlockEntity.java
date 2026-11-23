@@ -12,8 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
 import net.minecraft.world.phys.AABB;
 
 /**
@@ -21,7 +21,7 @@ import net.minecraft.world.phys.AABB;
  * at most 11 blocks across; a solid block on one face cuts the area off on that side and pushes it out the other way,
  * blocks on both faces of an axis close that axis to the device's own row. Glass and replaceable blocks don't count.
  */
-public class EntitySignalBlockEntity extends BlockEntity {
+public class EntitySignalBlockEntity extends BlockEntity implements com.automagy.port.PreRemove {
     private static final int REACH = 10;
 
     /** Which ages count among creatures that have one. */
@@ -81,8 +81,8 @@ public class EntitySignalBlockEntity extends BlockEntity {
         int[] lo = new int[3];
         int[] hi = new int[3];
         for (Direction.Axis axis : Direction.Axis.values()) {
-            boolean neg = blocks(level, pos.relative(axis.getNegative()));
-            boolean posBlocked = blocks(level, pos.relative(axis.getPositive()));
+            boolean neg = blocks(level, pos.relative(Direction.fromAxisAndDirection(axis, Direction.AxisDirection.NEGATIVE)));
+            boolean posBlocked = blocks(level, pos.relative(Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE)));
             int i = axis.ordinal();
             if (neg && posBlocked) {
                 lo[i] = 0;
@@ -107,7 +107,6 @@ public class EntitySignalBlockEntity extends BlockEntity {
         return !s.isAir() && !s.canBeReplaced() && !s.is(BlockTags.IMPERMEABLE) && s.getFluidState().isEmpty();
     }
 
-    @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         if (level != null && !eye.isEmpty()) {
             Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, eye);
@@ -115,16 +114,18 @@ public class EntitySignalBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         eye = in.read("eye", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);
         ages = SavedEnum.read(in, "ages", Ages.ALL);
         count = in.getIntOr("count", 0);
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         out.store("eye", ItemStack.OPTIONAL_CODEC, eye);
         SavedEnum.write(out, "ages", ages);
         out.putInt("count", count);

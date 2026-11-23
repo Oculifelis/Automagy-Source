@@ -14,7 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 
 /**
@@ -39,13 +38,13 @@ public class GolemLinkerItem extends Item {
             if (player != null && player.isSecondaryUseActive()) {
                 device.golems().clear();
                 device.linksChanged();
-                player.sendOverlayMessage(Component.translatable("automagia.golem_linker.cleared"));
+                player.displayClientMessage(Component.translatable("automagia.golem_linker.cleared"), true);
             } else {
                 stack.set(AMRegistry.LINK.get(), GlobalPos.of(level.dimension(), pos));
                 stack.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true);
                 if (player != null) {
-                    player.sendOverlayMessage(Component.translatable("automagia.golem_linker.attuned",
-                            level.getBlockState(pos).getBlock().getName()));
+                    player.displayClientMessage(Component.translatable("automagia.golem_linker.attuned",
+                            level.getBlockState(pos).getBlock().getName()), true);
                 }
             }
             return InteractionResult.SUCCESS;
@@ -69,18 +68,18 @@ public class GolemLinkerItem extends Item {
         GlobalPos at = stack.get(AMRegistry.LINK.get());
         if (at == null || at.dimension() != player.level().dimension()
                 || !(player.level().getBlockEntity(at.pos()) instanceof GolemLinks.Device device)) {
-            player.sendOverlayMessage(Component.translatable("automagia.golem_linker.unattuned"));
+            player.displayClientMessage(Component.translatable("automagia.golem_linker.unattuned"), true);
         } else if (GolemLinks.link(golem, player.level(), device, at.pos())) {
-            player.sendOverlayMessage(Component.translatable("automagia.golem_linker.linked", device.golems().size(), GolemLinks.MAX));
+            player.displayClientMessage(Component.translatable("automagia.golem_linker.linked", device.golems().size(), GolemLinks.MAX), true);
         } else {
-            player.sendOverlayMessage(Component.translatable("automagia.golem_linker.full", GolemLinks.MAX));
+            player.displayClientMessage(Component.translatable("automagia.golem_linker.full", GolemLinks.MAX), true);
         }
         return InteractionResult.SUCCESS;
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> out, TooltipFlag flag) {
-        super.appendHoverText(stack, context, display, out, flag);
-        LinkTooltip.add(stack.get(AMRegistry.LINK.get()), out);
+    public void appendHoverText(ItemStack stack, TooltipContext context, java.util.List<Component> out, TooltipFlag flag) {
+        super.appendHoverText(stack, context, out, flag);
+        LinkTooltip.add(stack.get(AMRegistry.LINK.get()), out::add);
     }
 }

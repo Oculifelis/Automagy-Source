@@ -7,10 +7,18 @@
     }
   ],
   "ingredients": [
-    "minecraft:amethyst_shard",
-    "minecraft:amethyst_shard",
-    "automagia:sliver_ordo",
-    "automagia:sliver_aer"
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "automagia:sliver_ordo"
+    },
+    {
+      "item": "automagia:sliver_aer"
+    }
   ],
   "research": {
     "entry": "automagia:remote_comparator",

@@ -37,7 +37,7 @@ public abstract class LimitRedcrystalBlock extends RedcrystalBlock implements II
             level.setBlock(pos, now, Block.UPDATE_ALL);
             update(level, pos, now);
             level.updateNeighborsAt(attachedTo(pos, now), this);
-            player.sendOverlayMessage(Component.translatable(messageKey(), limit));
+            player.displayClientMessage(Component.translatable(messageKey(), limit), true);
         }
         return true;
     }

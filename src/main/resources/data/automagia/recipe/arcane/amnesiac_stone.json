@@ -7,9 +7,15 @@
     }
   ],
   "key": {
-    "S": "minecraft:mossy_cobblestone",
-    "P": "automagia:sliver_perditio",
-    "B": "thaumaturge:brain"
+    "S": {
+      "item": "minecraft:mossy_cobblestone"
+    },
+    "P": {
+      "item": "automagia:sliver_perditio"
+    },
+    "B": {
+      "item": "thaumaturge:brain"
+    }
   },
   "pattern": [
     "SPS",

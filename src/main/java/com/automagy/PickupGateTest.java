@@ -51,7 +51,7 @@ final class PickupGateTest {
         player.connection = new ServerGamePacketListenerImpl(server, dummy, player,
                 CommonListenerCookie.createInitial(player.getGameProfile(), false)) {
             @Override
-            public boolean hasChannel(net.minecraft.resources.Identifier payloadId) {
+            public boolean hasChannel(net.minecraft.resources.ResourceLocation payloadId) {
                 return false;
             }
 

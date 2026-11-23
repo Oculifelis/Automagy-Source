@@ -10,7 +10,9 @@
       "amount": 2
     }
   ],
-  "catalyst": "thaumaturge:crystal_terra",
+  "catalyst": {
+    "item": "thaumaturge:crystal_terra"
+  },
   "research": {
     "entry": "automagia:entropic_refining"
   },

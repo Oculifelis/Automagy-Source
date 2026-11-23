@@ -6,7 +6,9 @@
       "amount": 8
     }
   ],
-  "catalyst": "thaumaturge:crystal_perditio",
+  "catalyst": {
+    "item": "thaumaturge:crystal_perditio"
+  },
   "research": {
     "entry": "automagia:entropic_refining"
   },

@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "thaumaturge:plate_brass",
-    "automagia:crystal_brain_aqua",
-    "thaumaturge:mechanism_simple"
+    {
+      "item": "thaumaturge:plate_brass"
+    },
+    {
+      "item": "automagia:crystal_brain_aqua"
+    },
+    {
+      "item": "thaumaturge:mechanism_simple"
+    }
   ],
   "research": {
     "entry": "automagia:workbench_upgrades",

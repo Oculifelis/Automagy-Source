@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "automagia:runed_obsidian",
-    "minecraft:gold_nugget",
-    "minecraft:gold_nugget"
+    {
+      "item": "automagia:runed_obsidian"
+    },
+    {
+      "item": "minecraft:gold_nugget"
+    },
+    {
+      "item": "minecraft:gold_nugget"
+    }
   ],
   "research": {
     "entry": "automagia:netherrune_zombie",

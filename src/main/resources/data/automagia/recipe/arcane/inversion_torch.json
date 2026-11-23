@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "minecraft:redstone_torch",
-    "automagia:sliver_perditio",
-    "minecraft:quartz"
+    {
+      "item": "minecraft:redstone_torch"
+    },
+    {
+      "item": "automagia:sliver_perditio"
+    },
+    {
+      "item": "minecraft:quartz"
+    }
   ],
   "research": {
     "entry": "automagia:redstone_theory",

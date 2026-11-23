@@ -11,9 +11,15 @@
     }
   ],
   "key": {
-    "P": "thaumaturge:plate_void",
-    "D": "automagia:conflux_disc",
-    "G": "thaumaturge:mirrored_glass"
+    "P": {
+      "item": "thaumaturge:plate_void"
+    },
+    "D": {
+      "item": "automagia:conflux_disc"
+    },
+    "G": {
+      "item": "thaumaturge:mirrored_glass"
+    }
   },
   "pattern": [
     "PDP",

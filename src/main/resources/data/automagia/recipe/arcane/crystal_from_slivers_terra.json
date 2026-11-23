@@ -2,10 +2,18 @@
   "type": "thaumaturge:arcane_workbench_shapeless",
   "crystals": [],
   "ingredients": [
-    "automagia:sliver_terra",
-    "automagia:sliver_terra",
-    "automagia:sliver_terra",
-    "automagia:sliver_terra"
+    {
+      "item": "automagia:sliver_terra"
+    },
+    {
+      "item": "automagia:sliver_terra"
+    },
+    {
+      "item": "automagia:sliver_terra"
+    },
+    {
+      "item": "automagia:sliver_terra"
+    }
   ],
   "research": {
     "entry": "automagia:slivers",

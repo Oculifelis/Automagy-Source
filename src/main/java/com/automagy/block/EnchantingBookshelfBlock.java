@@ -24,7 +24,7 @@ public class EnchantingBookshelfBlock extends Block {
     }
 
     @Override
-    public float getEnchantPowerBonus(BlockState state, BlockGetter level, BlockPos pos) {
+    public float getEnchantPowerBonus(BlockState state, net.minecraft.world.level.LevelReader level, BlockPos pos) {
         return power;
     }
 }

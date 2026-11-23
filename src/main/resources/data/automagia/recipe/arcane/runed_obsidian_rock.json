@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "automagia:runed_obsidian",
-    "minecraft:netherrack",
-    "minecraft:netherrack"
+    {
+      "item": "automagia:runed_obsidian"
+    },
+    {
+      "item": "minecraft:netherrack"
+    },
+    {
+      "item": "minecraft:netherrack"
+    }
   ],
   "research": {
     "entry": "automagia:nethermind",

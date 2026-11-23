@@ -7,8 +7,12 @@
     }
   ],
   "key": {
-    "O": "minecraft:obsidian",
-    "S": "automagia:sliver_ignis"
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "S": {
+      "item": "automagia:sliver_ignis"
+    }
   },
   "pattern": [
     "OOO",

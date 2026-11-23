@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -16,7 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /** A hungry maw that takes a runic list: right-click it with one to put it in, sneak-right-click to take it out. */
 public class FinicalMawBlock extends HungryMawBlock {
@@ -40,7 +41,7 @@ public class FinicalMawBlock extends HungryMawBlock {
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
                                           InteractionHand hand, BlockHitResult hit) {
         if (stack.getItem() instanceof RunicListItem && !player.isSecondaryUseActive()
                 && level.getBlockEntity(pos) instanceof FinicalMawBlockEntity maw) {
@@ -50,11 +51,11 @@ public class FinicalMawBlock extends HungryMawBlock {
                 if (!old.isEmpty()) {
                     player.getInventory().placeItemBackInInventory(old);
                 }
-                player.sendOverlayMessage(Component.translatable("automagia.msg.list_in", maw.list().getHoverName()));
+                player.displayClientMessage(Component.translatable("automagia.msg.list_in", maw.list().getHoverName()), true);
             }
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
-        return InteractionResult.TRY_WITH_EMPTY_HAND;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override

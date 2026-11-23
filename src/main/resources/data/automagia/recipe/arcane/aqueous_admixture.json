@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "minecraft:ink_sac",
-    "automagia:sliver_aqua",
-    "minecraft:slime_ball"
+    {
+      "item": "minecraft:ink_sac"
+    },
+    {
+      "item": "automagia:sliver_aqua"
+    },
+    {
+      "item": "minecraft:slime_ball"
+    }
   ],
   "research": {
     "entry": "automagia:thirsty_tank_glyph",

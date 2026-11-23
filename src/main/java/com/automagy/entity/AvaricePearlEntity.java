@@ -17,7 +17,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableItemProjectile;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -42,7 +42,8 @@ public class AvaricePearlEntity extends ThrowableItemProjectile {
     }
 
     public AvaricePearlEntity(Level level, LivingEntity thrower, ItemStack stack) {
-        super(AMRegistry.AVARICE_PEARL_ENTITY.get(), thrower, level, stack);
+        super(AMRegistry.AVARICE_PEARL_ENTITY.get(), thrower, level);
+        setItem(stack);
     }
 
     @Override
@@ -98,7 +99,7 @@ public class AvaricePearlEntity extends ThrowableItemProjectile {
             // instability grows with the stacks and the kinds of thing moved
             float risk = Math.min(0.85f, items.size() * 0.03f + kinds.size() * 0.05f + count / 640f);
             if (random.nextFloat() < risk) {
-                thrower.hurtServer(server, damageSources().indirectMagic(this, thrower), 1 + items.size() / 4f);
+                thrower.hurt(damageSources().indirectMagic(this, thrower), 1 + items.size() / 4f);
             }
             if (random.nextFloat() < risk * 0.6f) {
                 shattered = true;
@@ -110,7 +111,7 @@ public class AvaricePearlEntity extends ThrowableItemProjectile {
             if (owner instanceof Player player && player.isAlive()) {
                 player.getInventory().placeItemBackInInventory(back);
             } else {
-                spawnAtLocation(server, back);
+                spawnAtLocation(back);
             }
         }
         server.sendParticles(ParticleTypes.PORTAL, getX(), getY(), getZ(), 12, 0.3, 0.3, 0.3, 0.1);
@@ -130,7 +131,7 @@ public class AvaricePearlEntity extends ThrowableItemProjectile {
                 player.sendSystemMessage(Component.translatable("automagia.msg.avarice_insight"));
             }
         } else {
-            spawnAtLocation(server, shards);
+            spawnAtLocation(shards);
         }
     }
 }

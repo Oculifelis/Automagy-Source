@@ -2,9 +2,15 @@
   "type": "thaumaturge:arcane_workbench_shapeless",
   "crystals": [],
   "ingredients": [
-    "automagia:conflux_disc",
-    "thaumaturge:plate_void",
-    "thaumaturge:mirrored_glass"
+    {
+      "item": "automagia:conflux_disc"
+    },
+    {
+      "item": "thaumaturge:plate_void"
+    },
+    {
+      "item": "thaumaturge:mirrored_glass"
+    }
   ],
   "research": {
     "entry": "automagia:melding_mirror",

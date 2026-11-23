@@ -27,12 +27,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemContainerContents;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import org.jspecify.annotations.Nullable;
+import com.automagy.port.ItemResource;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A hand mirror that holds up to two runic lists. Linked to a magic mirror like Thaumaturge's hand mirror, it sends what
@@ -42,7 +41,7 @@ import org.jspecify.annotations.Nullable;
  * stack through by hand; sneak-right-click with the other hand empty to take the lists out.
  */
 public class HungryHandMirrorItem extends Item {
-    public static final net.minecraft.resources.Identifier GATE = Automagy.id("auto_hand_mirror");
+    public static final net.minecraft.resources.ResourceLocation GATE = Automagy.id("auto_hand_mirror");
 
     public HungryHandMirrorItem(Properties properties) {
         super(properties);
@@ -51,7 +50,7 @@ public class HungryHandMirrorItem extends Item {
     public static final int LISTS = 2;
 
     public static List<ItemStack> lists(ItemStack mirror) {
-        return mirror.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).nonEmptyItemCopyStream().toList();
+        return mirror.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).nonEmptyStream().map(ItemStack::copy).toList();
     }
 
     /** Puts a list in: into a free place, else in place of the first list; returns the list it pushed out, if any. */
@@ -84,13 +83,18 @@ public class HungryHandMirrorItem extends Item {
     }
 
     @Override
-    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+    public net.minecraft.world.InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        InteractionResult result = useItem(level, player, hand);
+        return new net.minecraft.world.InteractionResultHolder<>(result, player.getItemInHand(hand));
+    }
+
+    private InteractionResult useItem(Level level, Player player, InteractionHand hand) {
         ItemStack mirror = player.getItemInHand(hand);
         InteractionHand otherHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
         ItemStack other = player.getItemInHand(otherHand);
         if (!mirror.has(TTDataComponents.MIRROR_LINK.get())) {
             if (!level.isClientSide()) {
-                player.sendOverlayMessage(Component.translatable("automagia.msg.mirror_unlinked"));
+                player.displayClientMessage(Component.translatable("automagia.msg.mirror_unlinked"), true);
             }
             return InteractionResult.PASS;
         }
@@ -106,7 +110,7 @@ public class HungryHandMirrorItem extends Item {
             if (!out.isEmpty()) {
                 player.getInventory().placeItemBackInInventory(out);
             }
-            player.sendOverlayMessage(Component.translatable("automagia.msg.list_in", list.getHoverName()));
+            player.displayClientMessage(Component.translatable("automagia.msg.list_in", list.getHoverName()), true);
         } else if (player.isSecondaryUseActive()) {
             if (other.isEmpty()) {
                 lists(mirror).forEach(l -> player.getInventory().placeItemBackInInventory(l));
@@ -119,16 +123,16 @@ public class HungryHandMirrorItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, java.util.List<Component> tooltip, TooltipFlag flag) {
         GlobalPos link = stack.get(TTDataComponents.MIRROR_LINK.get());
         if (link != null) {
-            tooltip.accept(Component.translatable("automagia.tip.linked", link.pos().getX(), link.pos().getY(), link.pos().getZ()));
+            tooltip.add(Component.translatable("automagia.tip.linked", link.pos().getX(), link.pos().getY(), link.pos().getZ()));
         }
         List<ItemStack> lists = lists(stack);
         if (lists.isEmpty()) {
-            tooltip.accept(Component.translatable("automagia.tip.no_list"));
+            tooltip.add(Component.translatable("automagia.tip.no_list"));
         }
-        lists.forEach(l -> tooltip.accept(Component.translatable("automagia.tip.holds_list", l.getHoverName())));
+        lists.forEach(l -> tooltip.add(Component.translatable("automagia.tip.holds_list", l.getHoverName())));
     }
 
     /** After a pickup, every linked hungry hand mirror the player carries sends its share of what came in. */
@@ -145,7 +149,7 @@ public class HungryHandMirrorItem extends Item {
             return;
         }
         ItemResource res = ItemResource.of(original);
-        NonNullList<ItemStack> items = player.getInventory().getNonEquipmentItems();
+        NonNullList<ItemStack> items = player.getInventory().items;
         for (ItemStack mirror : items) {
             if (picked <= 0) {
                 return;
@@ -182,7 +186,7 @@ public class HungryHandMirrorItem extends Item {
     }
 
     private static boolean carriesLinkedMirror(Player player) {
-        for (ItemStack stack : player.getInventory().getNonEquipmentItems()) {
+        for (ItemStack stack : player.getInventory().items) {
             if (stack.getItem() instanceof HungryHandMirrorItem && stack.has(TTDataComponents.MIRROR_LINK.get())) {
                 return true;
             }

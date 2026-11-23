@@ -2,10 +2,18 @@
   "type": "thaumaturge:arcane_workbench_shapeless",
   "crystals": [],
   "ingredients": [
-    "automagia:sliver_perditio",
-    "automagia:sliver_perditio",
-    "automagia:sliver_perditio",
-    "automagia:sliver_perditio"
+    {
+      "item": "automagia:sliver_perditio"
+    },
+    {
+      "item": "automagia:sliver_perditio"
+    },
+    {
+      "item": "automagia:sliver_perditio"
+    },
+    {
+      "item": "automagia:sliver_perditio"
+    }
   ],
   "research": {
     "entry": "automagia:slivers",

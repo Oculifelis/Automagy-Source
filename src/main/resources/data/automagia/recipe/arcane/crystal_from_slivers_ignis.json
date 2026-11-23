@@ -2,10 +2,18 @@
   "type": "thaumaturge:arcane_workbench_shapeless",
   "crystals": [],
   "ingredients": [
-    "automagia:sliver_ignis",
-    "automagia:sliver_ignis",
-    "automagia:sliver_ignis",
-    "automagia:sliver_ignis"
+    {
+      "item": "automagia:sliver_ignis"
+    },
+    {
+      "item": "automagia:sliver_ignis"
+    },
+    {
+      "item": "automagia:sliver_ignis"
+    },
+    {
+      "item": "automagia:sliver_ignis"
+    }
   ],
   "research": {
     "entry": "automagia:slivers",

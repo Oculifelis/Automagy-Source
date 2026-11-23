@@ -7,11 +7,21 @@
     }
   ],
   "ingredients": [
-    "automagia:redcrystal",
-    "automagia:redcrystal",
-    "automagia:redcrystal",
-    "automagia:redcrystal",
-    "automagia:sliver_ignis"
+    {
+      "item": "automagia:redcrystal"
+    },
+    {
+      "item": "automagia:redcrystal"
+    },
+    {
+      "item": "automagia:redcrystal"
+    },
+    {
+      "item": "automagia:redcrystal"
+    },
+    {
+      "item": "automagia:sliver_ignis"
+    }
   ],
   "research": {
     "entry": "automagia:redcrystal_amp",

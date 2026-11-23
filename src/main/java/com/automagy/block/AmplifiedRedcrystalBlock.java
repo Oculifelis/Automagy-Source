@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Amplified redcrystal: any signal reaching it comes out at full strength, one way only (OUTPUT), so it also works
@@ -86,8 +86,8 @@ public class AmplifiedRedcrystalBlock extends RedcrystalBlock implements IIntera
             level.setBlock(pos, state.setValue(OUTPUT, out), Block.UPDATE_ALL);
             level.updateNeighborsAt(pos.relative(state.getValue(OUTPUT)), this);
             level.updateNeighborsAt(pos.relative(out), this);
-            player.sendOverlayMessage(Component.translatable("automagia.msg.redcrystal_output",
-                    Component.translatable("automagia.direction." + out.getSerializedName())));
+            player.displayClientMessage(Component.translatable("automagia.msg.redcrystal_output",
+                    Component.translatable("automagia.direction." + out.getSerializedName())), true);
         }
         return true;
     }

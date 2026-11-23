@@ -18,14 +18,12 @@ import java.util.Map;
 import java.util.Optional;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.storage.TagValueInput;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 
@@ -81,13 +79,13 @@ final class SelfTest {
     private static void check(HolderLookup.Provider reg, String name, Supplier<BlockEntity> make, CompoundTag in, CompoundTag expect,
             String... absent) {
         BlockEntity a = make.get();
-        a.loadCustomOnly(TagValueInput.create(ProblemReporter.DISCARDING, reg, in));
+        a.loadCustomOnly(in, reg);
         CompoundTag first = a.saveCustomOnly(reg);
         BlockEntity b = make.get();
-        b.loadCustomOnly(TagValueInput.create(ProblemReporter.DISCARDING, reg, first));
+        b.loadCustomOnly(first, reg);
         CompoundTag second = b.saveCustomOnly(reg);
         boolean ok = first.equals(second);
-        for (String k : expect.keySet()) {
+        for (String k : expect.getAllKeys()) {
             ok &= expect.get(k).equals(first.get(k));
         }
         for (String k : absent) {
@@ -100,25 +98,25 @@ final class SelfTest {
     private static void legacy() {
         String block = BuiltInRegistries.BLOCK.getKey(AMRegistry.GREEDY_CHEST.get()).getPath();
         String be = BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(AMRegistry.GREEDY_CHEST_BE.get()).getPath();
-        Automagy.LOG.info("SELFTEST {} legacy alias block", BuiltInRegistries.BLOCK.getValue(old(block)) == AMRegistry.GREEDY_CHEST.get() ? "PASS" : "FAIL");
-        Automagy.LOG.info("SELFTEST {} legacy alias item", BuiltInRegistries.ITEM.getValue(old(block)) == AMRegistry.GREEDY_CHEST.get().asItem() ? "PASS" : "FAIL");
-        Automagy.LOG.info("SELFTEST {} legacy alias block entity", BuiltInRegistries.BLOCK_ENTITY_TYPE.getValue(old(be)) == AMRegistry.GREEDY_CHEST_BE.get() ? "PASS" : "FAIL");
+        Automagy.LOG.info("SELFTEST {} legacy alias block", BuiltInRegistries.BLOCK.get(old(block)) == AMRegistry.GREEDY_CHEST.get() ? "PASS" : "FAIL");
+        Automagy.LOG.info("SELFTEST {} legacy alias item", BuiltInRegistries.ITEM.get(old(block)) == AMRegistry.GREEDY_CHEST.get().asItem() ? "PASS" : "FAIL");
+        Automagy.LOG.info("SELFTEST {} legacy alias block entity", BuiltInRegistries.BLOCK_ENTITY_TYPE.get(old(be)) == AMRegistry.GREEDY_CHEST_BE.get() ? "PASS" : "FAIL");
 
         PlayerKnowledge k = new PlayerKnowledge();
-        Identifier oldId = old("golem_workbench");
-        Identifier newId = Automagy.id("golem_workbench");
+        ResourceLocation oldId = old("golem_workbench");
+        ResourceLocation newId = Automagy.id("golem_workbench");
         ResourceKey<IResearchCategory> oldCat = ResourceKey.create(IResearchCategory.REGISTRY_KEY, old("automagy"));
         ResourceKey<IResearchCategory> newCat = ResourceKey.create(IResearchCategory.REGISTRY_KEY, Automagy.id("automagy"));
-        k.addResearch(oldId);
-        k.setResearchStage(oldId, 2);
+        k.learn(oldId);
+        k.setStage(oldId, 2);
         k.markComplete(oldId);
-        k.setResearchFlag(oldId, ResearchFlag.PAGE);
-        k.addKnowledge(KnowledgeType.THEORY, oldCat, 5);
+        k.addFlag(oldId, ResearchFlag.PAGE);
+        k.addKnowledgePoints(KnowledgeType.THEORY, oldCat, 5);
         boolean moved = LegacyIds.migrateResearch(k);
-        boolean ok = moved && k.isResearchComplete(newId) && k.researchStage(newId) == 2 && k.hasResearchFlag(newId, ResearchFlag.PAGE)
-                && !k.researchList().contains(oldId) && k.rawKnowledge(KnowledgeType.THEORY, newCat) == 5
-                && k.rawKnowledge(KnowledgeType.THEORY, oldCat) == 0;
-        Automagy.LOG.info("SELFTEST {} legacy research moved: {}", ok ? "PASS" : "FAIL", k.researchList());
+        boolean ok = moved && k.hasCompleted(newId) && k.stageOf(newId) == 2 && k.hasFlag(newId, ResearchFlag.PAGE)
+                && !k.knownEntries().contains(oldId) && k.knowledgePoints(KnowledgeType.THEORY, newCat) == 5
+                && k.knowledgePoints(KnowledgeType.THEORY, oldCat) == 0;
+        Automagy.LOG.info("SELFTEST {} legacy research moved: {}", ok ? "PASS" : "FAIL", k.knownEntries());
 
         ResourceKey<SpellPart> oldPart = ResourceKey.create(SpellPart.REGISTRY_KEY, old("crafting"));
         SpellNode tree = new SpellNode(oldPart, Optional.empty(), Map.of(),
@@ -129,8 +127,8 @@ final class SelfTest {
         Automagy.LOG.info("SELFTEST {} legacy spell parts renamed", spellOk ? "PASS" : "FAIL");
     }
 
-    private static Identifier old(String path) {
-        return Identifier.fromNamespaceAndPath(LegacyIds.OLD, path);
+    private static ResourceLocation old(String path) {
+        return ResourceLocation.fromNamespaceAndPath(LegacyIds.OLD, path);
     }
 
     private static CompoundTag tag(Object... kv) {

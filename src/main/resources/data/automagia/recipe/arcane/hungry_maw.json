@@ -11,8 +11,12 @@
     }
   ],
   "key": {
-    "O": "minecraft:obsidian",
-    "C": "thaumaturge:hungry_chest"
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "C": {
+      "item": "thaumaturge:hungry_chest"
+    }
   },
   "pattern": [
     "O",

@@ -10,15 +10,16 @@ import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
+import com.automagy.port.Handlers;
+import com.automagy.port.ItemResource;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 /**
  * The greedy chest steals from its neighbours' inventories, twice a second. Modes:
@@ -67,7 +68,7 @@ public class GreedyChestBlockEntity extends DeviceChestBlockEntity {
         if (level == null || level.getGameTime() % 10 != Math.floorMod(worldPosition.hashCode(), 10)) {
             return;
         }
-        ResourceHandler<ItemResource> self = VanillaContainerWrapper.of(this);
+        IItemHandler self = new InvWrapper(this);
         Filter filter = filter(0);
         for (Direction d : SIDES) {
             if (!takesFrom(d)) {
@@ -80,7 +81,7 @@ public class GreedyChestBlockEntity extends DeviceChestBlockEntity {
                     || other instanceof GreedyChestBlockEntity g && g.takesFrom(d.getOpposite())) {
                 continue;
             }
-            ResourceHandler<ItemResource> them = level.getCapability(Capabilities.Item.BLOCK, at, d.getOpposite());
+            IItemHandler them = level.getCapability(Capabilities.ItemHandler.BLOCK, at, d.getOpposite());
             if (them == null) {
                 seen.remove(d);
                 continue;
@@ -135,35 +136,20 @@ public class GreedyChestBlockEntity extends DeviceChestBlockEntity {
         return Math.min(take, theirs - leave);
     }
 
-    private static Map<ItemResource, Integer> totals(ResourceHandler<ItemResource> h) {
+    private static Map<ItemResource, Integer> totals(IItemHandler h) {
         Map<ItemResource, Integer> out = new LinkedHashMap<>();
-        for (int i = 0; i < h.size(); i++) {
-            ItemResource res = h.getResource(i);
-            if (!res.isEmpty()) {
-                out.merge(res, h.getAmountAsInt(i), Integer::sum);
+        for (int i = 0; i < h.getSlots(); i++) {
+            ItemStack s = h.getStackInSlot(i);
+            if (!s.isEmpty()) {
+                out.merge(ItemResource.of(s), s.getCount(), Integer::sum);
             }
         }
         return out;
     }
 
     /** Moves up to {@code max} of an item, as much as both sides allow; returns how many moved. */
-    static int move(ResourceHandler<ItemResource> from, ResourceHandler<ItemResource> to, ItemResource res, int max) {
-        int fits;
-        try (Transaction probe = Transaction.openRoot()) {
-            fits = to.insert(res, max, probe);
-        }
-        if (fits <= 0) {
-            return 0;
-        }
-        try (Transaction tx = Transaction.openRoot()) {
-            int out = from.extract(res, fits, tx);
-            int in = to.insert(res, out, tx);
-            if (out > 0 && in == out) {
-                tx.commit();
-                return out;
-            }
-        }
-        return 0;
+    static int move(IItemHandler from, IItemHandler to, ItemResource res, int max) {
+        return Handlers.move(from, to, res, max);
     }
 
     // ---- wand settings: mode, percentage, amount, then one on/off per side
@@ -207,8 +193,9 @@ public class GreedyChestBlockEntity extends DeviceChestBlockEntity {
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         mode = SavedEnum.read(in, "mode", Mode.SPLIT);
         percent = Math.clamp(in.getIntOr("percent", 50), 10, 100);
         amount = Math.clamp(in.getIntOr("amount", 6), 0, AMOUNTS.length - 1);
@@ -216,8 +203,9 @@ public class GreedyChestBlockEntity extends DeviceChestBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         SavedEnum.write(out, "mode", mode);
         out.putInt("percent", percent);
         out.putInt("amount", amount);

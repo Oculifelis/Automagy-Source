@@ -11,10 +11,18 @@
     }
   ],
   "ingredients": [
-    "automagia:aqueous_admixture",
-    "minecraft:smooth_stone_slab",
-    "minecraft:leather",
-    "minecraft:wheat"
+    {
+      "item": "automagia:aqueous_admixture"
+    },
+    {
+      "item": "minecraft:smooth_stone_slab"
+    },
+    {
+      "item": "minecraft:leather"
+    },
+    {
+      "item": "minecraft:wheat"
+    }
   ],
   "research": {
     "entry": "automagia:thirsty_tank_glyph_bovine",

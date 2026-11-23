@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "automagia:hungry_maw",
-    "automagia:enchanted_paper",
-    "automagia:sliver_ordo"
+    {
+      "item": "automagia:hungry_maw"
+    },
+    {
+      "item": "automagia:enchanted_paper"
+    },
+    {
+      "item": "automagia:sliver_ordo"
+    }
   ],
   "research": {
     "entry": "automagia:finical_maw",

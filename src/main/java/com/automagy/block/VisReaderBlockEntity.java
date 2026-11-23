@@ -16,9 +16,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import org.jspecify.annotations.Nullable;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Reads aspects and turns them into a signal. Like a comparator, the strength scales with how full the target is
@@ -156,8 +156,9 @@ public class VisReaderBlockEntity extends ConfigurableBlockEntity {
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         mode = SavedEnum.read(in, "mode", Mode.TOTAL);
         capacity = Math.floorMod(in.getIntOr("capacity", 0), CAPACITIES.length);
         invert = in.getBooleanOr("invert", false);
@@ -165,8 +166,9 @@ public class VisReaderBlockEntity extends ConfigurableBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         SavedEnum.write(out, "mode", mode);
         out.putInt("capacity", capacity);
         out.putBoolean("invert", invert);

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.recipe.types.IRecipeType;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -17,7 +17,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * JEI: information pages for the blocks that work in the world (redcrystal circuits, hourglasses, the hungry maw, the
@@ -88,11 +88,11 @@ public final class AMJeiPlugin implements IModPlugin {
             Map.entry("concentrate_phial", "xpstone"));
 
     @Override
-    public Identifier getPluginUid() {
+    public ResourceLocation getPluginUid() {
         return Automagy.id("jei");
     }
 
-    private static final IRecipeType<JeiKit.Conversion> INFUSION_ENCHANTING = JeiKit.type(Automagy.id("infusion_enchanting"));
+    private static final RecipeType<JeiKit.Conversion> INFUSION_ENCHANTING = JeiKit.type(Automagy.id("infusion_enchanting"));
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
@@ -106,7 +106,7 @@ public final class AMJeiPlugin implements IModPlugin {
     }
 
     private static List<ItemStack> stacks(Ingredient ingredient) {
-        return ingredient.items().map(ItemStack::new).toList();
+        return List.of(ingredient.getItems());
     }
 
     @Override

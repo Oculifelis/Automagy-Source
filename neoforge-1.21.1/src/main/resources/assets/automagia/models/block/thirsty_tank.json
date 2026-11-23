@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_bottom_top",
-  "textures": {
-    "side": "automagia:block/thirsty_tank_side",
-    "top": "automagia:block/thirsty_tank_end",
-    "bottom": "automagia:block/thirsty_tank_end"
-  }
-}

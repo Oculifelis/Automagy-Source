@@ -11,7 +11,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Moves creatures towards working Siren's Lures. Creatures of the {@code automagia:lure_immune} entity tag (golems,
@@ -36,7 +36,7 @@ public final class SirenLures {
 
     public static void onEntityTick(EntityTickEvent.Post event) {
         if (!(event.getEntity() instanceof Mob mob) || mob.level().isClientSide() || mob.tickCount % 20 != 0
-                || SirenLureBlockEntity.loaded(mob.level()).isEmpty() || mob.is(IMMUNE) || mob.getTarget() != null) {
+                || SirenLureBlockEntity.loaded(mob.level()).isEmpty() || mob.getType().is(IMMUNE) || mob.getTarget() != null) {
             return;
         }
         long now = mob.level().getGameTime();

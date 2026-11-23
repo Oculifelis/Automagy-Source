@@ -19,8 +19,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import org.jspecify.annotations.Nullable;
+import com.automagy.port.ItemResource;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * What an unseen scribe reads (or, toggled, the whole Inventarium), and the requisition tome's order sheet. The lists
@@ -185,7 +185,7 @@ public class ArchiveMenu extends AbstractContainerMenu {
                     }
                 }
                 if (!wanted.isEmpty()) {
-                    player.sendOverlayMessage(tomeBe.order(wanted));
+                    player.displayClientMessage(tomeBe.order(wanted), true);
                 }
             }
             java.util.Arrays.fill(sheet, 0);

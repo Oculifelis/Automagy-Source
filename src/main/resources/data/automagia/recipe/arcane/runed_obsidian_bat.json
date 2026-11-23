@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "automagia:runed_obsidian",
-    "minecraft:blaze_powder",
-    "minecraft:blaze_powder"
+    {
+      "item": "automagia:runed_obsidian"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    }
   ],
   "research": {
     "entry": "automagia:netherrune_bat",

@@ -7,11 +7,21 @@
     }
   ],
   "ingredients": [
-    "minecraft:paper",
-    "minecraft:paper",
-    "minecraft:paper",
-    "minecraft:gold_nugget",
-    "automagia:sliver_ordo"
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "minecraft:gold_nugget"
+    },
+    {
+      "item": "automagia:sliver_ordo"
+    }
   ],
   "research": {
     "entry": "automagia:enchanted_paper",

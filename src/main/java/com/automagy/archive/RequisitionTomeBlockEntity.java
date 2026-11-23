@@ -18,10 +18,10 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import org.jspecify.annotations.Nullable;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
+import com.automagy.port.ItemResource;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The requisition tome. It lists the whole Inventarium and takes orders, which its core hands to taskmasters. It has
@@ -84,7 +84,7 @@ public class RequisitionTomeBlockEntity extends ArchiveNodeBlockEntity implement
         }
         ServerLevel there = server.getServer().getLevel(watched.dimension());
         if (there == null || !there.isLoaded(watched.pos()) || !(there.getBlockEntity(watched.pos()) instanceof BlockEntityMirror mirror)
-                || !mirror.paired || mirror.link == null || !mirror.verifyPairing()) {
+                || !mirror.linked || mirror.link == null || !mirror.isLinkValid()) {
             return;
         }
         ServerLevel far = server.getServer().getLevel(mirror.link.dimension());
@@ -138,17 +138,16 @@ public class RequisitionTomeBlockEntity extends ArchiveNodeBlockEntity implement
         onOrder.forEach(out::accept);
     }
 
-    @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
-        super.preRemoveSideEffects(pos, state);
         if (level != null) {
             Containers.dropContents(level, pos, slots);
         }
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         slots.clearContent();
         in.read("slots", ItemStack.OPTIONAL_CODEC.listOf()).ifPresent(list -> {
             for (int i = 0; i < Math.min(list.size(), slots.getContainerSize()); i++) {
@@ -160,8 +159,9 @@ public class RequisitionTomeBlockEntity extends ArchiveNodeBlockEntity implement
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         List<ItemStack> list = new ArrayList<>();
         for (int i = 0; i < slots.getContainerSize(); i++) {
             list.add(slots.getItem(i));

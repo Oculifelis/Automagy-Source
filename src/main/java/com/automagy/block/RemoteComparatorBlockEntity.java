@@ -10,12 +10,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import org.jspecify.annotations.Nullable;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
+import org.jetbrains.annotations.Nullable;
 
 /** Holds the crystalline eye and reads the comparator signal of the block it watches, four times a second. */
-public class RemoteComparatorBlockEntity extends BlockEntity {
+public class RemoteComparatorBlockEntity extends BlockEntity implements com.automagy.port.PreRemove {
     public static final int RANGE = 16;
     private ItemStack eye = ItemStack.EMPTY;
 
@@ -63,7 +63,7 @@ public class RemoteComparatorBlockEntity extends BlockEntity {
         if (target != null && level.isLoaded(target) && !be.relaying()) {
             BlockState watched = level.getBlockState(target);
             if (watched.hasAnalogOutputSignal()) {
-                power = watched.getAnalogOutputSignal(level, target, Direction.UP);
+                power = watched.getAnalogOutputSignal(level, target);
             }
         }
         if (power != state.getValue(RemoteComparatorBlock.POWER)) {
@@ -71,7 +71,6 @@ public class RemoteComparatorBlockEntity extends BlockEntity {
         }
     }
 
-    @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         if (level != null && !eye.isEmpty()) {
             Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, eye);
@@ -79,14 +78,16 @@ public class RemoteComparatorBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         eye = in.read("eye", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         out.store("eye", ItemStack.OPTIONAL_CODEC, eye);
     }
 }

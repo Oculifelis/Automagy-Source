@@ -7,7 +7,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
@@ -19,7 +18,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A small thing stuck to one face of a block, like an amethyst cluster: FACING points away from the block it is
@@ -31,7 +30,22 @@ public abstract class AttachedBlock extends Block {
 
     protected AttachedBlock(float width, float height, Properties properties) {
         super(properties);
-        shapes = Shapes.rotateAll(Block.boxZ(width, 16.0F - height, 16.0));
+        shapes = shapes(width, height);
+    }
+
+    /** One shape per facing: a width x width block, {@code height} deep, against the face it is stuck to. */
+    private static Map<Direction, VoxelShape> shapes(float width, float height) {
+        double lo = 8.0 - width / 2.0;
+        double hi = 8.0 + width / 2.0;
+        double far = 16.0 - height;
+        Map<Direction, VoxelShape> map = new java.util.EnumMap<>(Direction.class);
+        map.put(Direction.NORTH, Block.box(lo, lo, far, hi, hi, 16.0));
+        map.put(Direction.SOUTH, Block.box(lo, lo, 0.0, hi, hi, height));
+        map.put(Direction.WEST, Block.box(far, lo, lo, 16.0, hi, hi));
+        map.put(Direction.EAST, Block.box(0.0, lo, lo, height, hi, hi));
+        map.put(Direction.DOWN, Block.box(lo, far, lo, hi, 16.0, hi));
+        map.put(Direction.UP, Block.box(lo, 0.0, lo, hi, height, hi));
+        return map;
     }
 
     public static BlockPos attachedTo(BlockPos pos, BlockState state) {
@@ -51,8 +65,8 @@ public abstract class AttachedBlock extends Block {
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction direction,
-                                     BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
+                                     net.minecraft.world.level.LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         return direction == state.getValue(FACING).getOpposite() && !state.canSurvive(level, pos)
                 ? Blocks.AIR.defaultBlockState()
                 : state;

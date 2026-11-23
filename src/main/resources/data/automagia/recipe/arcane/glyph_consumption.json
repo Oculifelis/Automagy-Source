@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "automagia:aqueous_admixture",
-    "minecraft:smooth_stone_slab",
-    "minecraft:blaze_powder"
+    {
+      "item": "automagia:aqueous_admixture"
+    },
+    {
+      "item": "minecraft:smooth_stone_slab"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    }
   ],
   "research": {
     "entry": "automagia:thirsty_tank_glyph",

@@ -11,10 +11,18 @@
     }
   ],
   "key": {
-    "G": "minecraft:gold_ingot",
-    "A": "minecraft:amethyst_shard",
-    "O": "minecraft:obsidian",
-    "B": "automagia:crystal_brain_aer"
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "A": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "B": {
+      "item": "automagia:crystal_brain_aer"
+    }
   },
   "pattern": [
     "GAG",

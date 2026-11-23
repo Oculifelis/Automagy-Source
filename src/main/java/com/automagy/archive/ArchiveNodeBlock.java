@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /** A block whose block entity a wand links to an Inventarium core. {@link Facing} ones face the block they work on. */
 public abstract class ArchiveNodeBlock<T extends ArchiveNodeBlockEntity> extends BaseEntityBlock implements IInteractWithCaster {
@@ -49,7 +49,7 @@ public abstract class ArchiveNodeBlock<T extends ArchiveNodeBlockEntity> extends
             return false;
         }
         if (!level.isClientSide()) {
-            player.sendOverlayMessage(node.link());
+            player.displayClientMessage(node.link(), true);
         }
         return true;
     }

@@ -13,8 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.redstone.Orientation;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A true analog inverter: where a redstone torch is simply on or off, this one gives out 15 minus the strength of the
@@ -41,7 +40,7 @@ public class InversionTorchBlock extends AttachedBlock {
     }
 
     @Override
-    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean moved) {
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean moved) {
         if (target(level, pos, state) != state.getValue(POWER) && !level.getBlockTicks().willTickThisTick(pos, this)) {
             level.scheduleTick(pos, this, DELAY);
         }
@@ -65,8 +64,9 @@ public class InversionTorchBlock extends AttachedBlock {
     }
 
     @Override
-    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean moved) {
-        if (!moved) {
+    protected void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
+        super.onRemove(state, world, pos, newState, moved);
+        if (!moved && !state.is(newState.getBlock()) && world instanceof ServerLevel level) {
             level.updateNeighborsAt(pos, this);
             level.updateNeighborsAt(pos.relative(state.getValue(FACING)), this);
         }

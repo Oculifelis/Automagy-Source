@@ -7,9 +7,15 @@
     }
   ],
   "key": {
-    "S": "automagia:sliver_ordo",
-    "A": "thaumaturge:amber",
-    "B": "thaumaturge:brain"
+    "S": {
+      "item": "automagia:sliver_ordo"
+    },
+    "A": {
+      "item": "thaumaturge:amber"
+    },
+    "B": {
+      "item": "thaumaturge:brain"
+    }
   },
   "pattern": [
     "SAS",

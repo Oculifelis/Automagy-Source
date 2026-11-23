@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -18,7 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The Signum Entia block. Right-click with an imprinted Oculo Anima to put it in (an empty hand takes it out); a
@@ -46,16 +47,16 @@ public class EntitySignalBlock extends BaseEntityBlock implements IInteractWithC
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
                                           InteractionHand hand, BlockHitResult hit) {
         if (!(stack.getItem() instanceof EntityEyeItem) || !(level.getBlockEntity(pos) instanceof EntitySignalBlockEntity signal)) {
-            return InteractionResult.TRY_WITH_EMPTY_HAND;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         if (!stack.has(AMRegistry.ENTITY_WATCH.get())) {
             if (!level.isClientSide()) {
-                player.sendOverlayMessage(Component.translatable("automagia.entity_eye.blank"));
+                player.displayClientMessage(Component.translatable("automagia.entity_eye.blank"), true);
             }
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
         if (!level.isClientSide()) {
             ItemStack old = signal.eye();
@@ -64,7 +65,7 @@ public class EntitySignalBlock extends BaseEntityBlock implements IInteractWithC
                 player.getInventory().placeItemBackInInventory(old);
             }
         }
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
     }
 
     @Override
@@ -83,7 +84,7 @@ public class EntitySignalBlock extends BaseEntityBlock implements IInteractWithC
         }
         if (!level.isClientSide()) {
             signal.cycleAges();
-            player.sendOverlayMessage(Component.translatable("automagia.entity_signal.ages." + signal.ages().name().toLowerCase()));
+            player.displayClientMessage(Component.translatable("automagia.entity_signal.ages." + signal.ages().name().toLowerCase()), true);
         }
         return true;
     }
@@ -104,7 +105,7 @@ public class EntitySignalBlock extends BaseEntityBlock implements IInteractWithC
     }
 
     @Override
-    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
         return level.getBlockEntity(pos) instanceof EntitySignalBlockEntity signal ? signal.signal() : 0;
     }
 }

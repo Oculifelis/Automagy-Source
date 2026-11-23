@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /** Experience bookkeeping for the Amnesiac's Stone, the Soul Stone and the concentrate. */
 public final class Experience {
@@ -38,7 +38,7 @@ public final class Experience {
     }
 
     public static int drainOf(ItemStack stack) {
-        Drain d = stack.typeHolder().getData(DRAIN);
+        Drain d = stack.getItemHolder().getData(DRAIN);
         return d == null ? 0 : d.points();
     }
 

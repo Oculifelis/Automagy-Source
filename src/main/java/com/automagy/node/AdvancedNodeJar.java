@@ -25,7 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Advanced node jarring. Thaumaturge's node jar, built with a lid of {@code automagia:node_jar_lid} (silverwood logs)
@@ -85,11 +85,11 @@ public final class AdvancedNodeJar {
         }
         IPlayerKnowledge knowledge = KnowledgeAccess.of(player);
         if (knowledge == null || !knowledge.isResearchKnown(Automagy.id("advanced_node_jar"))) {
-            player.sendOverlayMessage(Component.translatable("automagia.node_jar.research"));
+            player.displayClientMessage(Component.translatable("automagia.node_jar.research"), true);
             return;
         }
         if (!fits(level, pos)) {
-            player.sendOverlayMessage(Component.translatable("automagia.node_jar.structure"));
+            player.displayClientMessage(Component.translatable("automagia.node_jar.structure"), true);
             return;
         }
         Map<ResourceKey<IAspect>, Integer> cost = new LinkedHashMap<>();
@@ -97,16 +97,16 @@ public final class AdvancedNodeJar {
             cost.put(primal, VIS);
         }
         if (!WandVisHelper.consumeSpecificFromHotbar(player, cost, true)) {
-            player.sendOverlayMessage(Component.translatable("automagia.node_jar.vis", VIS));
+            player.displayClientMessage(Component.translatable("automagia.node_jar.vis", VIS), true);
             return;
         }
-        NodeModifier modifier = node.trait();
+        NodeModifier modifier = node.getNodeModifier();
         for (BlockPos p : NodeJarRitual.structurePositions(pos)) {
             level.setBlock(p, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
         }
         NodeJarRitual.completeJar(level, pos, node);
         if (level.getBlockEntity(pos) instanceof BlockEntityJarNode jar) {
-            jar.assignTrait(modifier);
+            jar.setNodeModifier(modifier);
             jar.setChanged();
             level.sendBlockUpdated(pos, jar.getBlockState(), jar.getBlockState(), Block.UPDATE_ALL);
         }

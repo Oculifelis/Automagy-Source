@@ -2,8 +2,12 @@
   "type": "thaumaturge:arcane_workbench_shaped",
   "crystals": [],
   "key": {
-    "N": "minecraft:gold_nugget",
-    "G": "minecraft:glass_pane"
+    "N": {
+      "item": "minecraft:gold_nugget"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    }
   },
   "pattern": [
     "NGN"

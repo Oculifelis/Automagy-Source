@@ -13,7 +13,7 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/automagia"
 authors="Oculifelis (reimplementation); Tuhljin (original Automagy design)"
 credits="Automagy was designed by Tuhljin for Thaumcraft 4. This is a clean reimplementation from the mod's public descriptions; no original code or textures. Thaumaturge by Leclowndu93150 and contributors."
 description='''
-A reimplementation of Automagy (Thaumcraft 4 addon) for Thaumaturge on NeoForge 26.1.2.
+A reimplementation of Automagy (Thaumcraft 4 addon) for Thaumaturge on NeoForge 1.21.1.
 '''
 
 [[mixins]]
@@ -22,7 +22,7 @@ config="automagia.mixins.json"
 [[dependencies.${mod_id}]]
     modId="neoforge"
     type="required"
-    versionRange="[26.1.2.71,)"
+    versionRange="[${neo_version},)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.${mod_id}]]

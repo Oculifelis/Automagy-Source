@@ -12,8 +12,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -22,7 +22,7 @@ import net.minecraft.world.phys.Vec3;
  * enough it drips concentrate into the jar one or two blocks below it, turning an empty warded jar into a jar of
  * enchanter's concentrate.
  */
-public class SoulStoneBlockEntity extends BlockEntity {
+public class SoulStoneBlockEntity extends BlockEntity implements com.automagy.port.PreRemove {
     public static final int CAPACITY = 10000;
     private static final int FLOW = 100;
     private static final int DRIP = 50;
@@ -91,23 +91,23 @@ public class SoulStoneBlockEntity extends BlockEntity {
         }
     }
 
-    @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
-        super.preRemoveSideEffects(pos, state);
         if (level instanceof ServerLevel server) {
             Experience.orbs(server, Vec3.atCenterOf(pos), xp / 2);
         }
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         xp = in.getIntOr("xp", 0);
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         out.putInt("xp", xp);
     }
 }

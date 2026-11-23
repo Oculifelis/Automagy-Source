@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "automagia:runed_obsidian",
-    "minecraft:glowstone_dust",
-    "minecraft:glowstone_dust"
+    {
+      "item": "automagia:runed_obsidian"
+    },
+    {
+      "item": "minecraft:glowstone_dust"
+    },
+    {
+      "item": "minecraft:glowstone_dust"
+    }
   ],
   "research": {
     "entry": "automagia:nethermind",

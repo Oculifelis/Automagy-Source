@@ -2,9 +2,15 @@
   "type": "thaumaturge:arcane_workbench_shapeless",
   "crystals": [],
   "ingredients": [
-    "automagia:enchanted_paper",
-    "minecraft:gold_nugget",
-    "automagia:sliver_perditio"
+    {
+      "item": "automagia:enchanted_paper"
+    },
+    {
+      "item": "minecraft:gold_nugget"
+    },
+    {
+      "item": "automagia:sliver_perditio"
+    }
   ],
   "research": {
     "entry": "automagia:enchanted_paper",

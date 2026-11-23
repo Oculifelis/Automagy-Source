@@ -11,10 +11,18 @@
     }
   ],
   "key": {
-    "G": "minecraft:glass_pane",
-    "E": "automagia:crystalline_eye",
-    "B": "thaumaturge:plate_brass",
-    "T": "thaumaturge:table_wood"
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "E": {
+      "item": "automagia:crystalline_eye"
+    },
+    "B": {
+      "item": "thaumaturge:plate_brass"
+    },
+    "T": {
+      "item": "thaumaturge:table_wood"
+    }
   },
   "pattern": [
     "GEG",

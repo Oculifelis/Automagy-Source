@@ -11,11 +11,21 @@
     }
   ],
   "key": {
-    "P": "thaumaturge:plate_brass",
-    "T": "minecraft:crafting_table",
-    "W": "thaumaturge:plank_greatwood",
-    "B": "automagia:crystal_brain_ordo",
-    "C": "minecraft:chest"
+    "P": {
+      "item": "thaumaturge:plate_brass"
+    },
+    "T": {
+      "item": "minecraft:crafting_table"
+    },
+    "W": {
+      "item": "thaumaturge:plank_greatwood"
+    },
+    "B": {
+      "item": "automagia:crystal_brain_ordo"
+    },
+    "C": {
+      "item": "minecraft:chest"
+    }
   },
   "pattern": [
     "PTP",

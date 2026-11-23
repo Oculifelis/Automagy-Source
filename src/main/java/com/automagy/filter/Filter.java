@@ -3,8 +3,8 @@ package com.automagy.filter;
 import com.automagy.AMRegistry;
 import com.automagy.item.RunicListItem;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import org.jspecify.annotations.Nullable;
+import com.automagy.port.ItemResource;
+import org.jetbrains.annotations.Nullable;
 
 /** A runic list read as a whitelist (only what it names) or a blacklist (everything it does not name). */
 public record Filter(RunicList list, boolean white) {

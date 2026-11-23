@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /** The Inventarium core: a wand forms it, then makes it the preferred core and reports its slots, scribes and memory. */
 public class InventariumCoreBlock extends BaseEntityBlock implements IInteractWithCaster {
@@ -43,7 +43,7 @@ public class InventariumCoreBlock extends BaseEntityBlock implements IInteractWi
             return false;
         }
         if (!level.isClientSide()) {
-            player.sendOverlayMessage(core.wand());
+            player.displayClientMessage(core.wand(), true);
         }
         return true;
     }

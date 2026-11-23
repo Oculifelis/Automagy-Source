@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /** The Soul Stone block; a comparator reads how much it holds. */
 public class SoulStoneBlock extends BaseEntityBlock {
@@ -39,7 +39,7 @@ public class SoulStoneBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
         return level.getBlockEntity(pos) instanceof SoulStoneBlockEntity stone
                 ? (int) Math.ceil(15.0 * stone.xp() / SoulStoneBlockEntity.CAPACITY) : 0;
     }

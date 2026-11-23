@@ -10,7 +10,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -19,19 +19,19 @@ import net.minecraft.world.entity.player.Player;
  * What an Oculo Anima watches for: an entity type, one named player, or any player (component
  * {@code automagia:entity_watch}).
  */
-public record EntityWatch(Optional<Identifier> type, Optional<UUID> player, String name) {
+public record EntityWatch(Optional<ResourceLocation> type, Optional<UUID> player, String name) {
     public static final Codec<EntityWatch> CODEC = RecordCodecBuilder.create(i -> i.group(
-            Identifier.CODEC.optionalFieldOf("type").forGetter(EntityWatch::type),
+            ResourceLocation.CODEC.optionalFieldOf("type").forGetter(EntityWatch::type),
             UUIDUtil.CODEC.optionalFieldOf("player").forGetter(EntityWatch::player),
             Codec.STRING.optionalFieldOf("name", "").forGetter(EntityWatch::name)).apply(i, EntityWatch::new));
     public static final StreamCodec<ByteBuf, EntityWatch> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.optional(Identifier.STREAM_CODEC), EntityWatch::type,
+            ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC), EntityWatch::type,
             ByteBufCodecs.optional(UUIDUtil.STREAM_CODEC), EntityWatch::player,
             ByteBufCodecs.STRING_UTF8, EntityWatch::name, EntityWatch::new);
 
     public static EntityWatch of(Entity entity) {
         if (entity instanceof Player p) {
-            return new EntityWatch(Optional.empty(), Optional.of(p.getUUID()), p.getGameProfile().name());
+            return new EntityWatch(Optional.empty(), Optional.of(p.getUUID()), p.getGameProfile().getName());
         }
         return new EntityWatch(Optional.of(BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType())), Optional.empty(), "");
     }

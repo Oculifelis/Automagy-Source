@@ -7,8 +7,12 @@
     }
   ],
   "ingredients": [
-    "automagia:tally_lens_clear",
-    "automagia:sliver_terra"
+    {
+      "item": "automagia:tally_lens_clear"
+    },
+    {
+      "item": "automagia:sliver_terra"
+    }
   ],
   "research": {
     "entry": "automagia:tally_box_lens",

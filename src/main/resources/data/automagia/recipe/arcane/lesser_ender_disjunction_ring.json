@@ -7,8 +7,12 @@
     }
   ],
   "key": {
-    "P": "minecraft:ender_pearl",
-    "R": "thaumaturge:ring_apprentice"
+    "P": {
+      "item": "minecraft:ender_pearl"
+    },
+    "R": {
+      "item": "thaumaturge:ring_apprentice"
+    }
   },
   "pattern": [
     " P ",

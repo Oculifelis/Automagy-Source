@@ -10,7 +10,9 @@
       "amount": 2
     }
   ],
-  "catalyst": "thaumaturge:crystal_aqua",
+  "catalyst": {
+    "item": "thaumaturge:crystal_aqua"
+  },
   "research": {
     "entry": "automagia:entropic_refining"
   },

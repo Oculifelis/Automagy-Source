@@ -11,9 +11,15 @@
     }
   ],
   "key": {
-    "P": "automagia:enchanted_paper",
-    "T": "minecraft:crafting_table",
-    "F": "thaumaturge:focus_1"
+    "P": {
+      "item": "automagia:enchanted_paper"
+    },
+    "T": {
+      "item": "minecraft:crafting_table"
+    },
+    "F": {
+      "item": "thaumaturge:focus_1"
+    }
   },
   "pattern": [
     " P ",

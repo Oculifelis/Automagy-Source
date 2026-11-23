@@ -14,10 +14,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import org.jspecify.annotations.Nullable;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
+import com.automagy.port.ItemResource;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The golemic taskmaster. It turns orders from requisition tomes into Thaumaturge provisioning requests, one stack at a
@@ -124,8 +124,9 @@ public class GolemTaskmasterBlockEntity extends ArchiveNodeBlockEntity {
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         queue.clear();
         in.read("queue", ORDER.listOf()).ifPresent(queue::addAll);
         // a request in flight does not outlive a reload: ask again
@@ -133,8 +134,9 @@ public class GolemTaskmasterBlockEntity extends ArchiveNodeBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         out.store("queue", ORDER.listOf(), List.copyOf(queue));
         if (active != null) {
             out.store("active", ORDER, active);

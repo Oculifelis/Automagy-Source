@@ -11,9 +11,15 @@
     }
   ],
   "key": {
-    "L": "minecraft:lapis_block",
-    "T": "automagia:sliver_ordo",
-    "M": "thaumaturge:mirror_essentia"
+    "L": {
+      "item": "minecraft:lapis_block"
+    },
+    "T": {
+      "item": "automagia:sliver_ordo"
+    },
+    "M": {
+      "item": "thaumaturge:mirror_essentia"
+    }
   },
   "pattern": [
     "LTL",

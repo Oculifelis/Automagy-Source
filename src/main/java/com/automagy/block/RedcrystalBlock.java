@@ -16,8 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.redstone.Orientation;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Redcrystal: redstone grown into a crystal stuck to a block face. It carries a signal like redstone dust, losing one
@@ -73,7 +72,7 @@ public class RedcrystalBlock extends AttachedBlock {
     /** Crystals elsewhere that read this one and must hear when it changes; same level by default. */
     protected void notifyFar(Level level, BlockPos pos, BlockState state) {
         for (BlockPos far : farPartners(level, pos, state)) {
-            level.neighborChanged(far, this, null);
+            level.neighborChanged(far, this, pos);
         }
     }
 
@@ -152,7 +151,7 @@ public class RedcrystalBlock extends AttachedBlock {
     private static @Nullable Direction directionTo(BlockPos from, BlockPos to) {
         BlockPos d = to.subtract(from);
         for (Direction dir : Direction.values()) {
-            if (dir.getUnitVec3i().equals(d)) {
+            if (dir.getNormal().equals(d)) {
                 return dir;
             }
         }
@@ -175,14 +174,14 @@ public class RedcrystalBlock extends AttachedBlock {
         level.updateNeighborsAt(pos.relative(strongSide(state)), this);
         for (BlockPos at : linked(level, pos, state)) {
             if (!at.closerThan(pos, 1.01)) {
-                level.neighborChanged(at, this, null);
+                level.neighborChanged(at, this, pos);
             }
         }
         notifyFar(level, pos, state);
     }
 
     @Override
-    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean moved) {
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean moved) {
         if (!level.isClientSide()) {
             if (!state.canSurvive(level, pos)) {
                 level.destroyBlock(pos, true);
@@ -201,14 +200,15 @@ public class RedcrystalBlock extends AttachedBlock {
     }
 
     @Override
-    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean moved) {
-        if (!moved) {
+    protected void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
+        super.onRemove(state, world, pos, newState, moved);
+        if (!moved && !state.is(newState.getBlock()) && world instanceof ServerLevel level) {
             level.updateNeighborsAt(pos, this);
             level.updateNeighborsAt(attachedTo(pos, state), this);
             Direction f = state.getValue(FACING);
             for (Direction d : Direction.values()) {
                 if (d.getAxis() != f.getAxis()) {
-                    level.neighborChanged(attachedTo(pos, state).relative(d), this, null);
+                    level.neighborChanged(attachedTo(pos, state).relative(d), this, pos);
                 }
             }
             notifyFar(level, pos, state);

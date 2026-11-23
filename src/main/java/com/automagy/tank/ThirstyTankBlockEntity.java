@@ -11,7 +11,7 @@ import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Containers;
-import net.minecraft.world.entity.animal.cow.Cow;
+import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -19,27 +19,24 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
-import net.neoforged.neoforge.transfer.fluid.FluidResource;
-import net.neoforged.neoforge.transfer.fluid.FluidStacksResourceHandler;
-import net.neoforged.neoforge.transfer.fluid.FluidUtil;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.world.level.block.BucketPickup;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The thirsty tank: drinks the fluid source blocks that touch it, or that a chain of the same fluid leads to, and
  * holds them for buckets, pipes and golems. Next to a water source it never runs dry of water. Up to six glyphs, one
  * per side, change what it does (see {@link Glyph}).
  */
-public class ThirstyTankBlockEntity extends BlockEntity {
+public class ThirstyTankBlockEntity extends BlockEntity implements com.automagy.port.PreRemove {
     private static final int BUCKET = 1000;
     public static final int BASE_CAPACITY = 8 * BUCKET;
     /** Ticks between drinks with no guzzler glyph. */
@@ -58,12 +55,12 @@ public class ThirstyTankBlockEntity extends BlockEntity {
         super(AMRegistry.THIRSTY_TANK_BE.get(), pos, state);
     }
 
-    public ResourceHandler<FluidResource> tank() {
+    public IFluidHandler tank() {
         return tank;
     }
 
     public FluidStack fluid() {
-        return FluidUtil.getStack(tank, 0);
+        return tank.getFluid();
     }
 
     // ---- glyphs -----------------------------------------------------------------------------------------------------
@@ -126,10 +123,7 @@ public class ThirstyTankBlockEntity extends BlockEntity {
     private void everySecond(Level level, BlockPos pos) {
         int consume = total(Glyph.Effect.CONSUMPTION);
         if (consume > 0 && !fluid().isEmpty()) {
-            try (Transaction tx = Transaction.openRoot()) {
-                tank.drain(consume, tx);
-                tx.commit();
-            }
+            tank.consume(consume);
         }
         if (RAIN > 0 && level.isRainingAt(pos.above())) {
             fill(Fluids.WATER, RAIN);
@@ -140,17 +134,14 @@ public class ThirstyTankBlockEntity extends BlockEntity {
                 continue;
             }
             Direction side = e.getKey();
-            ResourceHandler<FluidResource> other = level.getCapability(Capabilities.Fluid.BLOCK, pos.relative(side), side.getOpposite());
+            IFluidHandler other = level.getCapability(Capabilities.FluidHandler.BLOCK, pos.relative(side), side.getOpposite());
             if (other == null) {
                 continue;
             }
-            try (Transaction tx = Transaction.openRoot()) {
-                if (g.effect() == Glyph.Effect.SIPHONING) {
-                    ResourceHandlerUtil.move(tank, other, r -> true, g.amount(), tx);
-                } else {
-                    ResourceHandlerUtil.move(other, tank, r -> true, g.amount(), tx);
-                }
-                tx.commit();
+            if (g.effect() == Glyph.Effect.SIPHONING) {
+                FluidUtil.tryFluidTransfer(other, tank, g.amount(), true);
+            } else {
+                FluidUtil.tryFluidTransfer(tank, other, g.amount(), true);
             }
         }
     }
@@ -174,9 +165,12 @@ public class ThirstyTankBlockEntity extends BlockEntity {
             }
             BlockPos source = findSource(level, next, kind);
             if (source != null && room(kind) > 0) {
-                try (Transaction tx = Transaction.openRoot()) {
-                    if (!FluidUtil.tryPickupFluid(tank, null, level, source, dir.getOpposite(), tx).isEmpty()) {
-                        tx.commit();
+                BlockState block = level.getBlockState(source);
+                FluidStack want = new FluidStack(level.getFluidState(source).getType(), BUCKET);
+                if (block.getBlock() instanceof BucketPickup pickup && tank.fill(want, IFluidHandler.FluidAction.SIMULATE) == BUCKET) {
+                    ItemStack bucket = pickup.pickupBlock(null, level, source, block);
+                    if (!bucket.isEmpty()) {
+                        tank.fill(want, IFluidHandler.FluidAction.EXECUTE);
                         return;
                     }
                 }
@@ -233,11 +227,7 @@ public class ThirstyTankBlockEntity extends BlockEntity {
     }
 
     private int fill(Fluid fluid, int amount) {
-        try (Transaction tx = Transaction.openRoot()) {
-            int in = tank.insert(FluidResource.of(fluid), amount, tx);
-            tx.commit();
-            return in;
-        }
+        return tank.fill(new FluidStack(fluid, amount), IFluidHandler.FluidAction.EXECUTE);
     }
 
     public int signal() {
@@ -246,38 +236,47 @@ public class ThirstyTankBlockEntity extends BlockEntity {
 
     // ---- the tank ---------------------------------------------------------------------------------------------------
 
-    private final class Tank extends FluidStacksResourceHandler {
+    private final class Tank extends FluidTank {
         Tank() {
-            super(1, BASE_CAPACITY);
+            super(BASE_CAPACITY);
         }
 
         @Override
-        protected int getCapacity(int index, FluidResource resource) {
+        public int getCapacity() {
             return capacity();
         }
 
         @Override
-        public int insert(int index, FluidResource resource, int amount, TransactionContext tx) {
-            int in = super.insert(index, resource, amount, tx);
+        public int fill(FluidStack resource, FluidAction action) {
+            this.capacity = capacity();
+            boolean same = FluidStack.isSameFluidSameComponents(resource, fluid);
+            int in = super.fill(resource, action);
             // a void glyph swallows the rest of whatever it already holds
-            return has(Glyph.Effect.VOID) && (in > 0 || resource.matches(stacks.get(0))) ? amount : in;
+            return has(Glyph.Effect.VOID) && (in > 0 || same) ? resource.getAmount() : in;
         }
 
         @Override
-        public int extract(int index, FluidResource resource, int amount, TransactionContext tx) {
-            if (has(Glyph.Effect.PRESERVATION)) {
-                amount = Math.min(amount, Math.max(0, stacks.get(0).getAmount() - 1));
+        public FluidStack drain(FluidStack resource, FluidAction action) {
+            if (resource.isEmpty() || !FluidStack.isSameFluidSameComponents(resource, fluid)) {
+                return FluidStack.EMPTY;
             }
-            return super.extract(index, resource, amount, tx);
-        }
-
-        void drain(int amount, TransactionContext tx) {
-            FluidStack now = stacks.get(0);
-            super.extract(0, FluidResource.of(now), Math.min(amount, now.getAmount()), tx);
+            return drain(resource.getAmount(), action);
         }
 
         @Override
-        protected void onContentsChanged(int index, FluidStack previous) {
+        public FluidStack drain(int amount, FluidAction action) {
+            if (has(Glyph.Effect.PRESERVATION)) {
+                amount = Math.min(amount, Math.max(0, fluid.getAmount() - 1));
+            }
+            return super.drain(amount, action);
+        }
+
+        void consume(int amount) {
+            super.drain(Math.min(amount, fluid.getAmount()), FluidAction.EXECUTE);
+        }
+
+        @Override
+        protected void onContentsChanged() {
             setChanged();
             if (level != null) {
                 level.updateNeighbourForOutputSignal(worldPosition, getBlockState().getBlock());
@@ -287,7 +286,6 @@ public class ThirstyTankBlockEntity extends BlockEntity {
 
     // ---- saving -----------------------------------------------------------------------------------------------------
 
-    @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         if (level != null) {
             glyphs.values().forEach(g -> Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, g));
@@ -295,9 +293,10 @@ public class ThirstyTankBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
-        tank.deserialize(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
+        tank.readFromNBT(reg$, tag$);
         glyphs.clear();
         for (Direction dir : Direction.values()) {
             in.read("glyph_" + dir.getSerializedName(), ItemStack.CODEC).ifPresent(g -> glyphs.put(dir, g));
@@ -305,9 +304,10 @@ public class ThirstyTankBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
-        tank.serialize(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
+        tank.writeToNBT(reg$, tag$);
         glyphs.forEach((dir, g) -> out.store("glyph_" + dir.getSerializedName(), ItemStack.CODEC, g));
     }
 }

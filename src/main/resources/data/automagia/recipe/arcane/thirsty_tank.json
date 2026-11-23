@@ -7,9 +7,15 @@
     }
   ],
   "key": {
-    "W": "thaumaturge:plank_greatwood",
-    "G": "minecraft:glass",
-    "M": "automagia:hungry_maw"
+    "W": {
+      "item": "thaumaturge:plank_greatwood"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "M": {
+      "item": "automagia:hungry_maw"
+    }
   },
   "pattern": [
     "WGW",

@@ -26,7 +26,7 @@ public record ArchiveCapacity(int slots) {
     }
 
     public static int of(BlockState state) {
-        ArchiveCapacity c = state.typeHolder().getData(DATA);
+        ArchiveCapacity c = state.getBlockHolder().getData(DATA);
         return c == null ? 0 : c.slots();
     }
 }

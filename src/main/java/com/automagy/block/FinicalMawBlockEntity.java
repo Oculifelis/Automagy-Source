@@ -7,17 +7,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
+import com.automagy.port.ItemResource;
+import net.neoforged.neoforge.items.IItemHandler;
 
 /**
  * A hungry maw with a runic list. A whitelist: it eats only what the list names, and a quantity limits how many the
  * container behind may hold. A blacklist: it eats everything but what the list names, and a quantity is left behind on
  * the ground. With no list it is as hungry as a hungry maw.
  */
-public class FinicalMawBlockEntity extends HungryMawBlockEntity {
+public class FinicalMawBlockEntity extends HungryMawBlockEntity implements com.automagy.port.PreRemove {
     private ItemStack list = ItemStack.EMPTY;
 
     public FinicalMawBlockEntity(BlockPos pos, BlockState state) {
@@ -34,7 +34,7 @@ public class FinicalMawBlockEntity extends HungryMawBlockEntity {
     }
 
     @Override
-    protected int appetite(ItemStack stack, ResourceHandler<ItemResource> target) {
+    protected int appetite(ItemStack stack, IItemHandler target) {
         Filter f = Filter.of(list);
         if (f == null) {
             return stack.getCount();
@@ -54,17 +54,17 @@ public class FinicalMawBlockEntity extends HungryMawBlockEntity {
     }
 
     /** How many of the items matching a list entry the container already holds. */
-    private static int held(ResourceHandler<ItemResource> h, Filter f, RunicList.Entry e) {
+    private static int held(IItemHandler h, Filter f, RunicList.Entry e) {
         int n = 0;
-        for (int i = 0; i < h.size(); i++) {
-            if (f.entry(h.getResource(i)) == e) {
-                n += h.getAmountAsInt(i);
+        for (int i = 0; i < h.getSlots(); i++) {
+            ItemStack s = h.getStackInSlot(i);
+            if (!s.isEmpty() && f.entry(ItemResource.of(s)) == e) {
+                n += s.getCount();
             }
         }
         return n;
     }
 
-    @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         if (level != null && !list.isEmpty()) {
             Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, list);
@@ -72,14 +72,16 @@ public class FinicalMawBlockEntity extends HungryMawBlockEntity {
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         list = in.read("list", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         out.store("list", ItemStack.OPTIONAL_CODEC, list);
     }
 }

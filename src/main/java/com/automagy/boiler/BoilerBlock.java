@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -25,10 +26,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.transfer.fluid.FluidUtil;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
-import org.jspecify.annotations.Nullable;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The alchemical boiler block. Buckets fill and empty it; right-click with fuel to stoke it; with an empty hand it
@@ -64,25 +63,22 @@ public class BoilerBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
                                           InteractionHand hand, BlockHitResult hit) {
         if (!(level.getBlockEntity(pos) instanceof BoilerBlockEntity boiler)) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
         }
-        if (FluidUtil.interactWithFluidHandler(player, hand, pos, boiler.tank(), null)) {
-            return InteractionResult.SUCCESS;
+        if (FluidUtil.interactWithFluidHandler(player, hand, boiler.tank())) {
+            return ItemInteractionResult.SUCCESS;
         }
-        if (boiler.fuel().isValid(0, ItemResource.of(stack))) {
+        if (boiler.fuel().isItemValid(0, stack)) {
             if (!level.isClientSide()) {
-                try (Transaction tx = Transaction.openRoot()) {
-                    int in = boiler.fuel().insert(0, ItemResource.of(stack), stack.getCount(), tx);
-                    tx.commit();
-                    stack.shrink(in);
-                }
+                ItemStack rest = boiler.fuel().insertItem(0, stack.copy(), false);
+                stack.setCount(rest.getCount());
             }
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
-        return InteractionResult.TRY_WITH_EMPTY_HAND;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
@@ -90,7 +86,7 @@ public class BoilerBlock extends BaseEntityBlock {
         if (!level.isClientSide() && level.getBlockEntity(pos) instanceof BoilerBlockEntity boiler) {
             Component liquid = boiler.fluid().isEmpty() ? Component.translatable("automagia.boiler.empty")
                     : Component.translatable("automagia.boiler.liquid", boiler.fluid().getHoverName(), boiler.fluid().getAmount());
-            player.sendOverlayMessage(Component.translatable("automagia.boiler.status", liquid, boiler.essentia()));
+            player.displayClientMessage(Component.translatable("automagia.boiler.status", liquid, boiler.essentia()), true);
         }
         return InteractionResult.SUCCESS;
     }
@@ -101,7 +97,7 @@ public class BoilerBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
         return level.getBlockEntity(pos) instanceof BoilerBlockEntity boiler ? boiler.signal() : 0;
     }
 

@@ -11,9 +11,15 @@
     }
   ],
   "key": {
-    "A": "automagia:sliver_ignis",
-    "B": "automagia:sliver_ordo",
-    "S": "thaumaturge:stone_arcane_brick"
+    "A": {
+      "item": "automagia:sliver_ignis"
+    },
+    "B": {
+      "item": "automagia:sliver_ordo"
+    },
+    "S": {
+      "item": "thaumaturge:stone_arcane_brick"
+    }
   },
   "pattern": [
     "SAS",

@@ -1,11 +1,19 @@
 {
   "type": "automagia:infusion_enchanting",
   "enchantment": "minecraft:luck_of_the_sea",
-  "catalyst": "minecraft:fishing_rod",
+  "catalyst": {
+    "item": "minecraft:fishing_rod"
+  },
   "components": [
-    "minecraft:prismarine_crystals",
-    "minecraft:gold_nugget",
-    "thaumaturge:quicksilver"
+    {
+      "item": "minecraft:prismarine_crystals"
+    },
+    {
+      "item": "minecraft:gold_nugget"
+    },
+    {
+      "item": "thaumaturge:quicksilver"
+    }
   ],
   "aspects": [
     {

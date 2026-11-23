@@ -11,9 +11,15 @@
     }
   ],
   "key": {
-    "T": "thaumaturge:plate_thaumium",
-    "G": "thaumaturge:mirrored_glass",
-    "M": "automagia:melding_mirror"
+    "T": {
+      "item": "thaumaturge:plate_thaumium"
+    },
+    "G": {
+      "item": "thaumaturge:mirrored_glass"
+    },
+    "M": {
+      "item": "automagia:melding_mirror"
+    }
   },
   "pattern": [
     "TGT",

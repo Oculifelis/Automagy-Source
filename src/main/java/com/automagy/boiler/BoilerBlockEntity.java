@@ -18,18 +18,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.fluid.FluidResource;
-import net.neoforged.neoforge.transfer.fluid.FluidStacksResourceHandler;
-import net.neoforged.neoforge.transfer.fluid.FluidUtil;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 /**
  * The alchemical boiler: the alchemical furnace for liquids. It burns furnace fuel (alumentum makes it faster), boils
@@ -37,7 +33,7 @@ import net.neoforged.neoforge.transfer.transaction.Transaction;
  * A liquid's essentia comes from the fluid data map {@code automagia:boiler_aspects}, or else from its bucket's
  * aspects less an empty bucket's.
  */
-public class BoilerBlockEntity extends BlockEntity {
+public class BoilerBlockEntity extends BlockEntity implements com.automagy.port.PreRemove {
     public static final DataMapType<Fluid, AspectList> ASPECTS = DataMapType.builder(Automagy.id("boiler_aspects"),
             Registries.FLUID, AspectList.CODEC).build();
     private static final int BUCKET = 1000;
@@ -47,25 +43,20 @@ public class BoilerBlockEntity extends BlockEntity {
     /** How many alembics up it sends to. */
     private static final int ALEMBICS = 5;
 
-    private final FluidStacksResourceHandler tank = new FluidStacksResourceHandler(1, CAPACITY) {
+    private final FluidTank tank = new FluidTank(CAPACITY, f -> !aspectsOf(f.getFluid()).isEmpty()) {
         @Override
-        public boolean isValid(int index, FluidResource resource) {
-            return !aspectsOf(resource.getFluid()).isEmpty();
-        }
-
-        @Override
-        protected void onContentsChanged(int index, FluidStack previous) {
+        protected void onContentsChanged() {
             setChanged();
         }
     };
-    private final ItemStacksResourceHandler fuel = new ItemStacksResourceHandler(1) {
+    private final ItemStackHandler fuel = new ItemStackHandler(1) {
         @Override
-        public boolean isValid(int index, ItemResource resource) {
-            return level != null && resource.toStack().getBurnTime(RecipeType.SMELTING, level.fuelValues()) > 0;
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return stack.getBurnTime(RecipeType.SMELTING) > 0;
         }
 
         @Override
-        protected void onContentsChanged(int index, ItemStack previous) {
+        protected void onContentsChanged(int slot) {
             setChanged();
         }
     };
@@ -95,16 +86,16 @@ public class BoilerBlockEntity extends BlockEntity {
         return fluid.getBucket() == Items.AIR ? AspectList.EMPTY : full;
     }
 
-    public ResourceHandler<FluidResource> tank() {
+    public IFluidHandler tank() {
         return tank;
     }
 
-    public ResourceHandler<ItemResource> fuel() {
+    public ItemStackHandler fuel() {
         return fuel;
     }
 
     public FluidStack fluid() {
-        return FluidUtil.getStack(tank, 0);
+        return tank.getFluid();
     }
 
     public int essentia() {
@@ -127,10 +118,7 @@ public class BoilerBlockEntity extends BlockEntity {
             if (be.burn > 0 && ++be.boil >= (be.fast ? BOIL_TIME / 2 : BOIL_TIME)) {
                 be.boil = 0;
                 be.boiling = aspectsOf(be.fluid().getFluid());
-                try (Transaction tx = Transaction.openRoot()) {
-                    be.tank.extract(0, FluidResource.of(be.fluid()), BUCKET, tx);
-                    tx.commit();
-                }
+                be.tank.drain(BUCKET, IFluidHandler.FluidAction.EXECUTE);
             }
         }
         if (lit != be.burn > 0) {
@@ -140,20 +128,17 @@ public class BoilerBlockEntity extends BlockEntity {
     }
 
     private void refuel(Level level) {
-        ItemStack stack = fuel.getResource(0).toStack(fuel.getAmountAsInt(0));
-        int time = stack.isEmpty() ? 0 : stack.getBurnTime(RecipeType.SMELTING, level.fuelValues());
+        ItemStack stack = fuel.getStackInSlot(0).copy();
+        int time = stack.isEmpty() ? 0 : stack.getBurnTime(RecipeType.SMELTING);
         if (time <= 0) {
             return;
         }
         fast = stack.is(TTItems.ALUMENTUM.get());
         burn = time;
-        try (Transaction tx = Transaction.openRoot()) {
-            fuel.extract(0, fuel.getResource(0), 1, tx);
-            tx.commit();
-        }
-        ItemStack rest = stack.getItem().getCraftingRemainder(stack) == null ? ItemStack.EMPTY : stack.getItem().getCraftingRemainder(stack).create();
-        if (!rest.isEmpty() && fuel.getAmountAsInt(0) == 0) {
-            fuel.set(0, ItemResource.of(rest), rest.getCount());
+        fuel.extractItem(0, 1, false);
+        ItemStack rest = stack.getCraftingRemainingItem();
+        if (!rest.isEmpty() && fuel.getStackInSlot(0).isEmpty()) {
+            fuel.setStackInSlot(0, rest.copy());
         }
     }
 
@@ -174,20 +159,21 @@ public class BoilerBlockEntity extends BlockEntity {
         return fluid().isEmpty() ? 0 : 1 + Math.min(14, fluid().getAmount() * 14 / CAPACITY);
     }
 
-    @Override
+    /** Called from the block's onRemove. */
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         // the liquid is lost with the boiler; its fuel drops
-        if (level != null && fuel.getAmountAsInt(0) > 0) {
+        if (level != null && !fuel.getStackInSlot(0).isEmpty()) {
             Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-                    fuel.getResource(0).toStack(fuel.getAmountAsInt(0)));
+                    fuel.getStackInSlot(0).copy());
         }
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
-        tank.deserialize(in.childOrEmpty("tank"));
-        fuel.deserialize(in.childOrEmpty("fuel"));
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
+        tank.readFromNBT(reg$, tag$.getCompound("tank"));
+        fuel.deserializeNBT(reg$, tag$.getCompound("fuel"));
         boiling = in.read("boiling", AspectList.CODEC).orElse(AspectList.EMPTY);
         burn = in.getIntOr("burn", 0);
         boil = in.getIntOr("boil", 0);
@@ -195,10 +181,11 @@ public class BoilerBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
-        tank.serialize(out.child("tank"));
-        fuel.serialize(out.child("fuel"));
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
+        tag$.put("tank", tank.writeToNBT(reg$, new net.minecraft.nbt.CompoundTag()));
+        tag$.put("fuel", fuel.serializeNBT(reg$));
         out.store("boiling", AspectList.CODEC, boiling);
         out.putInt("burn", burn);
         out.putInt("boil", boil);

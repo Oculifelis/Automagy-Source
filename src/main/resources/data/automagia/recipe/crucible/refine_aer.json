@@ -10,7 +10,9 @@
       "amount": 2
     }
   ],
-  "catalyst": "thaumaturge:crystal_aer",
+  "catalyst": {
+    "item": "thaumaturge:crystal_aer"
+  },
   "research": {
     "entry": "automagia:entropic_refining"
   },

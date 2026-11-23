@@ -10,10 +10,10 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemStackTemplate;
+
 
 /**
  * Writing on a runic list. Nine ghost slots hold copies, never the items themselves: click one with an item to write
@@ -37,7 +37,7 @@ public class RunicListMenu extends AbstractContainerMenu {
         for (int i = 0; i < RunicList.SIZE; i++) {
             addSlot(new Ghost(ghosts, i, 62 + (i % 3) * 18, 17 + (i / 3) * 18));
         }
-        int held = hand == InteractionHand.MAIN_HAND ? inv.getSelectedSlot() : -1;
+        int held = hand == InteractionHand.MAIN_HAND ? inv.selected : -1;
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 addSlot(new Slot(inv, col + row * 9 + 9, 8 + col * 18, 84 + row * 18));
@@ -66,19 +66,19 @@ public class RunicListMenu extends AbstractContainerMenu {
         RunicList list = list();
         for (int i = 0; i < RunicList.SIZE; i++) {
             RunicList.Entry e = list.at(i);
-            ghosts.setItem(i, e == null ? ItemStack.EMPTY : e.item().create());
+            ghosts.setItem(i, e == null ? ItemStack.EMPTY : e.item().copy());
         }
     }
 
     private void writeAt(int slot, ItemStack stack) {
-        write(list().with(new RunicList.Entry(slot, ItemStackTemplate.fromNonEmptyStack(stack.copyWithCount(1)),
+        write(list().with(new RunicList.Entry(slot, stack.copyWithCount(1),
                 Math.max(1, stack.getCount()))));
     }
 
     @Override
-    public void clicked(int slotId, int button, ContainerInput input, Player player) {
+    public void clicked(int slotId, int button, ClickType input, Player player) {
         if (slotId >= 0 && slotId < RunicList.SIZE) {
-            if (input == ContainerInput.PICKUP || input == ContainerInput.QUICK_MOVE) {
+            if (input == ClickType.PICKUP || input == ClickType.QUICK_MOVE) {
                 ItemStack carried = getCarried();
                 if (carried.isEmpty() || carried.getItem() instanceof RunicListItem) {
                     write(list().without(slotId));

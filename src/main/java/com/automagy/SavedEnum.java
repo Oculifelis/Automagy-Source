@@ -1,8 +1,8 @@
 package com.automagy;
 
 import java.util.Locale;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
 
 /**
  * Block entity settings kept as enums are saved by their lower-case name, never by ordinal, so adding or reordering a

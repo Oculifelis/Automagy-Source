@@ -7,11 +7,21 @@
     }
   ],
   "ingredients": [
-    "automagia:redcrystal",
-    "automagia:redcrystal",
-    "automagia:redcrystal",
-    "automagia:redcrystal",
-    "automagia:sliver_terra"
+    {
+      "item": "automagia:redcrystal"
+    },
+    {
+      "item": "automagia:redcrystal"
+    },
+    {
+      "item": "automagia:redcrystal"
+    },
+    {
+      "item": "automagia:redcrystal"
+    },
+    {
+      "item": "automagia:sliver_terra"
+    }
   ],
   "research": {
     "entry": "automagia:redcrystal_dense",

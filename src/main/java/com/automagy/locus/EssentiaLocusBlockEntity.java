@@ -25,9 +25,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import org.jspecify.annotations.Nullable;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The essentia locus. Built on a water crystal cluster over a core block (lapis), the core ringed by water sources and
@@ -37,7 +37,7 @@ import org.jspecify.annotations.Nullable;
  * More clusters touching the rim raise its limits. With an essentia aggregator on top it is a source that draws from
  * those containers.
  */
-public class EssentiaLocusBlockEntity extends BlockEntity implements IAspectContainer {
+public class EssentiaLocusBlockEntity extends BlockEntity implements com.automagy.port.PreRemove, IAspectContainer {
     public static final TagKey<Block> CORE = TagKey.create(Registries.BLOCK, Automagy.id("locus_core"));
     public static final TagKey<Block> RIM = TagKey.create(Registries.BLOCK, Automagy.id("locus_rim"));
     public static final TagKey<Block> CLUSTER = TagKey.create(Registries.BLOCK, Automagy.id("locus_cluster"));
@@ -264,7 +264,6 @@ public class EssentiaLocusBlockEntity extends BlockEntity implements IAspectCont
         };
     }
 
-    @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         if (level != null) {
             for (ItemStack eye : eyes) {
@@ -274,15 +273,17 @@ public class EssentiaLocusBlockEntity extends BlockEntity implements IAspectCont
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         eyes.clear();
         in.read("eyes", ItemStack.CODEC.listOf()).ifPresent(eyes::addAll);
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         out.store("eyes", ItemStack.CODEC.listOf(), eyes);
     }
 }

@@ -7,10 +7,18 @@
     }
   ],
   "key": {
-    "G": "minecraft:gold_ingot",
-    "S": "automagia:sliver_perditio",
-    "C": "thaumaturge:hungry_chest",
-    "M": "automagia:hungry_maw"
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "S": {
+      "item": "automagia:sliver_perditio"
+    },
+    "C": {
+      "item": "thaumaturge:hungry_chest"
+    },
+    "M": {
+      "item": "automagia:hungry_maw"
+    }
   },
   "pattern": [
     "GSG",

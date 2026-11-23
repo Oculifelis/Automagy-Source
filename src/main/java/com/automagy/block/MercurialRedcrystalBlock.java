@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Mercurial redcrystal is bound to a Thaumaturge magic mirror or essentia mirror (right-click the mirror with it) and
@@ -74,7 +74,7 @@ public class MercurialRedcrystalBlock extends RedcrystalBlock implements EntityB
         ServerLevel mirrorLevel = server.getLevel(mirror.dimension());
         if (mirrorLevel == null || !mirrorLevel.isLoaded(mirror.pos())
                 || !(mirrorLevel.getBlockEntity(mirror.pos()) instanceof BlockEntityMirrorBase glass)
-                || !glass.paired || glass.link == null) {
+                || !glass.linked || glass.link == null) {
             return List.of();
         }
         Set<GlobalPos> far = BOUND.get(glass.link);
@@ -112,7 +112,7 @@ public class MercurialRedcrystalBlock extends RedcrystalBlock implements EntityB
         for (GlobalPos far : partners(level, pos)) {
             ServerLevel there = level.getServer().getLevel(far.dimension());
             if (there != null && there.isLoaded(far.pos())) {
-                there.neighborChanged(far.pos(), this, null);
+                there.neighborChanged(far.pos(), this, far.pos());
             }
         }
     }

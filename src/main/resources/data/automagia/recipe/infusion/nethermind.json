@@ -18,14 +18,28 @@
       "amount": 8
     }
   ],
-  "catalyst": "automagia:crystal_brain_ignis",
+  "catalyst": {
+    "item": "automagia:crystal_brain_ignis"
+  },
   "components": [
-    "automagia:ember_heart",
-    "automagia:runed_obsidian",
-    "minecraft:ghast_tear",
-    "automagia:runed_obsidian",
-    "minecraft:blaze_rod",
-    "automagia:runed_obsidian"
+    {
+      "item": "automagia:ember_heart"
+    },
+    {
+      "item": "automagia:runed_obsidian"
+    },
+    {
+      "item": "minecraft:ghast_tear"
+    },
+    {
+      "item": "automagia:runed_obsidian"
+    },
+    {
+      "item": "minecraft:blaze_rod"
+    },
+    {
+      "item": "automagia:runed_obsidian"
+    }
   ],
   "instability": 5,
   "research": {

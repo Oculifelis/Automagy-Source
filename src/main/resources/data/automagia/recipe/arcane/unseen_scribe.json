@@ -7,8 +7,12 @@
     }
   ],
   "key": {
-    "T": "thaumaturge:scribing_tools",
-    "W": "thaumaturge:table_wood"
+    "T": {
+      "item": "thaumaturge:scribing_tools"
+    },
+    "W": {
+      "item": "thaumaturge:table_wood"
+    }
   },
   "pattern": [
     "T",

@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "automagia:runed_obsidian",
-    "minecraft:phantom_membrane",
-    "minecraft:phantom_membrane"
+    {
+      "item": "automagia:runed_obsidian"
+    },
+    {
+      "item": "minecraft:phantom_membrane"
+    },
+    {
+      "item": "minecraft:phantom_membrane"
+    }
   ],
   "research": {
     "entry": "automagia:netherrune_wisp",

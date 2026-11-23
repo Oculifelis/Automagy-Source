@@ -7,8 +7,12 @@
     }
   ],
   "key": {
-    "R": "minecraft:redstone",
-    "S": "automagia:sliver_ordo"
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "S": {
+      "item": "automagia:sliver_ordo"
+    }
   },
   "pattern": [
     "RRR",

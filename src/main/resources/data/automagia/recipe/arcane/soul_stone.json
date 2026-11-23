@@ -11,9 +11,15 @@
     }
   ],
   "key": {
-    "G": "minecraft:gold_ingot",
-    "E": "minecraft:experience_bottle",
-    "A": "automagia:amnesiac_stone"
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "E": {
+      "item": "minecraft:experience_bottle"
+    },
+    "A": {
+      "item": "automagia:amnesiac_stone"
+    }
   },
   "pattern": [
     "GEG",

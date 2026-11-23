@@ -14,7 +14,7 @@ import com.leclowndu93150.thaumaturge.content.research.ResearchManager;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.NonNullList;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -36,7 +36,7 @@ public final class LegacyIds {
     }
 
     /** The id under the current namespace, or null when it isn't an old one. */
-    public static Identifier renamed(Identifier id) {
+    public static ResourceLocation renamed(ResourceLocation id) {
         return OLD.equals(id.getNamespace()) ? Automagy.id(id.getPath()) : null;
     }
 
@@ -55,7 +55,7 @@ public final class LegacyIds {
 
     private static boolean migrateResearch(ServerPlayer player) {
         if (ResearchManager.of(player) instanceof PlayerKnowledge k && migrateResearch(k)) {
-            k.sync(player);
+            k.queueSync(player);
             return true;
         }
         return false;
@@ -64,35 +64,35 @@ public final class LegacyIds {
     /** Moves research entries and category knowledge from the old namespace. True when something moved. */
     public static boolean migrateResearch(PlayerKnowledge k) {
         boolean changed = false;
-        for (Identifier old : List.copyOf(k.researchList())) {
-            Identifier now = renamed(old);
+        for (ResourceLocation old : List.copyOf(k.knownEntries())) {
+            ResourceLocation now = renamed(old);
             if (now == null) {
                 continue;
             }
-            k.addResearch(now);
-            int stage = k.researchStage(old);
-            if (stage > k.researchStage(now)) {
-                k.setResearchStage(now, stage);
+            k.learn(now);
+            int stage = k.stageOf(old);
+            if (stage > k.stageOf(now)) {
+                k.setStage(now, stage);
             }
-            if (k.isResearchComplete(old)) {
+            if (k.hasCompleted(old)) {
                 k.markComplete(now);
             }
             for (ResearchFlag flag : FLAGS) {
-                if (k.hasResearchFlag(old, flag)) {
-                    k.setResearchFlag(now, flag);
+                if (k.hasFlag(old, flag)) {
+                    k.addFlag(now, flag);
                 }
             }
-            k.removeResearch(old);
+            k.forget(old);
             changed = true;
         }
         ResourceKey<IResearchCategory> oldCat = ResourceKey.create(IResearchCategory.REGISTRY_KEY,
-                Identifier.fromNamespaceAndPath(OLD, "automagy"));
+                ResourceLocation.fromNamespaceAndPath(OLD, "automagy"));
         ResourceKey<IResearchCategory> newCat = ResourceKey.create(IResearchCategory.REGISTRY_KEY, Automagy.id("automagy"));
         for (KnowledgeType type : KnowledgeType.values()) {
-            int amount = k.rawKnowledge(type, oldCat);
+            int amount = k.knowledgePoints(type, oldCat);
             if (amount > 0) {
-                k.addKnowledge(type, newCat, amount);
-                k.addKnowledge(type, oldCat, -amount);
+                k.addKnowledgePoints(type, newCat, amount);
+                k.addKnowledgePoints(type, oldCat, -amount);
                 changed = true;
             }
         }
@@ -154,7 +154,7 @@ public final class LegacyIds {
     static SpellNode rename(SpellNode node) {
         boolean changed = false;
         var part = node.part();
-        Identifier now = renamed(part.identifier());
+        ResourceLocation now = renamed(part.location());
         if (now != null) {
             part = ResourceKey.create(SpellPart.REGISTRY_KEY, now);
             changed = true;

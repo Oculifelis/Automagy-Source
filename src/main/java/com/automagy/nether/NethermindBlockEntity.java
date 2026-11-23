@@ -18,16 +18,16 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import com.automagy.port.ValueInput;
+import com.automagy.port.ValueOutput;
 import net.minecraft.world.phys.AABB;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The Nethermind: a crystalline brain set among runed obsidian that calls blocks and creatures across from the
@@ -125,7 +125,7 @@ public class NethermindBlockEntity extends BlockEntity {
                 }
             }
         }
-        if (worldPosition.getY() - 12 < level.getMinY()) {
+        if (worldPosition.getY() - 12 < level.getMinBuildHeight()) {
             return new Survey(runes, "yTooLow", null, celerity, false);
         }
         if (blocks > 0 && creatures > 0) {
@@ -305,7 +305,7 @@ public class NethermindBlockEntity extends BlockEntity {
 
     private void spawn(ServerLevel server, BlockPos at, NetherRune.Conjure what) {
         what.entity().ifPresent(type -> {
-            Entity e = type.spawn(server, at, EntitySpawnReason.MOB_SUMMONED);
+            Entity e = type.spawn(server, at, MobSpawnType.MOB_SUMMONED);
             if (e instanceof WispEntity wisp && what.aspect().isPresent()) {
                 wisp.setAspect(what.aspect().get());
             }
@@ -316,8 +316,9 @@ public class NethermindBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueInput in = ValueInput.of(tag$, reg$);
+        super.loadAdditional(in.tag(), in.registries());
         state = SavedEnum.read(in, "state", State.IDLE);
         boolean on = state == State.ACTIVE;
         timer = on ? in.getIntOr("timer", 0) : 0;
@@ -325,8 +326,9 @@ public class NethermindBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag$, net.minecraft.core.HolderLookup.Provider reg$) {
+        ValueOutput out = ValueOutput.of(tag$, reg$);
+        super.saveAdditional(out.tag(), out.registries());
         SavedEnum.write(out, "state", state);
         if (state == State.ACTIVE) {
             out.putInt("timer", timer);

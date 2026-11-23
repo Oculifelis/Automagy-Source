@@ -11,9 +11,15 @@
     }
   ],
   "key": {
-    "A": "automagia:sliver_aer",
-    "H": "automagia:hourglass",
-    "O": "automagia:sliver_ordo"
+    "A": {
+      "item": "automagia:sliver_aer"
+    },
+    "H": {
+      "item": "automagia:hourglass"
+    },
+    "O": {
+      "item": "automagia:sliver_ordo"
+    }
   },
   "pattern": [
     "A",

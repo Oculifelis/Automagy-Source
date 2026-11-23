@@ -7,9 +7,15 @@
     }
   ],
   "ingredients": [
-    "automagia:runed_obsidian",
-    "minecraft:ghast_tear",
-    "minecraft:ghast_tear"
+    {
+      "item": "automagia:runed_obsidian"
+    },
+    {
+      "item": "minecraft:ghast_tear"
+    },
+    {
+      "item": "minecraft:ghast_tear"
+    }
   ],
   "research": {
     "entry": "automagia:netherrune_ghast",
