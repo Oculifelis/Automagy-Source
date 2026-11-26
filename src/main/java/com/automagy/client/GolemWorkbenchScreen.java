@@ -8,24 +8,27 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
-/** The golem's workbench on the large chest's background; patterns not yet opened by fire upgrades are shaded. */
+/** The golem's workbench: three pattern windows, the storage board and the player's inventory on greatwood boards.
+ *  Pattern windows not yet opened by fire upgrades stay shut behind locked greatwood doors. */
 public class GolemWorkbenchScreen extends AbstractContainerScreen<GolemWorkbenchMenu> {
-    private static final Identifier BACKGROUND = Identifier.withDefaultNamespace("textures/gui/container/generic_54.png");
+    private static final Identifier BACKGROUND = Identifier.fromNamespaceAndPath("automagia", "textures/gui/golem_workbench.png");
 
     public GolemWorkbenchScreen(GolemWorkbenchMenu menu, Inventory inventory, Component title) {
-        super(menu, inventory, title, 176, 222);
-        inventoryLabelY = imageHeight - 94;
+        super(menu, inventory, title, 178, 220);
     }
 
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         super.extractBackground(graphics, mouseX, mouseY, a);
-        graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, leftPos, topPos, 0.0F, 0.0F, imageWidth, 125, 256, 256);
-        graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, leftPos, topPos + 125, 0.0F, 126.0F, imageWidth, 96, 256, 256);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
         for (int p = menu.openPatterns(); p < 3; p++) {
-            graphics.fill(leftPos + 7 + p * 54, topPos + 17, leftPos + 7 + p * 54 + 54, topPos + 17 + 54, 0xA0202020);
+            int x = leftPos + GolemWorkbenchMenu.patternX(p);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, x, topPos + 4, 180.0F, 0.0F, 54, 54, 256, 256);
         }
-        // a line between the patterns and the storage
-        graphics.fill(leftPos + 7, topPos + 71, leftPos + 169, topPos + 72, 0xFF8B8B8B);
+    }
+
+    @Override
+    protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        // the boards leave no room for titles, as in the original
     }
 }

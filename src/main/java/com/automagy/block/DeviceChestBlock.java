@@ -83,7 +83,7 @@ public abstract class DeviceChestBlock extends ChestBlock implements IInteractWi
                 }
                 return InteractionResult.SUCCESS;
             }
-            if (!level.isClientSide()) {
+            if (!level.isClientSide() && !player.isSecondaryUseActive()) { // sneaking opens it without a trade
                 chest.beforeOpen(player);
             }
         }

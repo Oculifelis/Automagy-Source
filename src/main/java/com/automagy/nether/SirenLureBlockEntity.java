@@ -52,15 +52,20 @@ public class SirenLureBlockEntity extends BlockEntity {
         }
     }
 
+    private void forget() {
+        Set<SirenLureBlockEntity> set = LOADED.get(level);
+        if (set != null) set.remove(this);
+    }
+
     @Override
     public void setRemoved() {
-        loaded(level).remove(this);
+        forget();
         super.setRemoved();
     }
 
     @Override
     public void onChunkUnloaded() {
-        loaded(level).remove(this);
+        forget();
         super.onChunkUnloaded();
     }
 

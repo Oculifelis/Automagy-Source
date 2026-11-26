@@ -18,7 +18,7 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * Amplified redcrystal: any signal reaching it comes out at full strength, one way only (OUTPUT), so it also works
- * as a diode. It takes signal from every side but its output. A wand turns the output.
+ * as a diode. It takes signal only from the side opposite its output. A wand turns the output.
  */
 public class AmplifiedRedcrystalBlock extends RedcrystalBlock implements IInteractWithCaster {
     public static final EnumProperty<Direction> OUTPUT = EnumProperty.create("output", Direction.class);
@@ -61,7 +61,7 @@ public class AmplifiedRedcrystalBlock extends RedcrystalBlock implements IIntera
 
     @Override
     protected boolean acceptsFrom(BlockState state, Direction from) {
-        return from != state.getValue(OUTPUT);
+        return from == state.getValue(OUTPUT).getOpposite();
     }
 
     @Override

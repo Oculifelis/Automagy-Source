@@ -3,6 +3,11 @@ package com.automagy.block;
 import com.automagy.AMRegistry;
 import com.automagy.SavedEnum;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -13,7 +18,8 @@ import net.minecraft.world.level.storage.ValueOutput;
 
 /**
  * Sand falling in an hourglass. The mundane glass flips when activated mid-run (the sand flows back from where it
- * was); the magic one restarts from zero instead, or stops if it was repeating.
+ * was). The magic one chooses: flip like the mundane glass, move the sand to the top (restart) or move it to the
+ * bottom (end early with no signal, which also ends a repeat).
  */
 public class HourglassBlockEntity extends ConfigurableBlockEntity {
     /** Magic hourglass times, in seconds: fine at the short end, up to an hour. */
@@ -21,7 +27,10 @@ public class HourglassBlockEntity extends ConfigurableBlockEntity {
             180, 240, 300, 600, 900, 1200, 1800, 2700, 3600};
     private static final int PULSE = 4;
 
-    enum Mode { PULSE, CONSTANT, ALTERNATING, NEGATIVE_PULSE }
+    enum Mode { PULSE, CONSTANT, ALTERNATING, NEGATIVE_PULSE, DISABLED }
+
+    /** What a magic glass does when activated while sand is still falling. */
+    enum Flip { TOP, BOTTOM, STANDARD }
 
     enum Gate { TRIGGER, WHILE_POWERED, WHILE_UNPOWERED, IGNORE }
 
@@ -32,6 +41,7 @@ public class HourglassBlockEntity extends ConfigurableBlockEntity {
     private Mode mode = Mode.PULSE;
     private Gate gate = Gate.TRIGGER;
     private boolean repeat;
+    private Flip flip = Flip.TOP;
     private int lastLevel;
 
     public HourglassBlockEntity(BlockPos pos, BlockState state) {
@@ -57,6 +67,29 @@ public class HourglassBlockEntity extends ConfigurableBlockEntity {
 
     /** Client-side: game time the renderer first saw the current turn, so the tumble starts from its own frame. */
     public long turnSeenAt = -1L;
+    /** Client only: game time the turn was seen to end, while the landed glass is still drawn by the renderer. */
+    public long landedAt = -1L;
+    /** Client only: game time the last synced `remaining` was first read, so the sand can sink by the clock. */
+    private long syncedAt = Long.MIN_VALUE;
+
+    /**
+     * Client side, for the renderer: how much sand is still in the top bulb, from 1 just turned to 0 run out, worked
+     * out from the last synced count and the clock every frame so the sand sinks smoothly instead of in eighths.
+     */
+    public float sandOnTop(float partialTick) {
+        if (level == null || length() <= 0) {
+            return -1.0F;
+        }
+        if (syncedAt == Long.MIN_VALUE) {
+            syncedAt = level.getGameTime();
+        }
+        double left = remaining - (level.getGameTime() - syncedAt + (double) partialTick);
+        return (float) Math.max(0.0D, Math.min(1.0D, left / length()));
+    }
+
+    public boolean isMagic() {
+        return magic();
+    }
 
     public void activate() {
         if (!magic()) {
@@ -69,12 +102,19 @@ public class HourglassBlockEntity extends ConfigurableBlockEntity {
                     level.scheduleTick(worldPosition, now.getBlock(), HourglassBlock.TURN_TICKS);
                 }
             }
-        } else if (repeat && remaining > 0) {
-            remaining = 0;
-        } else {
+        } else if (remaining <= 0) {
             remaining = length();
+        } else {
+            remaining = switch (flip) {
+                case TOP -> length();
+                case BOTTOM -> 0; // straight to the bottom: no pulse, and serverTick does not restart a repeat
+                case STANDARD -> length() - remaining;
+            };
         }
         setChanged();
+        if (level != null && !level.isClientSide()) { // the client draws the sand from this count
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
+        }
     }
 
     public void onRedstone(boolean powered) {
@@ -152,13 +192,14 @@ public class HourglassBlockEntity extends ConfigurableBlockEntity {
             case PULSE -> pulse > 0;
             case CONSTANT -> falling;
             case ALTERNATING -> falling && (remaining / 10) % 2 == 0;
-            case NEGATIVE_PULSE -> pulse == 0;
+            case NEGATIVE_PULSE -> falling && pulse == 0;
+            case DISABLED -> false;
         };
     }
 
     @Override
     protected int settingCount() {
-        return 4;
+        return 5;
     }
 
     @Override
@@ -167,7 +208,8 @@ public class HourglassBlockEntity extends ConfigurableBlockEntity {
             case 0 -> "mode";
             case 1 -> "repeat";
             case 2 -> "redstone";
-            default -> "time";
+            case 3 -> "time";
+            default -> "reactivation";
         };
     }
 
@@ -177,7 +219,8 @@ public class HourglassBlockEntity extends ConfigurableBlockEntity {
             case 0 -> Component.translatable("automagia.hourglass.mode." + mode.name().toLowerCase());
             case 1 -> Component.translatable(repeat ? "automagia.value.on" : "automagia.value.off");
             case 2 -> Component.translatable("automagia.hourglass.gate." + gate.name().toLowerCase());
-            default -> Component.translatable("automagia.value.seconds", seconds);
+            case 3 -> Component.translatable("automagia.value.seconds", seconds);
+            default -> Component.translatable("automagia.hourglass.flip." + flip.name().toLowerCase());
         };
     }
 
@@ -187,6 +230,7 @@ public class HourglassBlockEntity extends ConfigurableBlockEntity {
             case 0 -> mode = SavedEnum.next(mode);
             case 1 -> repeat = !repeat;
             case 2 -> gate = SavedEnum.next(gate);
+            case 4 -> flip = SavedEnum.next(flip);
             default -> {
                 int next = MAGIC_TIMES[0];
                 for (int t : MAGIC_TIMES) {
@@ -211,6 +255,8 @@ public class HourglassBlockEntity extends ConfigurableBlockEntity {
         mode = SavedEnum.read(in, "mode", Mode.PULSE);
         gate = SavedEnum.read(in, "gate", Gate.TRIGGER);
         repeat = in.getBooleanOr("repeat", false);
+        flip = SavedEnum.read(in, "flip", Flip.TOP);
+        syncedAt = Long.MIN_VALUE;
     }
 
     @Override
@@ -223,5 +269,16 @@ public class HourglassBlockEntity extends ConfigurableBlockEntity {
         SavedEnum.write(out, "mode", mode);
         SavedEnum.write(out, "gate", gate);
         out.putBoolean("repeat", repeat);
+        SavedEnum.write(out, "flip", flip);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 }

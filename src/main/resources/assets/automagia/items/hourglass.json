@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "automagia:block/hourglass_5_running"
+    "model": "automagia:block/hourglass_item"
   }
 }

@@ -49,10 +49,12 @@ public final class AMClient {
     }
 
     /** Opens the crafting focus on the hotbar (the key the original's research page names). */
-    static final KeyMapping CRAFTING_KEY = new KeyMapping("key.automagia.focus_crafting", InputConstants.KEY_K, KeyMapping.Category.GAMEPLAY);
+    public static final KeyMapping.Category CATEGORY = new KeyMapping.Category(net.minecraft.resources.Identifier.fromNamespaceAndPath("automagia", "main"));
+    static final KeyMapping CRAFTING_KEY = new KeyMapping("key.automagia.focus_crafting", InputConstants.KEY_K, CATEGORY);
 
     @SubscribeEvent
     static void keys(RegisterKeyMappingsEvent event) {
+        event.registerCategory(CATEGORY);
         event.register(CRAFTING_KEY);
     }
 

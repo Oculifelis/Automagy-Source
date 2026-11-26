@@ -36,6 +36,7 @@ neoForge {
             // Development-only automated client check: tools/run_client_test.sh (./gradlew runClient -Pautotest=1)
             if (project.hasProperty('autotest')) {
                 systemProperty 'automagia.autotest', project.property('autotest').toString()
+                systemProperty 'automagia.selftest', 'true' // the integrated server runs the self tests too
             }
         }
         server {
