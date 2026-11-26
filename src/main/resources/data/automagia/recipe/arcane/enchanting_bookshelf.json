@@ -3,7 +3,7 @@
   "crystals": [],
   "key": {
     "W": {
-      "tag": "minecraft:planks"
+      "item": "thaumaturge:plank_greatwood"
     },
     "B": {
       "item": "automagia:bound_enchanting_paper"

@@ -24,7 +24,9 @@ import org.slf4j.Logger;
  * Development-only automated client check, inert unless the JVM runs with -Dautomagia.autotest (only the Gradle dev run
  * passes it with -Pautotest, see build.gradle and tools/run_client_test.sh). It makes a fresh creative superflat world
  * "amtest", sets amber blocks before a striped wall and both hourglasses beside them, turns the glasses with
- * redstone and screenshots the scene, the turn (every 3 ticks), the settled glass and the sand 20 s on, logs "AMTEST"
+ * redstone and screenshots the turn (every tick) and the sand draining over 15 s; device chests are shot close at the
+ * lid seam with the old chest textures (resource pack amtest_before) and again without them; opens a filled golem's
+ * workbench for one screen shot; logs "AMTEST"
  * lines and stops the client.
  */
 @EventBusSubscriber(modid = Automagy.MODID, value = Dist.CLIENT)
@@ -40,6 +42,8 @@ public final class AMClientAutotest {
     private static int idleTicks;
     private static int worldTicks;
     private static boolean finished;
+    private static int packWait;
+    private static final String BEFORE_PACK = "file/amtest_before";
 
     private AMClientAutotest() {
     }
@@ -83,6 +87,12 @@ public final class AMClientAutotest {
                 idleTicks = 0;
             }
             if (!creating && mc.screen instanceof TitleScreen title && mc.getOverlay() == null) {
+                if (packWait == 0) {
+                    setBeforePack(mc, true);
+                }
+                if (++packWait < 40) {
+                    return;
+                }
                 creating = true;
                 titleSeen = true;
                 titleAt = System.nanoTime();
@@ -105,25 +115,115 @@ public final class AMClientAutotest {
         worldTicks++;
         if (worldTicks == 1) {
             LOG.info("AMTEST joined");
-        } else if (worldTicks == 60) {
+        } else if (worldTicks == 30) {
             build(mc);
-        } else if (worldTicks == 160) {
+            chests(mc);
+        } else if (worldTicks >= 70 && worldTicks <= 85 && worldTicks % 5 == 0) {
+            chestShot(mc, "before", (worldTicks - 70) / 5);
+        } else if (worldTicks == 90) {
+            setBeforePack(mc, false);
+        } else if (worldTicks >= 200 && worldTicks <= 215 && worldTicks % 5 == 0) {
+            chestShot(mc, "after", (worldTicks - 200) / 5);
+        } else if (worldTicks == 220) {
+            // hourglass row, seen close; both glasses run 15 s so the sand can be caught on its way down
+            run(mc, java.util.List.of("data merge block 1 -60 -1 {seconds:15}", "data merge block 2 -60 -1 {seconds:15}",
+                "tp @a 2.0 -61.12 1.3 180 0"));
+        } else if (worldTicks == 250) {
             shot(mc, "scene");
             // a rising signal under each glass turns it (the real redstone path, HourglassBlock.neighborChanged)
             run(mc, java.util.List.of("setblock 1 -61 -1 minecraft:redstone_block", "setblock 2 -61 -1 minecraft:redstone_block"));
-        } else if (worldTicks >= 162 && worldTicks <= 176 && worldTicks % 3 == 0) {
+        } else if (worldTicks >= 251 && worldTicks <= 270) {
+            shot(mc, String.format("turn_%02d", worldTicks - 250));
+            if (worldTicks % 4 == 0) {
+                logGlass(mc);
+            }
+        } else if (worldTicks == 268 || worldTicks == 350 || worldTicks == 450 || worldTicks == 540 || worldTicks == 552 || worldTicks == 570) {
             logGlass(mc);
-            shot(mc, "turn_" + (worldTicks - 160));
-        } else if (worldTicks == 200) {
-            logGlass(mc);
-            shot(mc, "after_turn");
+        }
+        if (worldTicks == 272) {
+            shot(mc, "drain_000");
+        } else if (worldTicks == 350) {
+            shot(mc, "drain_033");
+        } else if (worldTicks == 450) {
+            shot(mc, "drain_066");
+        } else if (worldTicks == 540) {
+            shot(mc, "drain_096");
+        } else if (worldTicks == 570) {
+            shot(mc, "drain_100");
+        } else if (worldTicks == 575) {
+            workbench(mc);
+        } else if (worldTicks == 590) {
+            mc.options.hideGui = false;
         } else if (worldTicks == 600) {
-            logGlass(mc);
-            shot(mc, "running_20s");
-        } else if (worldTicks == 640) {
+            shot(mc, "workbench");
+        } else if (worldTicks == 610) {
             LOG.info("AMTEST done");
             finish(mc);
         }
+    }
+
+    /** Device chests in a row at x 20, 22, 24 (eager, greedy, tenacious), for close looks at the lid seam. */
+    private static void chests(Minecraft mc) {
+        run(mc, java.util.List.of("gamemode spectator @a", "setblock 20 -60 -1 automagia:eager_chest",
+            "setblock 22 -60 -1 automagia:greedy_chest", "setblock 24 -60 -1 automagia:tenacious_chest",
+            "tp @a 22.5 -61.02 2.3 180 0"));
+    }
+
+    /** Shot n of a chest pass: 0 all three, then each chest close at the seam, slightly from the side. */
+    private static void chestShot(Minecraft mc, String pass, int n) {
+        String[] names = {"all", "eager", "greedy", "tenacious"};
+        if (n == 0) {
+            shot(mc, "chest_" + pass + "_all");
+            run(mc, java.util.List.of("tp @a 20.85 -61.02 0.75 165 4"));
+        } else {
+            shot(mc, "chest_" + pass + "_" + names[n]);
+            if (n < 3) {
+                run(mc, java.util.List.of("tp @a " + (20.85 + 2 * n) + " -61.02 0.75 165 4"));
+            } else {
+                run(mc, java.util.List.of("tp @a 22.5 -61.02 2.3 180 0"));
+            }
+        }
+    }
+
+    /** The run script drops resourcepacks/amtest_before (the chest textures as they were) for the "before" shots. */
+    private static void setBeforePack(Minecraft mc, boolean on) {
+        var repo = mc.getResourcePackRepository();
+        repo.reload();
+        boolean changed = on ? repo.addPack(BEFORE_PACK) : repo.removePack(BEFORE_PACK);
+        LOG.info("AMTEST before pack {} -> {} (selected {})", on ? "on" : "off", changed, repo.getSelectedIds());
+        if (changed) {
+            mc.reloadResourcePacks();
+        }
+    }
+
+    /** A golem's workbench with items in storage and in the player's inventory, opened for one screen shot (one pattern
+     *  window open, two shaded). */
+    private static void workbench(Minecraft mc) {
+        IntegratedServer server = mc.getSingleplayerServer();
+        if (server == null) {
+            return;
+        }
+        server.execute(() -> {
+            var pos = new net.minecraft.core.BlockPos(5, -60, -1);
+            var level = server.overworld();
+            level.setBlockAndUpdate(pos, com.automagy.AMRegistry.GOLEM_WORKBENCH.get().defaultBlockState());
+            var player = server.getPlayerList().getPlayers().get(0);
+            player.setGameMode(GameType.CREATIVE);
+            if (level.getBlockEntity(pos) instanceof com.automagy.golem.GolemWorkbenchBlockEntity be) {
+                net.minecraft.world.item.Item[] items = {net.minecraft.world.item.Items.OAK_PLANKS, net.minecraft.world.item.Items.STICK,
+                    net.minecraft.world.item.Items.IRON_INGOT, net.minecraft.world.item.Items.REDSTONE};
+                for (int i = 0; i < 27; i += 2) {
+                    be.storage().setItem(i, new net.minecraft.world.item.ItemStack(items[(i / 2) % 4], 1 + i));
+                }
+                for (int i = 0; i < 36; i += 3) {
+                    player.getInventory().setItem(i, new net.minecraft.world.item.ItemStack(items[(i / 3) % 4], 1 + i));
+                }
+                player.openMenu(be, buf -> buf.writeBlockPos(pos));
+                LOG.info("AMTEST workbench opened, {} pattern(s) open", be.openPatterns());
+            } else {
+                LOG.error("AMTEST no workbench block entity");
+            }
+        });
     }
 
     private static void logGlass(Minecraft mc) {
@@ -161,7 +261,7 @@ public final class AMClientAutotest {
         c.addAll(java.util.List.of(
             "fill -2 -60 -1 -2 -59 -1 automagia:glowing_amber", "fill -1 -60 -1 -1 -59 -1 automagia:glowing_amber_bricks",
             "setblock 1 -60 -1 automagia:hourglass", "setblock 2 -60 -1 automagia:magic_hourglass",
-            "tp @a 0.5 -59.6 2.2 180 12"));
+            "tp @a 2.0 -61.12 1.3 180 0"));
         run(mc, c);
     }
 

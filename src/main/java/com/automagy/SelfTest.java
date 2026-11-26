@@ -41,6 +41,7 @@ final class SelfTest {
         if (Boolean.getBoolean("automagia.selftest")) {
             NeoForge.EVENT_BUS.addListener((ServerStartedEvent e) -> run(e.getServer().registryAccess()));
             NeoForge.EVENT_BUS.addListener((ServerStartedEvent e) -> PickupGateTest.run(e.getServer()));
+            NeoForge.EVENT_BUS.addListener((ServerStartedEvent e) -> BehaviourTest.run(e.getServer()));
         }
     }
 

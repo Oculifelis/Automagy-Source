@@ -1,0 +1,67 @@
+{
+  "replace": false,
+  "values": {
+    "automagia:concentrate_jar": [
+      {
+        "aspect": "thaumaturge:cognitio",
+        "amount": 32
+      },
+      {
+        "aspect": "thaumaturge:vitreus",
+        "amount": 5
+      }
+    ],
+    "automagia:concentrate_phial": [
+      {
+        "aspect": "thaumaturge:cognitio",
+        "amount": 8
+      },
+      {
+        "aspect": "thaumaturge:vacuos",
+        "amount": 3
+      }
+    ],
+    "automagia:ember_heart": [
+      {
+        "aspect": "thaumaturge:ignis",
+        "amount": 10
+      },
+      {
+        "aspect": "thaumaturge:victus",
+        "amount": 5
+      },
+      {
+        "aspect": "thaumaturge:praecantatio",
+        "amount": 5
+      }
+    ],
+    "automagia:shattered_avarice_pearl": [
+      {
+        "aspect": "thaumaturge:desiderium",
+        "amount": 4
+      },
+      {
+        "aspect": "thaumaturge:alienis",
+        "amount": 2
+      }
+    ],
+    "automagia:vishroom_soup_bucket": [
+      {
+        "aspect": "thaumaturge:vacuos",
+        "amount": 5
+      },
+      {
+        "aspect": "thaumaturge:metallum",
+        "amount": 3
+      },
+      {
+        "aspect": "thaumaturge:victus",
+        "amount": 5
+      },
+      {
+        "aspect": "thaumaturge:praecantatio",
+        "amount": 5
+      }
+    ]
+  }
+}

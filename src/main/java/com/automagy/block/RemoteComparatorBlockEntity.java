@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 /** Holds the crystalline eye and reads the comparator signal of the block it watches, four times a second. */
 public class RemoteComparatorBlockEntity extends BlockEntity implements com.automagy.port.PreRemove {
-    public static final int RANGE = 16;
+    public static final int RANGE = 20;
     private ItemStack eye = ItemStack.EMPTY;
 
     public RemoteComparatorBlockEntity(BlockPos pos, BlockState state) {

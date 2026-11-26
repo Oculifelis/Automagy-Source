@@ -5,14 +5,20 @@ import com.automagy.SavedEnum;
 import com.leclowndu93150.thaumaturge.api.aspect.AspectCapabilities;
 import com.leclowndu93150.thaumaturge.api.aspect.AspectInstance;
 import com.leclowndu93150.thaumaturge.api.aspect.AspectList;
+import com.leclowndu93150.thaumaturge.api.aspect.IAspect;
 import com.leclowndu93150.thaumaturge.api.aspect.IAspectContainer;
 import com.leclowndu93150.thaumaturge.api.essentia.EssentiaCapabilities;
 import com.leclowndu93150.thaumaturge.api.essentia.IAspectQuery;
 import com.leclowndu93150.thaumaturge.api.essentia.IEssentiaJar;
 import com.leclowndu93150.thaumaturge.api.essentia.IEssentiaStorage;
+import com.leclowndu93150.thaumaturge.api.items.ILabel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,7 +30,8 @@ import org.jetbrains.annotations.Nullable;
  * Reads aspects and turns them into a signal. Like a comparator, the strength scales with how full the target is
  * against its capacity (Auto takes a jar's own capacity); Invert gives a full signal when empty instead.
  * Modes: Total (every aspect together), Any (High) and Any (Low) (the fullest or emptiest single aspect),
- * Aspect Count (how many aspects are there, one strength each, never inverted).
+ * Aspect Count (how many aspects are there, one strength each, never inverted). Right-clicking it with a jar label
+ * makes it read only that label's aspect; a blank label clears the filter.
  */
 public class VisReaderBlockEntity extends ConfigurableBlockEntity {
     private static final int[] CAPACITIES = {0, 8, 16, 32, 64, 128, 250, 500, 1000};
@@ -36,6 +43,7 @@ public class VisReaderBlockEntity extends ConfigurableBlockEntity {
     private int capacity; // index into CAPACITIES; 0 = Auto
     private boolean invert;
     private int output; // 0 = all sides, else Direction ordinal + 1
+    private @Nullable ResourceKey<IAspect> filter; // from a jar label: read only this aspect
 
     public VisReaderBlockEntity(BlockPos pos, BlockState state) {
         super(AMRegistry.VIS_READER_BE.get(), pos, state);
@@ -93,6 +101,10 @@ public class VisReaderBlockEntity extends ConfigurableBlockEntity {
         if (aspects == null) {
             return 0;
         }
+        if (filter != null) {
+            ResourceKey<IAspect> only = filter;
+            aspects = AspectList.ofEntries(aspects.entries().stream().filter(a -> a.aspect().is(only)).toList());
+        }
         if (mode == Mode.COUNT) {
             return Math.min(15, aspects.size());
         }
@@ -113,6 +125,22 @@ public class VisReaderBlockEntity extends ConfigurableBlockEntity {
         int power = be.signal(level, state);
         if (power != state.getValue(VisReaderBlock.POWER)) {
             level.setBlock(pos, state.setValue(VisReaderBlock.POWER, power), Block.UPDATE_ALL);
+        }
+    }
+
+    /** A jar label sets the aspect filter; a blank one clears it. */
+    public void applyLabel(Player player, ItemStack stack, ILabel label) {
+        filter = label.getFilteredAspect(stack);
+        setChanged();
+        if (filter == null) {
+            player.displayClientMessage(Component.translatable("automagia.msg.vis_reader_filter_off"), true);
+        } else {
+            ResourceLocation id = filter.location();
+            player.displayClientMessage(Component.translatable("automagia.msg.vis_reader_filter",
+                    Component.translatable("aspect." + id.getNamespace() + "." + id.getPath())), true);
+        }
+        if (level != null) {
+            level.updateNeighborsAt(worldPosition, getBlockState().getBlock());
         }
     }
 
@@ -163,6 +191,8 @@ public class VisReaderBlockEntity extends ConfigurableBlockEntity {
         capacity = Math.floorMod(in.getIntOr("capacity", 0), CAPACITIES.length);
         invert = in.getBooleanOr("invert", false);
         output = Math.floorMod(in.getIntOr("output", 0), 7);
+        ResourceLocation id = ResourceLocation.tryParse(in.getStringOr("filter", ""));
+        filter = id == null || in.getStringOr("filter", "").isEmpty() ? null : ResourceKey.create(IAspect.REGISTRY_KEY, id);
     }
 
     @Override
@@ -173,5 +203,8 @@ public class VisReaderBlockEntity extends ConfigurableBlockEntity {
         out.putInt("capacity", capacity);
         out.putBoolean("invert", invert);
         out.putInt("output", output);
+        if (filter != null) {
+            out.putString("filter", filter.location().toString());
+        }
     }
 }

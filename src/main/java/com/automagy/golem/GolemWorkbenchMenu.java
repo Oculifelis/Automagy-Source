@@ -39,24 +39,29 @@ public class GolemWorkbenchMenu extends AbstractContainerMenu {
         this.access = inv.player.level().isClientSide() ? ContainerLevelAccess.NULL : ContainerLevelAccess.create(inv.player.level(), pos);
         for (int p = 0; p < GolemWorkbenchBlockEntity.PATTERNS; p++) {
             for (int i = 0; i < 9; i++) {
-                addSlot(new Ghost(patterns, p * 9 + i, 8 + (p * 3 + i % 3) * 18, 18 + (i / 3) * 18));
+                addSlot(new Ghost(patterns, p * 9 + i, patternX(p) + 1 + (i % 3) * 18, 5 + (i / 3) * 18));
             }
         }
         for (int i = 0; i < GolemWorkbenchBlockEntity.STORAGE; i++) {
-            addSlot(new Slot(storage, i, 8 + (i % 9) * 18, 72 + (i / 9) * 18));
+            addSlot(new Slot(storage, i, 9 + (i % 9) * 18, 71 + (i / 9) * 18));
         }
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                addSlot(new Slot(inv, col + row * 9 + 9, 8 + col * 18, 139 + row * 18));
+                addSlot(new Slot(inv, col + row * 9 + 9, 9 + col * 18, 137 + row * 18));
             }
         }
         for (int col = 0; col < 9; col++) {
-            addSlot(new Slot(inv, col, 8 + col * 18, 197));
+            addSlot(new Slot(inv, col, 9 + col * 18, 195));
         }
         addDataSlots(data);
     }
 
     /** Patterns in use: 1 to 3. */
+    /** Left edge of pattern window p on the screen texture. */
+    public static int patternX(int p) {
+        return 4 + p * 58;
+    }
+
     public int openPatterns() {
         return Math.max(1, data.get(0));
     }

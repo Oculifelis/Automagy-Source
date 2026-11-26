@@ -51,6 +51,7 @@ neoForge {
             jvmArgument '-Xmx3G'
             if (project.hasProperty('autotest')) {
                 systemProperty 'automagia.autotest', project.property('autotest').toString()
+                systemProperty 'automagia.selftest', 'true' // the integrated server runs the self tests too
             }
         }
         server {
